@@ -6,7 +6,7 @@ abstract class cleverMediaHandler
     $this->file = $file;
     $this->filesystem = $filesystem;
     $this->options = $options;
-    $this->setup();
+    $this->setup($options);
   }
 
   public function __destruct()
@@ -31,8 +31,8 @@ abstract class cleverMediaHandler
   {
     foreach ($sizes as $format => $size)
     {
-      if (!isset($size['overwrite']) 
-          || (true == $size['overwrite']) 
+      if (!isset($size['overwrite'])
+          || (true == $size['overwrite'])
           || !$this->filesystem->exists($size['directory'].DIRECTORY_SEPARATOR.$this->file))
       {
         $this->resize($size);

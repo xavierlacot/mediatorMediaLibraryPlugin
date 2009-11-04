@@ -1,23 +1,23 @@
 all:
-  stylesheets:   [-main, -admin, /sfDoctrinePlugin/css/global.css, /sfDoctrinePlugin/css/default.css, main, admin, /cleverMediaLibraryPlugin/css/cleverMediaLibrary]
-  javascripts:   [/cleverMediaLibraryPlugin/js/jquery.min.js, /cleverMediaLibraryPlugin/js/jquery.livequery.js]
+  stylesheets:   [-main, -admin, /sfDoctrinePlugin/css/global.css, /sfDoctrinePlugin/css/default.css, main, admin, /mediatorPlugin/css/cleverMediaLibrary]
+  javascripts:   [/mediatorPlugin/js/jquery.min.js, /mediatorPlugin/js/jquery.livequery.js]
 
 chooseImageSuccess:
   layout:        facebox
-  stylesheets:   [/cleverMediaLibraryPlugin/css/cleverMediaLibrary]
+  stylesheets:   [/mediatorPlugin/css/cleverMediaLibrary]
 
 editSuccess:
-  stylesheets:   [/cleverMediaLibraryPlugin/css/jquery.Jcrop.css, /cleverMediaLibraryPlugin/css/cleverMediaLibrary]
-  javascripts:   [/cleverMediaLibraryPlugin/js/jquery.Jcrop.js]
+  stylesheets:   [/mediatorPlugin/css/jquery.Jcrop.css, /mediatorPlugin/css/cleverMediaLibrary]
+  javascripts:   [/mediatorPlugin/js/jquery.Jcrop.js]
 
 listSuccess:
-  stylesheets:   [/cleverMediaLibraryPlugin/css/cleverMediaLibrary]
-  javascripts:   [/cleverMediaLibraryPlugin/js/cleverMediaLibrary, /cleverMediaLibraryPlugin/js/jquery.pageslider.js]
+  stylesheets:   [/mediatorPlugin/css/cleverMediaLibrary]
+  javascripts:   [/mediatorPlugin/js/cleverMediaLibrary, /mediatorPlugin/js/jquery.pageslider.js]
 
 searchSuccess:
-  stylesheets:   [/cleverMediaLibraryPlugin/css/cleverMediaLibrary]
-  javascripts:   [/cleverMediaLibraryPlugin/js/cleverMediaLibrary]
+  stylesheets:   [/mediatorPlugin/css/cleverMediaLibrary]
+  javascripts:   [/mediatorPlugin/js/cleverMediaLibrary]
 
 viewSuccess:
-  stylesheets:   [/sfFormExtraPlugin/css/jquery.autocompleter.css, /cleverMediaLibraryPlugin/css/cleverMediaLibrary]
-  javascripts:   [/cleverMediaLibraryPlugin/js/jquery.pageslider.js]
+  stylesheets:   [/sfFormExtraPlugin/css/jquery.autocompleter.css, /mediatorPlugin/css/cleverMediaLibrary]
+  javascripts:   [/mediatorPlugin/js/jquery.pageslider.js]

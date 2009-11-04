@@ -25,7 +25,7 @@ class PluginCcMediaTable extends Doctrine_Table
    * @param string $filename
    * @return ccMedia
    */
-  public static function retrieveByFilename($path)
+  public function retrieveByFilename($path)
   {
     $path_parts = pathinfo($path);
 
@@ -43,7 +43,7 @@ class PluginCcMediaTable extends Doctrine_Table
     return isset($result[0]) ? $result[0] : null;
   }
 
-  public static function retrieveByPk($pk)
+  public function retrieveByPk($pk)
   {
     $q = Doctrine_Query::create()->from('CcMedia m')
       ->where('m.id = ?', $pk);

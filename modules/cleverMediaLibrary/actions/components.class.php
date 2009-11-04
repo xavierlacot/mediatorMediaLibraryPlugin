@@ -9,7 +9,7 @@ class cleverMediaLibraryComponents extends sfComponents
       throw new Exception('The breadcrumb component needs to be passed a "cc_media" parameter.');
     }
 
-    $folder = $this->cc_media->getCcMediaFolder()->getRawValue();
+    $folder = $this->cc_media->getCcMediaFolder();
     $this->path = $folder->getNode()->getAncestors();
     $this->path[] = $folder;
   }
@@ -21,7 +21,7 @@ class cleverMediaLibraryComponents extends sfComponents
       throw new Exception('The folder_breadcrumb component needs to be passed a "cc_media_folder" parameter.');
     }
 
-    $folder = $this->cc_media_folder->getRawValue();
+    $folder = $this->cc_media_folder;
     $this->path = $folder->getNode()->getAncestors();
     $this->path[] = $folder;
   }
@@ -29,7 +29,7 @@ class cleverMediaLibraryComponents extends sfComponents
   public function executeList()
   {
     // get the subdirectories
-    $this->directories = $this->cc_media_folder->getRawValue()->getNode()->getChildren();
+    $this->directories = $this->cc_media_folder->getNode()->getChildren();
 
     if (!$this->directories)
     {
@@ -37,7 +37,7 @@ class cleverMediaLibraryComponents extends sfComponents
     }
 
     // get the medias
-    $this->files = $this->cc_media_folder->getRawValue()->getFiles();
+    $this->files = $this->cc_media_folder->getFiles();
   }
 
   public function executeSearch(sfWebRequest $request)
@@ -55,6 +55,6 @@ class cleverMediaLibraryComponents extends sfComponents
 
   public function executeView_tags()
   {
-    $this->tags_form = new CcMediaTagForm($this->cc_media->getRawValue(), array('url' => $this->getController()->genUrl('cleverMediaLibrary/tagAutocomplete')));
+    $this->tags_form = new CcMediaTagForm($this->cc_media, array('url' => $this->getController()->genUrl('cleverMediaLibrary/tagAutocomplete')));
   }
 }

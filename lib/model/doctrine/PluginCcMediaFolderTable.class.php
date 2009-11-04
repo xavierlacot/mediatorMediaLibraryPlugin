@@ -3,7 +3,7 @@
  */
 class PluginCcMediaFolderTable extends Doctrine_Table
 {
-  public static function retrieveByPath($path)
+  public function retrieveByPath($path)
   {
     $q = Doctrine_Query::create()->from('CcMediaFolder f')
       ->where('f.absolute_path = ?', $path);
@@ -12,7 +12,7 @@ class PluginCcMediaFolderTable extends Doctrine_Table
     return isset($result[0]) ? $result[0] : null;
   }
 
-  public static function retrieveByPk($pk)
+  public function retrieveByPk($pk)
   {
     $q = Doctrine_Query::create()->from('CcMediaFolder f')
       ->where('f.id = ?', $pk);

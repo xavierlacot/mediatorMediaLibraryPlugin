@@ -9,7 +9,7 @@
  */
 abstract class PluginCcMediaFolderForm extends BaseCcMediaFolderForm
 {
-  public function configure()
+  public function setup()
   {
     if (is_null($this->getObject()->getFolderPath()))
     {

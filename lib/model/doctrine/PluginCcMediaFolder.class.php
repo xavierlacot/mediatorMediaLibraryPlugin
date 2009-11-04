@@ -24,7 +24,7 @@ abstract class PluginCcMediaFolder extends BaseCcMediaFolder
 
   public function delete(Doctrine_Connection $conn = null)
   {
-    $medias = Doctrine::getTable('CcMedia')->findByCcMediaFolder($this);
+    $medias = Doctrine::getTable('CcMedia')->findByCcMediaFolder($this->getId());
 
     foreach ($medias as $media)
     {
@@ -48,6 +48,17 @@ abstract class PluginCcMediaFolder extends BaseCcMediaFolder
     }
 
     parent::delete($conn);
+  }
+
+  public function getFiles($q = null)
+  {
+    if ($q === null)
+    {
+      $q = Doctrine_Query::create()->from('CcMedia m');
+    }
+
+    $q->andWhere('m.cc_media_folder_id = ?', $this->getId());
+    return $q->execute();
   }
 
   public function getMetadata($name)
@@ -209,12 +220,5 @@ abstract class PluginCcMediaFolder extends BaseCcMediaFolder
         $this->getNode()->moveAsLastChildOf($parent);
       }
     }
-  }
-
-  public function getFiles()
-  {
-    $q = Doctrine_Query::create()->from('CcMedia m')
-      ->where('m.cc_media_folder_id = ?', $this->getId());
-    return $q->execute();
   }
 }

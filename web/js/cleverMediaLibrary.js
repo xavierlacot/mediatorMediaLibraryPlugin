@@ -80,9 +80,9 @@ $(function(){
 
   		getInfo : function() {
   			return {
-  				longname : 'Clever Media Library',
-  				author : 'Clever Age',
-  				authorurl : 'http://www.clever-age.com/',
+  				longname : 'Mediator Media Library',
+  				author : 'Xavier Lacot',
+  				authorurl : 'http://www.mediator-project.org/',
   				infourl : '',
   				version : '1.0.0'
   			};

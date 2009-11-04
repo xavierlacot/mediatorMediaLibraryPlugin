@@ -35,7 +35,7 @@ class cleverMediaLibraryActions extends sfActions
     if ($request->isMethod('post'))
     {
       $cc_media_tag = $request->getParameter('cc_media_tag');
-      $this->cc_media = CcMediaTable::retrieveByPk($cc_media_tag['id']);
+      $this->cc_media = Doctrine::getTable('CcMedia')->retrieveByPk($cc_media_tag['id']);
       $form = new CcMediaTagForm($this->cc_media);
       $form->bind($cc_media_tag);
 
@@ -75,7 +75,7 @@ class cleverMediaLibraryActions extends sfActions
     if ($request->isMethod('post'))
     {
       $tagging = $request->getParameter('tagging');
-      $this->cc_media = CcMediaTable::retrieveByPk($tagging[0]);
+      $this->cc_media = Doctrine::getTable('CcMedia')->retrieveByPk($tagging[0]);
       $this->cc_media->removeTag($tagging[1]);
       $this->cc_media->save();
     }
@@ -145,7 +145,7 @@ class cleverMediaLibraryActions extends sfActions
     if ($request->isMethod('put'))
     {
       $request_parameter = $request->getParameter('cc_media_folder');
-      $this->cc_media_folder = CcMediaFolderTable::retrieveByPk($request_parameter['id']);
+      $this->cc_media_folder = Doctrine::getTable('CcMediaFolder')->retrieveByPk($request_parameter['id']);
       $this->form = new CcMediaFolderForm($this->cc_media_folder);
       $this->form->bind($request_parameter);
 
@@ -207,7 +207,7 @@ class cleverMediaLibraryActions extends sfActions
   {
     // Building the current path
     $requested_path = $this->getRequestParameter('path', '');
-    $this->cc_media = CcMediaTable::retrieveByFilename($requested_path);
+    $this->cc_media = Doctrine::getTable('CcMedia')->retrieveByFilename($requested_path);
 
     if (!$this->cc_media)
     {
@@ -220,7 +220,7 @@ class cleverMediaLibraryActions extends sfActions
   protected function retrieveFile()
   {
     $requested_path = $this->getRequestParameter('path', '');
-    $this->cc_media = CcMediaTable::retrieveByFilename($requested_path);
+    $this->cc_media = Doctrine::getTable('CcMedia')->retrieveByFilename($requested_path);
 
     if (!$this->cc_media)
     {
@@ -231,7 +231,7 @@ class cleverMediaLibraryActions extends sfActions
   protected function retrieveFolder()
   {
     $requested_path = $this->getRequestParameter('path', '');
-    $this->cc_media_folder = CcMediaFolderTable::retrieveByPath($requested_path);
+    $this->cc_media_folder = Doctrine::getTable('CcMediaFolder')->retrieveByPath($requested_path);
 
     if (!$this->cc_media_folder)
     {

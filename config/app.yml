@@ -1,3 +1,4 @@
+all:
   cleverMediaLibraryPlugin:
     fs: localdisk
     media_root: /media

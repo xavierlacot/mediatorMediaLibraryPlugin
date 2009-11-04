@@ -69,15 +69,15 @@ abstract class PluginCcMediaForm extends BaseCcMediaForm
   public function getJavaScripts()
   {
     return array(
-      '/cleverMediaLibraryPlugin/js/jquery.uploadify/swfobject.js',
-      '/cleverMediaLibraryPlugin/js/jquery.uploadify/jquery.uploadify.v2.1.0.min.js',
+      '/mediatorPlugin/js/jquery.uploadify/swfobject.js',
+      '/mediatorPlugin/js/jquery.uploadify/jquery.uploadify.v2.1.0.min.js',
     );
   }
 
   public function getStylesheets()
   {
     return array(
-      '/cleverMediaLibraryPlugin/js/jquery.uploadify/uploadify.css',
+      '/mediatorPlugin/js/jquery.uploadify/uploadify.css',
     );
   }
 }

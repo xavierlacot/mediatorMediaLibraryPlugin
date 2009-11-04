@@ -69,9 +69,9 @@ $(document).ready(function() {
     'fileDataName':  'cc_media[file]',
     'wmode':      'transparent',
     'simUploadLimit': 3,
-    'uploader':   '/cleverMediaLibraryPlugin/js/jquery.uploadify/uploadify.swf',
+    'uploader':   '/mediatorPlugin/js/jquery.uploadify/uploadify.swf',
     'script':     $('#sf_admin_container form').attr('action'),
-    'cancelImg':  '/cleverMediaLibraryPlugin/images/cancel.png',
+    'cancelImg':  '/mediatorPlugin/images/cancel.png',
     'multi':      true,
     'sizeLimit':  '<?php echo $max_size ?>',
     'onAllComplete':  function(e, d) {
