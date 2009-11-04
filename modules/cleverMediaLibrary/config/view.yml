@@ -1,0 +1,23 @@
+all:
+  stylesheets:   [-main, -admin, /sfDoctrinePlugin/css/global.css, /sfDoctrinePlugin/css/default.css, main, admin, /cleverMediaLibraryPlugin/css/cleverMediaLibrary]
+  javascripts:   [/cleverMediaLibraryPlugin/js/jquery.min.js, /cleverMediaLibraryPlugin/js/jquery.livequery.js]
+
+chooseImageSuccess:
+  layout:        facebox
+  stylesheets:   [/cleverMediaLibraryPlugin/css/cleverMediaLibrary]
+
+editSuccess:
+  stylesheets:   [/cleverMediaLibraryPlugin/css/jquery.Jcrop.css, /cleverMediaLibraryPlugin/css/cleverMediaLibrary]
+  javascripts:   [/cleverMediaLibraryPlugin/js/jquery.Jcrop.js]
+
+listSuccess:
+  stylesheets:   [/cleverMediaLibraryPlugin/css/cleverMediaLibrary]
+  javascripts:   [/cleverMediaLibraryPlugin/js/cleverMediaLibrary, /cleverMediaLibraryPlugin/js/jquery.pageslider.js]
+
+searchSuccess:
+  stylesheets:   [/cleverMediaLibraryPlugin/css/cleverMediaLibrary]
+  javascripts:   [/cleverMediaLibraryPlugin/js/cleverMediaLibrary]
+
+viewSuccess:
+  stylesheets:   [/sfFormExtraPlugin/css/jquery.autocompleter.css, /cleverMediaLibraryPlugin/css/cleverMediaLibrary]
+  javascripts:   [/cleverMediaLibraryPlugin/js/jquery.pageslider.js]

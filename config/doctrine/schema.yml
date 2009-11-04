@@ -1,0 +1,89 @@
+CcMediaFolder:
+  columns:
+    name:                string(255)
+    description:         clob
+    absolute_path:       clob
+    folder_path:         clob
+    created_by:          integer
+    updated_by:          integer
+  actAs:
+    NestedSet:
+      hasManyRoots: true
+      rootColumnName: root
+    Timestampable:
+    Taggable:
+  relations:
+    CcMedia:
+      type: many
+      local: id
+      foreign: cc_media_folder_id
+    CcMediaFolderMetadata:
+      type: many
+      local: id
+      foreign: cc_media_folder_id
+    Created: { class: SfDoctrineGuardUser, onDelete: SET NULL, local: created_by, foreign: id }
+    Updated: { class: SfDoctrineGuardUser, onDelete: SET NULL, local: updated_by, foreign: id }
+
+CcMedia:
+  columns:
+    cc_media_folder_id:  integer
+    title:               string(250)
+    body:                clob
+    created_by:          integer
+    updated_by:          integer
+    filename:            string(255)
+    thumbnail_filename:  string(255)
+    filesize:            float
+    md5sum:              string(32)
+    height:              integer
+    mime_type:           string(50)
+    type:                string(10)
+    width:               integer
+  actAs:
+    Timestampable:
+    Taggable:
+  relations:
+    CcMediaFolder:
+      local: cc_media_folder_id
+      foreign: id
+      onDelete: CASCADE
+      onUpdate: CASCADE
+    CcMediaMetadata:
+      type: many
+      local: id
+      foreign: cc_media_id
+    Created: { class: SfDoctrineGuardUser, onDelete: SET NULL, local: created_by, foreign: id }
+    Updated: { class: SfDoctrineGuardUser, onDelete: SET NULL, local: updated_by, foreign: id }
+  indexes:
+    browse:
+      fields:            [filename]
+
+CcMediaFolderMetadata:
+  columns:
+    cc_media_folder_id:  integer
+    name:                string(255)
+    value:               clob
+  relations:
+    CcMediaFolder:
+      local: cc_media_folder_id
+      foreign: id
+      onDelete: CASCADE
+      onUpdate: CASCADE
+  indexes:
+    browse:
+      fields:            [cc_media_folder_id, name]
+
+CcMediaMetadata:
+  columns:
+    cc_media_id:         integer
+    name:                string(255)
+    value:               clob
+  relations:
+    CcMedia:
+      local: cc_media_id
+      foreign: id
+      onDelete: CASCADE
+      onUpdate: CASCADE
+  indexes:
+    browse:
+      fields:            [cc_media_id, name]

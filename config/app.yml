@@ -1,0 +1,37 @@
+  cleverMediaLibraryPlugin:
+    fs: localdisk
+    media_root: /media
+    thumbnail_types:
+      - jpg
+      - png
+      - gif
+    metadata_exif:
+      - Artist
+      - Copyright
+      - DateTimeOriginal
+      - ExposureTime
+      - FocalLength
+      - FocalLengthIn35mmFilm
+      - ISOSpeedRatings
+      - Make
+      - Model
+    directories:
+      original:
+        directory: original
+      large:
+        directory: large
+        width: 670
+        height: 670
+        overwrite: true
+      medium:
+        directory: medium
+        width: 200
+        height: 200
+        overwrite: true
+        crop: true
+      small:
+        directory: small
+        width: 120
+        height: 120
+        overwrite: true
+        crop: true
