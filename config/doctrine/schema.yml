@@ -1,0 +1,107 @@
+mmMediaFolder:
+  columns:
+    name:                  string(255)
+    description:           clob
+    absolute_path:         clob
+    folder_path:           clob
+    created_by:            integer
+    updated_by:            integer
+<?php if (sfConfig::get('app_mediatorMediaLibraryPlugin_use_nested_set', false)): ?>
+  actAs:
+    NestedSet:
+      hasManyRoots: true
+      rootColumnName: root
+<?php else: ?>
+    parent_id:             integer
+    root:                  integer
+  actAs:
+<?php endif ; ?>
+    Timestampable:
+    Taggable:
+  relations:
+<?php if (!sfConfig::get('app_mediatorMediaLibraryPlugin_use_nested_set', false)): ?>
+    parent_id:             { class: mmMediaFolder, onDelete: CASCADE, local: parent_id, foreign: id }
+<?php endif ; ?>
+    mmMedia:               { class: mmMedia, local: id, foreign: mm_media_folder_id, type: many }
+    mmMediaFolderMetadata: { class: mmMediaFolderMetadata, local: id, foreign: mm_media_folder_id, type: many }
+    created_by:            { class: SfDoctrineGuardUser, onDelete: SET NULL, local: created_by, foreign: id }
+    updated_by:            { class: SfDoctrineGuardUser, onDelete: SET NULL, local: updated_by, foreign: id }
+  indexes:
+<?php if (!sfConfig::get('app_mediatorMediaLibraryPlugin_use_nested_set', false)): ?>
+    parent_id_root:
+      fields:            [parent_id, root]
+<?php endif ; ?>
+    absolute_path:
+      fields:
+        absolute_path:
+          length:          "767"
+      type: unique
+
+mmMedia:
+  columns:
+    mm_media_folder_id:  integer
+    title:               string(250)
+    body:                clob
+    created_by:          integer
+    updated_by:          integer
+    filename:            string(255)
+    thumbnail_filename:  string(255)
+    filesize:            float
+    md5sum:              string(32)
+    height:              integer
+    mime_type:           string(50)
+    type:                string(10)
+    width:               integer
+  actAs:
+    Timestampable:
+    Taggable:
+  relations:
+    mmMediaFolder:
+      local: mm_media_folder_id
+      foreign: id
+      onDelete: CASCADE
+      onUpdate: CASCADE
+    mmMediaMetadata:
+      type: many
+      local: id
+      foreign: mm_media_id
+    CreatedBy: { class: SfDoctrineGuardUser, onDelete: SET NULL, local: created_by, foreign: id }
+    UpdatedBy: { class: SfDoctrineGuardUser, onDelete: SET NULL, local: updated_by, foreign: id }
+  indexes:
+    browse:
+      fields:            [filename]
+    filename_folder:
+      fields:            [mm_media_folder_id, filename]
+      type: unique
+    CreatedAt:
+      fields:            [created_at]
+
+mmMediaFolderMetadata:
+  columns:
+    mm_media_folder_id:  integer
+    name:                string(255)
+    value:               clob
+  relations:
+    mmMediaFolder:
+      local: mm_media_folder_id
+      foreign: id
+      onDelete: CASCADE
+      onUpdate: CASCADE
+  indexes:
+    browse:
+      fields:            [mm_media_folder_id, name]
+
+mmMediaMetadata:
+  columns:
+    mm_media_id:         integer
+    name:                string(255)
+    value:               clob
+  relations:
+    mmMedia:
+      local: mm_media_id
+      foreign: id
+      onDelete: CASCADE
+      onUpdate: CASCADE
+  indexes:
+    browse:
+      fields:            [mm_media_id, name]
