@@ -2,7 +2,7 @@ mmMediaFolder:
   columns:
     name:                  string(255)
     description:           clob
-    absolute_path:         clob
+    absolute_path:         string(255)
     folder_path:           clob
     created_by:            integer
     updated_by:            integer
@@ -32,9 +32,7 @@ mmMediaFolder:
       fields:            [parent_id, root]
 <?php endif ; ?>
     absolute_path:
-      fields:
-        absolute_path:
-          length:          "767"
+      fields:            [absolute_path]
       type: unique
 
 mmMedia:
