@@ -68,27 +68,27 @@ class sfWidgetFormMediatorMediaLibraryImageSelect extends sfWidgetFormInput
 jQuery(document).ready(function() {
   jQuery(document).bind('reveal.facebox', function() {
     jQuery('#facebox a[class!=close]').each(function() {
-      var fieldname = $('#facebox #mm_media_librart_widget_fieldname').val();
-      var href = $(this).attr('href');
+      var fieldname = jQuery('#facebox #mm_media_librart_widget_fieldname').val();
+      var href = jQuery(this).attr('href');
       if (-1 === (href + '').indexOf('?fieldname=', 0)) {
-        $(this).attr('href', $(this).attr('href') + '?fieldname=' + fieldname);
+        jQuery(this).attr('href', jQuery(this).attr('href') + '?fieldname=' + fieldname);
       }
     });
   });
 
   jQuery('#facebox a.file').livequery('click', function() {
-    var fieldname = $('#facebox #mm_media_librart_widget_fieldname').val();
-    jQuery('#' + fieldname).val($(this).attr('id'));
-    jQuery('#' + fieldname + '_image').html('<img src="' + $('img', this).attr('src') + '" alt="" /><br />' + '%s');
-    $(document).unbind('keydown.facebox')
-    $('#facebox').fadeOut(function() {
-      $('#facebox .content').removeClass().addClass('content');
-      $('#facebox_overlay').fadeOut(200, function(){
-        $("#facebox_overlay").removeClass("facebox_overlayBG")
-        $("#facebox_overlay").addClass("facebox_hide")
-        $("#facebox_overlay").remove()
+    var fieldname = jQuery('#facebox #mm_media_librart_widget_fieldname').val();
+    jQuery('#' + fieldname).val(jQuery(this).attr('id'));
+    jQuery('#' + fieldname + '_image span.imgselected').html('<img src="' + jQuery('img', this).attr('src') + '" alt="" />');
+    jQuery(document).unbind('keydown.facebox')
+    jQuery('#facebox').fadeOut(function() {
+      jQuery('#facebox .content').removeClass().addClass('content');
+      jQuery('#facebox_overlay').fadeOut(200, function(){
+        jQuery("#facebox_overlay").removeClass("facebox_overlayBG")
+        jQuery("#facebox_overlay").addClass("facebox_hide")
+        jQuery("#facebox_overlay").remove()
       });
-      $('#facebox .loading').remove()
+      jQuery('#facebox .loading').remove()
     })
     return false;
   });
@@ -105,14 +105,14 @@ $choose_link);
 
       if ($mm_media)
       {
-        return image_tag(sfConfig::get('app_mediatorMediaLibraryPlugin_media_root', 'media')
+        return '<span class="imgselected">'.image_tag(sfConfig::get('app_mediatorMediaLibraryPlugin_media_root', 'media')
                          .'/'.mediatorMediaLibraryToolkit::getDirectoryForSize('small')
                          .'/'.$mm_media->getmmMediaFolder()->getAbsolutePath()
-                         .'/'.$mm_media->getThumbnailFilename()).'<br />'.$choose_link;
+                         .'/'.$mm_media->getThumbnailFilename()).'</span><br />'.$choose_link;
       }
     }
 
-    return sfContext::getInstance()->getI18N()->__('No image has been chosen so far.').'<br />'
+    return sfContext::getInstance()->getI18N()->__('<span class="imgselected">No image has been chosen so far.</span>').'<br />'
     .$choose_link;
   }
 }
