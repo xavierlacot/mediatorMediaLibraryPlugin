@@ -4,5 +4,5 @@ echo image_tag(
   .'/'.mediatorMediaLibraryToolkit::getDirectoryForSize(isset($size) ? $size : 'original')
   .'/'.$mm_media->getmmMediaFolder()->getAbsolutePath()
   .'/'.$mm_media->getThumbnailFilename().'?time='.strtotime($mm_media->getUpdatedAt()),
-  $html_options->getRawValue()
+  is_object($html_options) ? $html_options->getRawValue() : $html_options
 );
