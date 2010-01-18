@@ -388,7 +388,7 @@ class mediatorMedia
       // nothing, context must have launched an exception and we don't care
     }
 
-    if (!$this->logger)
+    if (!isset($this->logger) || !$this->logger)
     {
       $this->logger = new sfNoLogger(new sfEventDispatcher());
     }
