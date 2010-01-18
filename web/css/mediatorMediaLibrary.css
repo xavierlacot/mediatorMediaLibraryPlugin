@@ -17,6 +17,15 @@
   padding-top: 20px;
 }
 
+.mediator-media-library .spacer {
+  clear: both;
+  font-size: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  line-height: 1px;
+}
+
 .mediator_media_library_box {
   border: 1px #ccc solid;
   padding: 0;

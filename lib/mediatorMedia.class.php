@@ -374,7 +374,24 @@ class mediatorMedia
 
   protected function initialize($type)
   {
-    $this->logger = sfContext::getInstance()->getLogger();
+    try
+    {
+      $context = sfContext::getInstance();
+
+      if ($context)
+      {
+        $this->logger = $context->getLogger();
+      }
+    }
+    catch (Exception $e)
+    {
+      // nothing, context must have launched an exception and we don't care
+    }
+
+    if (!$this->logger)
+    {
+      $this->logger = new sfNoLogger(new sfEventDispatcher());
+    }
 
     // create the filesystem
     $this->filesystem = mediatorMediaLibraryToolkit::getFilesystem();

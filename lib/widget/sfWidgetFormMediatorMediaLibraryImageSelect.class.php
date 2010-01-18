@@ -41,13 +41,6 @@ class sfWidgetFormMediatorMediaLibraryImageSelect extends sfWidgetFormInput
    */
   public function render($name, $value = null, $attributes = array(), $errors = array())
   {
-    $response = sfContext::getInstance()->getResponse();
-//    $response->addJavascript('/mediatorMediaLibraryPlugin/js/jquery.js');
-//    $response->addJavascript('/mediatorMediaLibraryPlugin/js/facebox.js');
-//    $response->addJavascript('/mediatorMediaLibraryPlugin/js/jquery.livequery.js');
-//    $response->addJavascript('/mediatorMediaLibraryPlugin/js/mediatorMediaLibrary.js');
-//    $response->addStylesheet('/mediatorMediaLibraryPlugin/css/facebox.css');
-
     $id = $this->generateId($name);
     $image = $this->display_value($value, $id);
     $image_div = content_tag('div', $image, array('id' => $id.'_image'));
