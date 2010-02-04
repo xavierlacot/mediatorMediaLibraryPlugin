@@ -225,10 +225,11 @@ abstract class PluginmmMedia extends BasemmMedia
 
   public function setSource($source)
   {
+    $filename = !is_null($this->getFilename()) ? $this->getFilename() : basename($source);
     $this->update(array(
       'source' => $source,
       'mm_media_folder' => $this->getMmMediaFolder(),
-      'filename' => $this->getFilename()
+      'filename' => $filename
     ));
   }
 

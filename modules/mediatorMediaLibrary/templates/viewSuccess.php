@@ -27,7 +27,7 @@ use_helper('Date')
     </div>
 
     <?php $creator = Doctrine::getTable('sfGuardUser')->find($mm_media->getCreatedBy()); ?>
-    <?php if (!is_null($creator)): ?>
+    <?php if (!is_null($creator) && $creator): ?>
       <div class="sf_admin_form_row">
         <?php
         echo __('Created at %1% by %2%',
@@ -38,7 +38,7 @@ use_helper('Date')
     <?php endif; ?>
 
     <?php $updater = Doctrine::getTable('sfGuardUser')->find($mm_media->getUpdatedBy()); ?>
-    <?php if (!is_null($updater)): ?>
+    <?php if (!is_null($updater) && $updater): ?>
       <div class="sf_admin_form_row">
         <?php
         echo __('Updated at %1% by %2%',

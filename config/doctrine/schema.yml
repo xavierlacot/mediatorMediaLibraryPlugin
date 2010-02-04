@@ -20,7 +20,7 @@ mmMediaFolder:
     Taggable:
   relations:
 <?php if (!sfConfig::get('app_mediatorMediaLibraryPlugin_use_nested_set', false)): ?>
-    parent_id:             { class: mmMediaFolder, onDelete: CASCADE, local: parent_id, foreign: id }
+    Parent:                { class: mmMediaFolder, onDelete: CASCADE, local: parent_id, foreign: id }
 <?php endif ; ?>
     mmMedia:               { class: mmMedia, local: id, foreign: mm_media_folder_id, type: many }
     mmMediaFolderMetadata: { class: mmMediaFolderMetadata, local: id, foreign: mm_media_folder_id, type: many }
