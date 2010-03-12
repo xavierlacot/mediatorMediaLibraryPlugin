@@ -145,7 +145,7 @@ class mediatorMediaLibraryActions extends sfActions
     if ($request->isMethod('put'))
     {
       $request_parameter = $request->getParameter('mm_media_folder');
-      $this->mm_media_folder = Doctrine::getTable('mmMediaFolder')->findOne($request_parameter['id']);
+      $this->mm_media_folder = Doctrine::getTable('mmMediaFolder')->find($request_parameter['id']);
       $this->form = new mmMediaFolderForm($this->mm_media_folder);
       $this->form->bind($request_parameter);
 

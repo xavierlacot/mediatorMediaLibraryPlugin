@@ -134,7 +134,7 @@ abstract class PluginmmMediaFolder extends BasemmMediaFolder
 
   public function delete(Doctrine_Connection $conn = null)
   {
-    $medias = Doctrine::getTable('mmMedia')->findByMmMediaFolder($this);
+    $medias = Doctrine::getTable('mmMedia')->findBymmMediaFolderId($this->getId());
 
     foreach ($medias as $media)
     {

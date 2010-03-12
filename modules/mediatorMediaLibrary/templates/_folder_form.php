@@ -12,7 +12,11 @@
       <div class="help"><?php echo $form['name']->renderHelp() ?></div>
     </div>
   </div>
-
+<?php if ($form->isNew() === false): ?>
+  <?php echo $form['id']->render() ?>
+  <?php echo $form['auto_path']->render() ?>
+  <?php echo $form['folder_path']->render() ?>
+<?php endif; ?>
   <?php echo $form['parent']->render() ?>
   <?php echo $form['_csrf_token']->render() ?>
 

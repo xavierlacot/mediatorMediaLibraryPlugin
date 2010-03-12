@@ -28,7 +28,7 @@ abstract class PluginmmMediaFolderForm extends BasemmMediaFolderForm
       $this->setWidgets(array(
         'id'          => new sfWidgetFormInputHidden(),
         'name'        => new sfWidgetFormInput(),
-        'folder_path' => new sfWidgetFormInput(),
+        'folder_path' => new sfWidgetFormInputHidden(),
         'parent'      => new sfWidgetFormDoctrineChoice(array('model' => 'mmMediaFolder', 'method' => '__toStringWithDepth')),
         'auto_path'   => new sfWidgetFormInputCheckbox(),
       ));
