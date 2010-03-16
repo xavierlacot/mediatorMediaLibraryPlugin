@@ -11,11 +11,13 @@
     </li>
     <li>
       <?php
-      echo link_to(__('download media'),
-                   '/'.sfConfig::get('app_mediatorMediaLibraryPlugin_media_root', 'media')
-                  .'/'.mediatorMediaLibraryToolkit::getDirectoryForSize('original')
-                  .'/'.$path,
-                   array('class' => 'download'))
+
+      echo link_to(
+        __('download media'),
+        sfConfig::get('app_mediatorMediaLibraryPlugin_media_root', '/media')
+          .'/'.mediatorMediaLibraryToolkit::getDirectoryForSize('original')
+          .'/'.$path,
+        array('class' => 'download'));
       ?>
     </li>
     <?php if (!is_null($mm_media->getType())): ?>
