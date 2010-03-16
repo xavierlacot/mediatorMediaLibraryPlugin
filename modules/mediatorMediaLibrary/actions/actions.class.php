@@ -20,7 +20,7 @@ class mediatorMediaLibraryActions extends sfActions
         $this->form->doSave();
         $this->getUser()->setFlash('notice', 'The file has been uploaded successfully.');
 
-        if (false === strpos($_SERVER['HTTP_USER_AGENT'], 'Adobe Flash Player'))
+        if (false === strpos($_SERVER['HTTP_USER_AGENT'], 'Flash'))
         {
           $this->redirect('mediatorMediaLibrary/view?path='.$this->form->getObject()->getAbsoluteFilename());
         }
