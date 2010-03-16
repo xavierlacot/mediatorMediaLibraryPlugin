@@ -6,7 +6,7 @@ abstract class mediatorMediaHandler
     $this->file = $file;
     $this->filesystem = $filesystem;
     $this->options = $options;
-    $this->setup();
+    $this->setup($options);
   }
 
   public function __destruct()

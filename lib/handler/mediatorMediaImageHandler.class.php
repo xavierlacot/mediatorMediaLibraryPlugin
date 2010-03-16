@@ -45,13 +45,19 @@ class mediatorMediaImageHandler extends mediatorMediaHandler
     {
       if (!isset($options['class']))
       {
-        if (extension_loaded('gd'))
+        // get default adapter
+        $adapterClass = mediatorMediaLibraryToolkit::getDefaultAdapter(get_class($this));
+
+        if (!$adapterClass)
         {
-          $adapterClass = 'mediatorMediaImageGDAdapter';
-        }
-        else
-        {
-          $adapterClass = 'mediatorMediaImageImageMagickAdapter';
+          if (extension_loaded('gd'))
+          {
+            $adapterClass = 'mediatorMediaImageGDAdapter';
+          }
+          else
+          {
+            $adapterClass = 'mediatorMediaImageImageMagickAdapter';
+          }
         }
       }
       else

@@ -15,6 +15,20 @@ class mediatorMediaLibraryToolkit
     return array_merge($defaults, $dir);
   }
 
+  public static function getDefaultAdapter($handler_class)
+  {
+    $adapters = sfConfig::get('app_mediatorMediaLibraryPlugin_default_adapters');
+
+    if (isset($adapters[$handler_class]))
+    {
+      return $adapters[$handler_class];
+    }
+    else
+    {
+      return null;
+    }
+  }
+
   public static function getDirectoryForSize($size_name)
   {
     $sizes = self::getAvailableSizes();
