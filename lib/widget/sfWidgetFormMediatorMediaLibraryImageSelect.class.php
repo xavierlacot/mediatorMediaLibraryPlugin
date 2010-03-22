@@ -50,7 +50,7 @@ class sfWidgetFormMediatorMediaLibraryImageSelect extends sfWidgetFormInput
   protected function display_value($value, $id)
   {
     $choose_link = link_to(
-      'choose',
+      sfContext::getInstance()->getI18N()->__('choose'),
       sprintf('@mediatorMediaLibrary?action=chooseImage&fieldname=%s&path=%s', $id, $this->getOption('path')),
       array('rel' => 'facebox')
     );
@@ -105,7 +105,7 @@ $choose_link);
       }
     }
 
-    return sfContext::getInstance()->getI18N()->__('<span class="imgselected">No image has been chosen so far.</span>').'<br />'
+    return '<span class="imgselected">'.sfContext::getInstance()->getI18N()->__('No image has been chosen so far.').'</span><br />'
     .$choose_link;
   }
 }
