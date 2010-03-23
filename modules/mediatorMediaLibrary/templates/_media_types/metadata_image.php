@@ -17,7 +17,7 @@
       echo __(
         '%1%: %2%',
         array(
-          '%1%' => $metadata->getName(),
+          '%1%' => __($metadata->getName()),
           '%2%' => $metadata->getValue()
         )
       );

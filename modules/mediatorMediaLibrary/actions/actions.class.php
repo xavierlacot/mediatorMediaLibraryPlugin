@@ -187,8 +187,6 @@ class mediatorMediaLibraryActions extends sfActions
       {
         $this->form->doSave();
         $this->getUser()->setFlash('notice', 'The media has been successfully moved.');
-//var_dump($this->form->getObject()->toArray());
-//var_dump($this->form->getObject()->getAbsoluteFilename());die();
         $this->redirect('mediatorMediaLibrary/view?path='.$this->form->getObject()->getAbsoluteFilename());
       }
     }
