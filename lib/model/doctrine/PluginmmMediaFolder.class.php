@@ -28,6 +28,7 @@ abstract class PluginmmMediaFolder extends BasemmMediaFolder
       'getAncestors',
       'getChildren',
       'getDescendants',
+      'getLevel',
       'getNode',
       'getParent',
       'insertAsLastChildOf',
@@ -92,11 +93,11 @@ abstract class PluginmmMediaFolder extends BasemmMediaFolder
     else
     {
       $children = $this->getChildren();
-      $descendants = $children;
+      $descendants = $children->toArray();
 
-      foreach ($children as $child)
+      foreach ($children as $key => $child)
       {
-        $descendants = array_merge($decendants, $child->getDescendants());
+        $descendants[$key]['__descendants'] = $child->getDescendants();
       }
 
       return $descendants;
@@ -106,6 +107,11 @@ abstract class PluginmmMediaFolder extends BasemmMediaFolder
   public function __adjancy_list_getParent()
   {
     return $this->getTable()->find($this->getParentId());
+  }
+
+  public function __adjancy_list_getLevel()
+  {
+    return count($this->__adjancy_list_getAncestors());
   }
 
   public function __adjancy_list_isRoot()

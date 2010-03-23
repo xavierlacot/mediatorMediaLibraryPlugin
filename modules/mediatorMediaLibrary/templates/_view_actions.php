@@ -20,6 +20,17 @@
         array('class' => 'download'));
       ?>
     </li>
+    <li>
+      <?php
+      echo cml_link_to(
+             __('move this media'),
+             '@mediatorMediaLibrary?action=move&path='.$path,
+             array(
+               'class'   => 'move',
+             )
+           );
+      ?>
+    </li>
     <?php if (!is_null($mm_media->getType())): ?>
       <li>
         <?php

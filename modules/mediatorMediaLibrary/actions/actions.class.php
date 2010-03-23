@@ -172,6 +172,28 @@ class mediatorMediaLibraryActions extends sfActions
     $this->retrieveFolder();
   }
 
+  public function executeMove(sfWebRequest $request)
+  {
+    $this->retrieveFile();
+    $formClass = 'mmMediaMoveForm';
+    $this->form = new $formClass($this->mm_media);
+
+    if ($request->isMethod('post'))
+    {
+      $mm_media = $this->getRequestParameter('mm_media');
+      $this->form->bind($mm_media);
+
+      if ($this->form->isValid())
+      {
+        $this->form->doSave();
+        $this->getUser()->setFlash('notice', 'The media has been successfully moved.');
+//var_dump($this->form->getObject()->toArray());
+//var_dump($this->form->getObject()->getAbsoluteFilename());die();
+        $this->redirect('mediatorMediaLibrary/view?path='.$this->form->getObject()->getAbsoluteFilename());
+      }
+    }
+  }
+
   public function executeSearch(sfWebRequest $request)
   {
     $form = $request->getParameter('mm_media_tag');

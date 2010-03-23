@@ -27,6 +27,23 @@ abstract class mediatorMediaHandler
    * @param  array  sizes of the thumbnails to be created
    * @return string name of one thumbnail file
    */
+  public function moveTo($absolute_path, $sizes)
+  {
+    foreach ($sizes as $format => $size)
+    {
+      $this->filesystem->rename(
+        $size['directory'].DIRECTORY_SEPARATOR.$this->file,
+        $size['directory'].DIRECTORY_SEPARATOR.$absolute_path.DIRECTORY_SEPARATOR.basename($this->file)
+      );
+    }
+  }
+
+  /**
+   * Create the thumbnails of the image in all the dimensions folders
+   *
+   * @param  array  sizes of the thumbnails to be created
+   * @return string name of one thumbnail file
+   */
   public function process(array $sizes)
   {
     foreach ($sizes as $format => $size)

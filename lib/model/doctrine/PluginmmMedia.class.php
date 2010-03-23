@@ -179,6 +179,20 @@ abstract class PluginmmMedia extends BasemmMedia
     return (null !== $this->getMetadata($name));
   }
 
+  public function moveTo($array = array())
+  {
+    if (!isset($array['mm_media_folder']))
+    {
+      throw new sfException('Missing informations in order to move the file.');
+    }
+
+    $mm_media_folder = $array['mm_media_folder'];
+    $mm_media_folder_path = ('' != $mm_media_folder->getAbsolutePath()) ? $mm_media_folder->getAbsolutePath().DIRECTORY_SEPARATOR : '';
+    $this->getMediatorMedia()->moveTo($mm_media_folder_path);
+    $this->setMmMediaFolder($mm_media_folder);
+    $this->save();
+  }
+
   public function save(Doctrine_Connection $conn = null)
   {
     parent::save($conn);

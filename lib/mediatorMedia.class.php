@@ -399,6 +399,12 @@ class mediatorMedia
     $this->logger->log(sprintf('{mediatorMedia} the media "%s" has been initialized.', $this->filename));
   }
 
+  public function moveTo($absolute_path)
+  {
+    $sizes = mediatorMediaLibraryToolkit::getAvailableSizes();
+    return $this->getHandler()->moveTo($absolute_path, $sizes);
+  }
+
   /**
    * Creates the thumbnails associated to a mediatorMedia
    *
