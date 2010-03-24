@@ -65,6 +65,8 @@ $(document).ready(function() {
 
   $('.sf_admin_form_row label').hide();
 
+  var errors = new Array();
+
   $('#mm_media_file').uploadify({
     'fileDataName':  'mm_media[file]',
     'wmode':      'transparent',
@@ -74,8 +76,17 @@ $(document).ready(function() {
     'cancelImg':  '/mediatorMediaLibraryPlugin/images/cancel.png',
     'multi':      true,
     'sizeLimit':  '<?php echo $max_size ?>',
-    'onAllComplete':  function(e, d) {
-      $('#sf_admin_container form').html('<p><?php echo str_replace('\'', '\\\'', __('The upload is completed. May be would you like to %1%?', array('%1%' => cml_link_to(__('see the files'), '@mediatorMediaLibrary?action=list&path='.$mm_media_folder->getAbsolutePath())))) ?></p>')
+    'onError': function(e, q, f, err) {
+      errors.push(f.name);
+    },
+    'onAllComplete': function(e, d) {
+      if (d.filesUploaded > 0) {
+        if (d.errors == 0) {
+          $('#sf_admin_container form').html('<p><?php echo str_replace('\'', '\\\'', __('The upload is completed. May be would you like to %1%?', array('%1%' => cml_link_to(__('see the files'), '@mediatorMediaLibrary?action=list&path='.$mm_media_folder->getAbsolutePath())))) ?></p>');
+        } else {
+          $('#sf_admin_container form').html('<p><?php echo str_replace('%1%', '\' + errors.join(", ") + \'', str_replace('\'', '\\\'', __('The upload is completed, but some files (%1%) have not been uploaded. May be would you like to %2%?', array('%2%' => cml_link_to(__('see the uploaded files'), '@mediatorMediaLibrary?action=list&path='.$mm_media_folder->getAbsolutePath()))))) ?></p>');
+        }
+      }
     },
     'scriptData': {
       '<?php echo session_name(); ?>': '<?php echo session_id(); ?>',
