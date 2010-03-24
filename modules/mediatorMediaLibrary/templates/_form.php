@@ -75,7 +75,7 @@ $(document).ready(function() {
     'multi':      true,
     'sizeLimit':  '<?php echo $max_size ?>',
     'onAllComplete':  function(e, d) {
-      $('#sf_admin_container form').html('<p><?php echo __('The upload is completed. May be would you like to %1%?', array('%1%' => cml_link_to(__('see the files'), '@mediatorMediaLibrary?action=list&path='.$mm_media_folder->getAbsolutePath()))) ?></p>')
+      $('#sf_admin_container form').html('<p><?php echo str_replace('\'', '\\\'', __('The upload is completed. May be would you like to %1%?', array('%1%' => cml_link_to(__('see the files'), '@mediatorMediaLibrary?action=list&path='.$mm_media_folder->getAbsolutePath())))) ?></p>')
     },
     'scriptData': {
       '<?php echo session_name(); ?>': '<?php echo session_id(); ?>',
