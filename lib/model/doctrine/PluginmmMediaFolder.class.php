@@ -301,18 +301,15 @@ abstract class PluginmmMediaFolder extends BasemmMediaFolder
           {
             if (isset($params['directory']))
             {
-              $filesystem->rename($params['directory'].DIRECTORY_SEPARATOR.$previous_absolute_path,
-                                  $params['directory'].DIRECTORY_SEPARATOR.$parent_path.$folder_path);
+              $filesystem->rename(
+                $params['directory'].DIRECTORY_SEPARATOR.$previous_absolute_path,
+                $params['directory'].DIRECTORY_SEPARATOR.$parent_path.$folder_path
+              );
             }
           }
 
           // update the descendants paths
-          foreach ($descendants as $descendant)
-          {
-            $descendant_absolute_path = $descendant->getAbsolutePath();
-            $descendant->setAbsolutePath($parent_path.$folder_path.substr($descendant_absolute_path, strlen($previous_absolute_path)));
-            $descendant->save();
-          }
+          $this->moveDescendant($descendants, $parent_path, $folder_path, $previous_absolute_path);
         }
       }
 
@@ -332,5 +329,21 @@ abstract class PluginmmMediaFolder extends BasemmMediaFolder
     $q = Doctrine_Query::create()->from('mmMedia m')
       ->where('m.mm_media_folder_id = ?', $this->getId());
     return $q->execute();
+  }
+
+  public function moveDescendant($descendants, $parent_path, $folder_path, $previous_absolute_path)
+  {
+    foreach ($descendants as $d)
+    {
+      $descendant = Doctrine::getTable('mmMediaFolder')->find($d['id']);
+      $descendant_absolute_path = $descendant->getAbsolutePath();
+      $descendant->setAbsolutePath($parent_path.$folder_path.substr($descendant_absolute_path, strlen($previous_absolute_path)));
+      $descendant->save();
+
+      if (isset($d['__descendants']))
+      {
+        $this->moveDescendant($d['__descendants'], $parent_path, $folder_path, $previous_absolute_path);
+      }
+    }
   }
 }
