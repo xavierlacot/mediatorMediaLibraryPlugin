@@ -226,7 +226,6 @@ class mediatorMediaLibraryActions extends sfActions
   public function executeView(sfWebRequest $request)
   {
     $this->retrieveFile();
-    $this->form = new mmMediaForm($this->mm_media);
   }
 
   protected function retrieveFile()

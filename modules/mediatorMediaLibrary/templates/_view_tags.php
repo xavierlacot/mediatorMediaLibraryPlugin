@@ -5,8 +5,11 @@
   <h2><?php echo __('Tags') ?></h2>
 
   <form action="<?php echo url_for('mediatorMediaLibrary/addTag') ?>" method="post" id="mediator_media_library_tag_form">
-    <?php echo $tags_form ?>
-    <input type="submit" value="<?php echo __('ok') ?>" />
+    <p>
+      <?php echo $tags_form['name'] ?>
+      <?php echo $tags_form->renderHiddenFields() ?>
+      <input type="submit" value="<?php echo __('ok') ?>" />
+    </p>
   </form>
 
   <div id="mediator_media_library_tags">

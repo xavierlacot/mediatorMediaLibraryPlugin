@@ -55,19 +55,5 @@ use_helper('Date')
       );
       ?>
     <?php } catch (Exception $e) { } ?>
-
-    <div class="sf_admin_form_row">
-      <?php
-      echo $form['file']->renderLabel();
-      echo $form['file']->render();
-      ?>
-    </div>
-
-    <div class="sf_admin_form_row">
-      <?php
-      echo $form['body']->renderLabel();
-      echo $form['body']->render();
-      ?>
-    </div>
   </div>
 </div>
