@@ -2,7 +2,7 @@
  * Facebox media choice window
  */
 $(function(){
-  $('a[rel*=facebox]').livequery(function() {
+  $('a[rel*=facebox]').live('click', function() {
     $(this).facebox();
   });
 });
