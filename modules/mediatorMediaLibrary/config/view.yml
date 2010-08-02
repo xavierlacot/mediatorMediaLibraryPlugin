@@ -1,6 +1,6 @@
 all:
   stylesheets:   [-main, -admin, /sfDoctrinePlugin/css/global.css, /sfDoctrinePlugin/css/default.css, main, admin, /mediatorMediaLibraryPlugin/css/mediatorMediaLibrary]
-  javascripts:   [/mediatorMediaLibraryPlugin/js/jquery.livequery.js]
+  javascripts:   [/mediatorMediaLibraryPlugin/js/jquery.livequery.js, /mediatorMediaLibraryPlugin/js/facebox.js]
 
 chooseImageSuccess:
   layout:        facebox
