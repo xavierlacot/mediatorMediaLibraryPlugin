@@ -70,7 +70,13 @@ abstract class PluginmmMedia extends BasemmMedia
 
   public function delete(Doctrine_Connection $conn = null)
   {
-    $this->getMediatorMedia()->delete();
+    $mediator_media = $this->getMediatorMedia();
+
+    if ($mediator_media)
+    {
+      $mediator_media->delete();
+    }
+
     parent::delete($conn);
   }
 
