@@ -200,6 +200,41 @@ abstract class PluginmmMediaFolder extends BasemmMediaFolder
 
   public function save(Doctrine_Connection $conn = null)
   {
+    if ($this->isNew())
+    {
+      if ($this->getName() && !$this->getFolderPath())
+      {
+        $this->setFolderPath(Doctrine::getTable('mmMediaFolder')->generateFolderName($this->getName()));
+      }
+
+      if (!sfConfig::get('app_mediatorMediaLibraryPlugin_use_nested_set', false) && $this->parent_id)
+      {
+        // ensure the absolute path is coherent with the parent and the folder_path
+        $parent = ('mmMediaFolder' == get_class($this->parent_id)) ? $this->parent_id : Doctrine::getTable('mmMediaFolder')->findOneById($this->parent_id);
+
+        if (!$parent)
+        {
+          throw new sfException('This parent does not exist.');
+        }
+
+        $parent_path = ('' != $parent->getAbsolutePath()) ? $parent->getAbsolutePath().DIRECTORY_SEPARATOR : '';
+        $this->setAbsolutePath($parent_path.$this->getFolderPath());
+
+        // create the filesystem
+        $filesystem = mediatorMediaLibraryToolkit::getFilesystem();
+        $sizes = mediatorMediaLibraryToolkit::getAvailableSizes();
+
+        // create the associated folders
+        foreach ($sizes as $size => $params)
+        {
+          if (isset($params['directory']))
+          {
+            $filesystem->mkdir($params['directory'].DIRECTORY_SEPARATOR.$parent_path.$this->getFolderPath());
+          }
+        }
+      }
+    }
+
     parent::save($conn);
 
     if (isset($this->_metadatas_unsaved))
