@@ -31,11 +31,15 @@ class mmMediaImageForm extends sfFormDoctrine
   public function doSave($con = null)
   {
     $media = new mediatorMedia($this->getObject()->getAbsoluteFilename());
-    $media->transform('crop',
-                      array('x1' => $this->getValue('x1'),
-                            'y1' => $this->getValue('y1'),
-                            'x2' => $this->getValue('x2'),
-                            'y2' => $this->getValue('y2')));
+    $media->transform(
+      'crop',
+      array(
+        'x1' => $this->getValue('x1'),
+        'y1' => $this->getValue('y1'),
+        'x2' => $this->getValue('x2'),
+        'y2' => $this->getValue('y2')
+      )
+    );
   }
 
   public function getModelName()

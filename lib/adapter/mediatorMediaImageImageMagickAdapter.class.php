@@ -75,7 +75,37 @@ class mediatorMediaImageImageMagickAdapter extends mediatorMediaAdapter
 
   public function crop($options)
   {
+    $x1 = $options['x1'];
+    $y1 = $options['y1'];
+    $x2 = $options['x2'];
+    $y2 = $options['y2'];
+    $command = sprintf(
+      ' -crop %sx%s+%s+%s',
+      abs($x2 - $x1),
+      abs($y2 - $y1),
+      $x1,
+      $y1
+    );
+    $quality = isset($options['quality']) ? $options['quality'] : 90;
+    $dest_mime = isset($options['dest_mime']) ? $options['dest_mime'] : null;
 
+    if (null === $dest_mime)
+    {
+      $dest_mime = $this->sourceMime;
+    }
+
+    if ($quality && $dest_mime == 'image/jpeg')
+    {
+      $command .= ' -quality '.$quality.'% ';
+    }
+
+    $output = '-';
+    $output = (($mime = array_search($dest_mime, $this->mimeMap)) ? $mime.':' : '').$output;
+    $cmd = $this->magickCommands['convert'].' '.$command.' '.escapeshellarg($this->cache_file).' '.escapeshellarg($output);
+
+    ob_start();
+    passthru($cmd);
+    return ob_get_clean();
   }
 
   public function getDimensions()
@@ -234,8 +264,7 @@ class mediatorMediaImageImageMagickAdapter extends mediatorMediaAdapter
     }
 
     $output = '-';
-    $targetMime = isset($this->options['targetMime']) ? $this->options['targetMime'] : 'image/png';
-    $output = (($mime = array_search($targetMime, $this->mimeMap)) ? $mime.':' : '').$output;
+    $output = (($mime = array_search($dest_mime, $this->mimeMap)) ? $mime.':' : '').$output;
     $cmd = $this->magickCommands['convert'].' '.$command.' '.escapeshellarg($this->cache_file).$extract.' '.escapeshellarg($output);
 
     ob_start();
