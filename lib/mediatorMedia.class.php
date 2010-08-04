@@ -74,32 +74,32 @@ class mediatorMedia
   );
 
   protected $file_extensions = array(
-    'pdf'    => 'application/pdf',
+    'c'      => 'text/x-c',
+    'cpp'    => 'text/x-cpp',
+    'doc'    => 'application/msword',
+    'docx'   => 'application/msword',
     'gif'    => 'image/gif',
     'jpg'    => 'image/jpeg',
     'jpeg'   => 'image/jpeg',
-    'pjpeg'  => 'image/jpeg',
-    'svg'    => 'image/svg',
-    'png'    => 'image/png',
-    'txt'    => 'text/plain',
-    'c'      => 'text/x-c',
-    'cpp'    => 'text/x-cpp',
-    'php'    => 'text/x-php',
-    'doc'    => 'application/msword',
-    'xls'    => 'application/vnd.ms-excel',
-    'docx'   => 'application/msword',
-    'xlsx'   => 'application/vnd.ms-excel',
-    'ppt'    => 'application/vnd.ms-powerpoint',
-    'odt'    => ' application/vnd.oasis.opendocument.text',
-    'odg'    => 'application/vnd.oasis.opendocument.graphics',
-    'ods'    => 'application/vnd.oasis.opendocument.spreadsheet',
-    'odp'    => 'application/vnd.oasis.opendocument.presentation',
     'odc'    => 'application/vnd.oasis.opendocument.chart',
+    'odg'    => 'application/vnd.oasis.opendocument.graphics',
     'odi'    => 'application/vnd.oasis.opendocument.image',
-    'sxw'    => 'application/vnd.sun.xml.writer',
+    'odp'    => 'application/vnd.oasis.opendocument.presentation',
+    'ods'    => 'application/vnd.oasis.opendocument.spreadsheet',
+    'odt'    => ' application/vnd.oasis.opendocument.text',
+    'pdf'    => 'application/pdf',
+    'pjpeg'  => 'image/jpeg',
+    'php'    => 'text/x-php',
+    'png'    => 'image/png',
+    'ppt'    => 'application/vnd.ms-powerpoint',
+    'svg'    => 'image/svg',
     'sxc'    => 'application/vnd.sun.xml.calc',
     'sxd'    => 'application/vnd.sun.xml.draw',
     'sxi'    => 'application/vnd.sun.xml.impress',
+    'sxw'    => 'application/vnd.sun.xml.writer',
+    'txt'    => 'text/plain',
+    'xls'    => 'application/vnd.ms-excel',
+    'xlsx'   => 'application/vnd.ms-excel',
   );
 
   /**
@@ -285,7 +285,7 @@ class mediatorMedia
     $original_path = mediatorMediaLibraryToolkit::getDirectoryForSize('original');
     $filename = $original_path.DIRECTORY_SEPARATOR.$this->filename;
     $path_info = pathinfo($filename);
-    $extension = $path_info['extension'];
+    $extension = strtolower($path_info['extension']);
 
     if (!isset($this->file_extensions[$extension]) || !$this->filesystem->exists($filename))
     {
