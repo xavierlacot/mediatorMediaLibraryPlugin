@@ -16,7 +16,7 @@ use_helper('Date')
 
   <div id="mediator_media_library_file_details">
     <div class="sf_admin_form_row" style="clear: none; padding-left: 0;">
-      <?php echo $mm_media->getRawValue()->getDisplay(array('size' => 'medium')); ?>
+      <?php echo $mm_media->getRawValue()->getDisplay(array('size' => 'large')); ?>
     </div>
 
     <div class="sf_admin_form_row">

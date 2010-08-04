@@ -1,5 +1,7 @@
 app:
   mediatorMediaLibraryPlugin:
+    default_adapters:
+      mediatorMediaImageHandler:    mediatorMediaImageImageMagickAdapter
     fs:                localdisk
     media_root:        /
     use_nested_set:    false
@@ -21,6 +23,11 @@ app:
       original:
         directory: original
       large:
+        directory: large
+        width: 500
+        height: 500
+        overwrite: true
+      medium:
         directory: medium
         width: 300
         height: 300
