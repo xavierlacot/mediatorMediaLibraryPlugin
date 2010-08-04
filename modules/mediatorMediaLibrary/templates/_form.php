@@ -70,6 +70,7 @@ $(document).ready(function() {
   $('#mm_media_file').uploadify({
     'fileDataName':  'mm_media[file]',
     'wmode':      'transparent',
+    'buttonText': '<?php echo __('Browse'); ?>',
     'simUploadLimit': 3,
     'uploader':   '/mediatorMediaLibraryPlugin/js/jquery.uploadify/uploadify.swf',
     'script':     $('#sf_admin_container form').attr('action'),
