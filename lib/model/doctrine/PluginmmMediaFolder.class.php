@@ -210,7 +210,7 @@ abstract class PluginmmMediaFolder extends BasemmMediaFolder
       if (!sfConfig::get('app_mediatorMediaLibraryPlugin_use_nested_set', false) && $this->parent_id)
       {
         // ensure the absolute path is coherent with the parent and the folder_path
-        $parent = ('mmMediaFolder' == get_class($this->parent_id)) ? $this->parent_id : Doctrine::getTable('mmMediaFolder')->findOneById($this->parent_id);
+        $parent = ('mmMediaFolder' == is_object($this->parent_id)get_class($this->parent_id) && ) ? $this->parent_id : Doctrine::getTable('mmMediaFolder')->findOneById($this->parent_id);
 
         if (!$parent)
         {
