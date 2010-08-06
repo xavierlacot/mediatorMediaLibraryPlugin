@@ -69,7 +69,7 @@ jQuery(document).ready(function() {
     });
   });
 
-  jQuery('#facebox a.file').livequery('click', function() {
+  jQuery('#facebox a.file').live('click', function() {
     var fieldname = jQuery('#facebox #mm_media_librart_widget_fieldname').val();
     jQuery('#' + fieldname).val(jQuery(this).attr('id'));
     jQuery('#' + fieldname + '_image span.imgselected').html('<img src="' + jQuery('img', this).attr('src') + '" alt="" />');

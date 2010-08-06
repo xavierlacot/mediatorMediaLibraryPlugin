@@ -1,9 +1,9 @@
-app:
+all:
   mediatorMediaLibraryPlugin:
     default_adapters:
       mediatorMediaImageHandler:    mediatorMediaImageImageMagickAdapter
     fs:                localdisk
-    media_root:        /
+    media_root:        /media/
     use_nested_set:    false
     thumbnail_types:
       - jpg
