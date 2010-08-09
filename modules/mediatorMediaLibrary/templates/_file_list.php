@@ -6,5 +6,5 @@
 echo cml_link_to(
   '<span>'.$mm_media->getTitle().'</span>'.$display,
   '@mediatorMediaLibrary?action=view&path='.$mm_media->getAbsoluteFilename($mm_media_folder),
-  array('class' => 'file '.$mm_media->getType())
+  array('class' => 'file '.$mm_media->getType(), 'rel' => $mm_media->getId())
 );

@@ -89,13 +89,13 @@ class mediatorWidgetFormMediaSelect extends sfWidgetFormInput
 
     if (!is_null($value))
     {
-      $media = Doctrine::getTable('Media')->find($value);
+      $media = Doctrine::getTable('MmMedia')->find($value);
 
       if ($media)
       {
-        return '<div class="imgselected">'.$media->getDisplay().'
+        return '<div class="imgselected">'.$media->getDisplay(array('size' => 'small')).'
                 <strong>'.truncate_text($media->getTitle(), 80).'</strong>
-                <span>'.truncate_text($media['description'], 85).'</span>
+                <span>'.truncate_text($media->getBody(), 85).'</span>
                 <em>Ajouté le '.format_date($media->getCreatedAt()).'</em>
             </div> '.$edit_link.' '.$delete_link;
       }

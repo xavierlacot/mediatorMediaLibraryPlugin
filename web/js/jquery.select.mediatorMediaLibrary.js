@@ -77,7 +77,6 @@
    * Functions
    */
   function fileClick(e) {
-//console.log('file clicked');
     try {
       var image = e.target;
 
@@ -87,12 +86,10 @@
         }
         image = $(image).find('img');
       }
-//console.log('image : ' + image);
 
       var fieldname = $('body').attr('widget_field_id');
-//console.log('fieldname : ' + fieldname);
       fieldname = fieldname.replace('_link', '');
-//console.log('fieldname : ' + fieldname);
+      console.log(fieldname);
       $('#' + fieldname).val($(image).parent('a').attr('rel')).change();
       $('#' + fieldname + '_image .imgselected').html($(image).parent().html());
       $('#' + fieldname + '_image a.mediatorWidgetFormMediaSelect').html('Replace');
@@ -103,7 +100,6 @@
     $(document).trigger('close.facebox')
     return false;
   }
-
 })(jQuery);
 
 
