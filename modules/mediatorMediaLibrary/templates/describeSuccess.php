@@ -10,3 +10,7 @@
     </form>
   </div>
 </div>
+
+<?php if ($sf_request->isXmlHttpRequest()): // Add this CSS only when there is no layout ?>
+  <?php echo javascript_include_tag('/mediatorMediaLibraryPlugin/js/jquery.select.mediatorMediaLibrary.js'); ?>
+<?php endif; ?>

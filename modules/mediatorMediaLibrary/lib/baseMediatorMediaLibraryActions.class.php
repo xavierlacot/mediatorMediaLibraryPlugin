@@ -6,7 +6,7 @@ class baseMediatorMediaLibraryActions extends sfActions
   {
     sfConfig::set('sf_web_debug', false);
     set_time_limit( sfConfig::get('app_mediatorMediaLibraryPlugin_max_upload_time', 300));
-    $this->retrieveFolder();
+    $this->retrieveFolder($request);
     $this->form = new mmMediaForm();
     $this->form->setDefaults(array('mm_media_folder_id' => $this->mm_media_folder->getId()));
 
@@ -42,9 +42,9 @@ class baseMediatorMediaLibraryActions extends sfActions
       {
         $message = '';
 
-        foreach ($this->form->getErrorSchema() as $error)
+        foreach ($this->form->getErrorSchema() as $field => $error)
         {
-          $message .= ' '.$error->getMessage();
+          $message .= sprintf(' %s: %s.', $field, $error->getMessage());
         }
 
         throw new sfException('Impossible upload:'.$message);
@@ -70,9 +70,9 @@ class baseMediatorMediaLibraryActions extends sfActions
     $this->setTemplate('tagList');
   }
 
-  public function executeChoose()
+  public function executeChoose(sfWebRequest $request)
   {
-    $this->retrieveFolder();
+    $this->retrieveFolder($request);
 
     $this->allowed_types = array(
       mediatorMedia::META_TYPE_SOUND => (bool) $this->getRequestParameter("audio", true),
@@ -130,6 +130,8 @@ class baseMediatorMediaLibraryActions extends sfActions
 
         if ($request->isXmlHttpRequest())
         {
+          $this->redirect('mediatorMediaLibrary/choose?path='.$path);
+          $request->setParameter('path', $path);
           $this->forward('mediatorMediaLibrary', 'choose', array('path' => $path));
         }
         else
@@ -171,13 +173,7 @@ class baseMediatorMediaLibraryActions extends sfActions
 
   public function executeFolderAdd(sfWebRequest $request)
   {
-    if ($request->isXmlHttpRequest())
-    {
-      $this->getResponse()->addJavascript('/mediatorMediaLibraryPlugin/js/facebox.js');
-      $this->ajaxForm = true;
-    }
-
-    $this->retrieveFolder();
+    $this->retrieveFolder($request);
     $this->form = new mmMediaFolderForm();
     $this->form->setDefaults(array('parent' => $this->mm_media_folder->getPrimaryKey()));
 
@@ -205,7 +201,7 @@ class baseMediatorMediaLibraryActions extends sfActions
 
   public function executeFolderDelete(sfWebRequest $request)
   {
-    $this->retrieveFolder();
+    $this->retrieveFolder($request);
     $parent = $this->mm_media_folder->getNode()->getParent();
     $this->mm_media_folder->delete();
     $this->redirect('mediatorMediaLibrary/list?path='.$parent->getAbsolutePath());
@@ -213,7 +209,7 @@ class baseMediatorMediaLibraryActions extends sfActions
 
   public function executeFolderEdit(sfWebRequest $request)
   {
-    $this->retrieveFolder();
+    $this->retrieveFolder($request);
 
     if ($request->isMethod('put'))
     {
@@ -247,7 +243,7 @@ class baseMediatorMediaLibraryActions extends sfActions
       $this->forward('mediatorMediaLibrary', 'choose');
     }
 
-    $this->retrieveFolder();
+    $this->retrieveFolder($request);
   }
 
   public function executeMove(sfWebRequest $request)
@@ -334,9 +330,9 @@ class baseMediatorMediaLibraryActions extends sfActions
     }
   }
 
-  protected function retrieveFolder()
+  protected function retrieveFolder(sfWebRequest $request)
   {
-    $requested_path = $this->getRequestParameter('path', '');
+    $requested_path = $request->getParameter('path', '');
     $this->mm_media_folder = Doctrine::getTable('mmMediaFolder')->findOneByAbsolutePath($requested_path);
 
     if (!$this->mm_media_folder)

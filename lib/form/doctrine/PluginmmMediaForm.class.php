@@ -77,7 +77,7 @@ abstract class PluginmmMediaForm extends BasemmMediaForm
   public function getStylesheets()
   {
     return array(
-      '/mediatorMediaLibraryPlugin/js/jquery.uploadify/uploadify.css',
+      '/mediatorMediaLibraryPlugin/js/jquery.uploadify/uploadify.css' => 'all',
     );
   }
 }

@@ -10,10 +10,3 @@
     </form>
   </div>
 </div>
-
-<?php if (isset($ajaxForm) && $ajaxForm): ?>
-  <script type="text/javascript">
-    $(document).ready(function() {
-    });
-  </script>
-<?php endif; ?>

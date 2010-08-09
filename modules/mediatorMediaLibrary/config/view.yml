@@ -4,11 +4,12 @@ all:
 
 chooseSuccess:
   has_layout:    false
-  javascripts:   [/mediatorMediaLibraryPlugin/js/jquery.form.js]
+  javascripts:   [/mediatorMediaLibraryPlugin/js/jquery.form.js, /mediatorMediaLibraryPlugin/js/jquery.autoSuggest.js]
+  stylesheets:   [/mediatorMediaLibraryPlugin/css/autoSuggest.css]
 
 describeSuccess:
-  javascripts:   [/mediatorMediaLibraryPlugin/js/jquery.autoSuggest.js ]
-  stylesheets:   [ /mediatorMediaLibraryPlugin/css/autoSuggest.css]
+  javascripts:   [/mediatorMediaLibraryPlugin/js/jquery.autoSuggest.js]
+  stylesheets:   [/mediatorMediaLibraryPlugin/css/autoSuggest.css]
 
 editSuccess:
   stylesheets:   [/mediatorMediaLibraryPlugin/css/jquery.Jcrop.css]

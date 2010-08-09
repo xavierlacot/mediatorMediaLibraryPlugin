@@ -1,7 +1,8 @@
 /**
  * Loaded by mediatorWidgetFormMediaSelect
  * no init needed
- * @author dalexandre
+ * @author Damien Alexandre
+ * @author Xavier Lacot
  * @require Facebox for jQuery
  * @require AjaxForm for jQuery
  * @require jQuery
@@ -9,80 +10,52 @@
 
 (function($) {
 
+  /**
+   * Initialization
+   */
   $.fn.mediatorMediaLibraryMediaSelect = function(is_multiple) {
-
     this.each(function() {
-      $(this).click(function()
-      {
-        //console.log('store the ID');
+      $(this).click(function() {
         // Store the clicked widget id on the facebox.
         if (!is_multiple) is_multiple = false;
-        $('#facebox').data('widget_field_id', $(this).attr('id')).data('is_multiple', is_multiple);
+        $('body').attr('widget_field_id', $(this).attr('id')).attr('is_multiple', is_multiple);
       });
     });
 
     return this;
   };
 
-  function searchBinder()
-  {
-    // When is_multiple, search result must have a "save the selection" button
-    if ( $('#facebox').data('is_multiple') )
-    {
-      dynamicMediaFormApi.init();
-    }
-
-    $('#mediator-media-search a.file').click(fileClick);
-    $('#mediator-media-search .pagination a').click(function() {
-      $('#mediator-media-search').load(this.href, null, function() {
-        searchBinder();
-      });
-      return false;
-    });
-    $('#mediator_media_library_search_form').ajaxForm(ajaxFormOptionsSearch);
-    return false;
-  }
-
-  var ajaxFormOptionsSearch = {
-    target:     '#mediator-media-search',
-    success:    searchBinder
-  };
-
-  var ajaxFormOptionsAdd = {
-    target:     '#mediator-media-add',
-    success:    function() {
-      $('#mediator-media-add a.file').click(fileClick);
-      $('#mediator-media-description').ajaxForm(ajaxFormOptionsAdd);
-      $('#autoselectedmedia a.file').first().click(); // If there is only one file, one choice available, auto-clic on the file.
-      if ( $('#facebox').data('is_multiple') &&  $('.mediator_media_library_list').length > 0)
-      {
-        dynamicMediaFormApi.initAfterUpload();
-      }
-      return false;
-    }
-  };
-
  /**
   * Binding
   */
   $(document).bind('reveal.facebox', function() {
-    $(document).trigger('mediatormediarebind')
+    $('html').trigger('mediatormediarebind')
   });
-  $(document).bind('mediatormediarebind', bindForms);
+
+  $(document).delegate('html', 'mediatormediarebind', mediatorMediaRebind);
 
 
-  function bindForms() {
-    console.log('Binding');
+  function mediatorMediaRebind() {
+    //console.log('beginning mediatorMediaRebind()');
 
-    $('#facebox form').ajaxForm({
+    // ajaxify forms
+    $('#facebox form[id!=mediator-media-add-form]').ajaxForm({
       success: function (responseText) {
-        console.log('reveived responseText');
-        jQuery.facebox(responseText); // this will launch the internal binding process
-        $(document).trigger('mediatormediarebind');
+        jQuery.facebox(responseText);
+        $('html').trigger('mediatormediarebind');
       }
     });
 
-    $('#facebox a').facebox();
+    // enable facebox on all links wthin the popup
+    if ($('#facebox .ui-tabs-panel').length > 0) {
+      // only in the panels if there are
+      //console.log('binding panels only');
+      $('#facebox .content .ui-tabs-panel a').unbind('click').facebox();
+    } else {
+      // else globaly
+      //console.log('binding globaly');
+      $('#facebox .content a').unbind('click').facebox();
+    }
 
     // Make sure files are clickable and that a click on it closes the facebox
     $('#facebox a.file').unbind('click').click(fileClick);
@@ -91,44 +64,39 @@
   /**
    * Init
    */
-  $(document).ready(function()
-  {
-    $('a.mediatorWidgetFormMediaSelect[rel*=media_lib_facebox]').facebox();
-    $('a.mediatorWidgetFormMediaSelect').mediatorMediaLibraryMediaSelect();
-    $('a.mediatorWidgetFormMediaDelete').click(deleteMedia);
+  $(document).ready(function() {
+    if ($('#facebox', document).length == 0) {
+      $('a.mediatorWidgetFormMediaSelect[rel*=media_lib_facebox]').unbind('click').facebox();
+      $('a.mediatorWidgetFormMediaSelect').mediatorMediaLibraryMediaSelect();
+      $('a.mediatorWidgetFormMediaDelete').unbind('click').click(deleteMedia);
+    }
   });
+
 
   /**
    * Functions
    */
-  function fileClick(e)
-  {
-    // When is_multiple, file click must add to selection the file.
-    if ( $('#facebox').data('is_multiple') && $('#autoselectedmedia').length == 0)
-    {
-      return dynamicMediaFormApi.fileClick(e);
-    }
-
-    try
-    {
+  function fileClick(e) {
+//console.log('file clicked');
+    try {
       var image = e.target;
-      if ( !$(image).is('img') )
-      {
-        if ( !$(image).is('a') )
-        {
+
+      if (!$(image).is('img')) {
+        if (!$(image).is('a')) {
           image = $(image).parent();
         }
         image = $(image).find('img');
       }
+//console.log('image : ' + image);
 
-      var fieldname = $('#facebox').data('widget_field_id');
+      var fieldname = $('body').attr('widget_field_id');
+//console.log('fieldname : ' + fieldname);
       fieldname = fieldname.replace('_link', '');
+//console.log('fieldname : ' + fieldname);
       $('#' + fieldname).val($(image).parent('a').attr('rel')).change();
       $('#' + fieldname + '_image .imgselected').html($(image).parent().html());
       $('#' + fieldname + '_image a.mediatorWidgetFormMediaSelect').html('Replace');
-    }
-    catch (exception)
-    {
+    } catch (exception) {
       return false;
     }
 
@@ -139,8 +107,7 @@
 })(jQuery);
 
 
-function deleteMedia(e)
-{
+function deleteMedia(e) {
   $(e.target).parent().find('.imgselected').html('Media removed').parent().prev('input').val('').removeAttr('value').change().parent().find('a.mediatorWidgetFormMediaSelect').html('Choose a new one');
   return false;
 }

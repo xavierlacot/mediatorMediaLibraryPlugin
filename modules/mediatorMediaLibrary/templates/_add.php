@@ -4,7 +4,7 @@
   <?php include_component('mediatorMediaLibrary', 'folder_breadcrumb', array('mm_media_folder' => $mm_media_folder)); ?>
 
   <div class="sf_admin_form" id="mediator-media-add">
-    <?php echo form_tag_for($form, 'mediatorMediaLibrary/add') ?>
+    <?php echo form_tag_for($form, 'mediatorMediaLibrary/add', array('id' => 'mediator-media-add-form')) ?>
       <?php include_partial('mediatorMediaLibrary/flash'); ?>
       <?php include_partial('mediatorMediaLibrary/form', array('form' => $form, 'mm_media_folder' => $mm_media_folder)); ?>
     </form>

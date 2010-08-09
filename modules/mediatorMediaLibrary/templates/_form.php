@@ -24,8 +24,6 @@
 </fieldset>
 
 <script type="text/javascript">
-
-
 $(document).ready(function() {
   $('#sf_admin_container form').bind('submit', function() {
     $('#mm_media_file').uploadifyUpload();
@@ -44,7 +42,7 @@ $(document).ready(function() {
       'buttonText':      '<?php echo __('Browse'); ?>',
       'simUploadLimit':  <?php echo sfConfig::get('app_mediatorMediaLibraryPlugin_upload_simultaneaous', 3) ?>,
       'uploader':        '/mediatorMediaLibraryPlugin/js/jquery.uploadify/uploadify.swf',
-      'script':          $('#sf_admin_container form').attr('action'),
+      'script':          $('#mediator-media-add form').attr('action'),
       'cancelImg':       '/mediatorMediaLibraryPlugin/images/cancel.png',
       'multi':           true,
       <?php if (isset($fileDesc)): ?>
@@ -57,9 +55,6 @@ $(document).ready(function() {
       'onComplete':  function(e, q, f, r, d) { // event, ID, fileObj, response, data
         hash_keys.push(r);
         return true;
-      },
-      'onError': function(e, q, f, err) {
-        errors.push(f.name);
       },
       'onAllComplete':  function(e, d) {
         if (d.errors > 0) {
@@ -76,21 +71,34 @@ $(document).ready(function() {
         } else {
           // Upload complete with no error, go to the next step
           $('#mediator-media-add form').hide().after('<p><?php echo image_tag('icons/load.gif'); ?></p>');
-          $('#sf_admin_container.mediator-media-library').load("<?php echo url_for('@mediatorMediaLibrary_describe?path=') ?>" + hash_keys.join(','), null, function(t, st) {
-            if (st == 'error') {
-              $('#mediator-media-add').html("<p class=\"error\"><?php echo __('A problem happened, and no file was uploaded.') ?></p>");
-            } else {
-              $(document).trigger('mediatormediarebind');
+
+          // load the description page
+          var destination = $('#facebox .content');
+
+          if (destination.length == 0) {
+            destination = $('#sf_admin_container.mediator-media-library');
+          }
+
+          destination.load(
+            '<?php echo url_for('@mediatorMediaLibrary_describe?path=') ?>' + hash_keys.join(',') + ',nocache=' + new Date().getTime(),
+            function(r, s) { // response, status
+              if (s == 'error') {
+                $('#mediator-media-add').html("<p class=\"error\"><?php echo __('A problem happened, and no file was uploaded.') ?></p>");
+              } else {
+                //console.log('call rebind media');
+                $('html').trigger('mediatormediarebind');
+                //console.log('called rebind media');
+              }
             }
-          });
-          return true;
+          );
         }
 
         // Ajax load for links
         $('#mediator-media-add a:not(.file)').click(function() {
-          $('#mediator-media-add').load(this.href, null, function() { $(document).trigger('mediatormediarebind'); });
+          $('#mediator-media-add').load(this.href, null, function() { $('html').trigger('mediatormediarebind'); });
           return false;
         });
+
         return true;
       },
       'scriptData': {
