@@ -2,7 +2,33 @@
 
 class baseMediatorMediaLibraryComponents extends sfComponents
 {
-  public function executeBreadcrumb()
+  public function executeAdd(sfWebRequest $request)
+  {
+    $types = array();
+    $media_types = sfConfig::get('app_mediatorMediaLibraryPlugin_media_types', array());
+
+    if (isset($this->allowed_types) && $this->allowed_types)
+    {
+      foreach ($this->allowed_types as $type => $allowed_extensions)
+      {
+        if ($allowed_extensions && isset($media_types[$type]))
+        {
+          $types[$type] = $allowed_extensions;
+        }
+      }
+    }
+    else
+    {
+      $types = $media_types;
+    }
+
+    $this->fileExt  = implode(';', $types);
+    $this->fileDesc = implode(', ', array_keys($types));
+    $this->form = new mmMediaForm();
+    $this->form->setDefaults(array('mm_media_folder_id' => $this->mm_media_folder->getId()));
+  }
+
+  public function executeBreadcrumb(sfWebRequest $request)
   {
     if (is_null($this->mm_media))
     {
@@ -14,7 +40,7 @@ class baseMediatorMediaLibraryComponents extends sfComponents
     $this->path[] = $folder;
   }
 
-  public function executeFolder_breadcrumb()
+  public function executeFolder_breadcrumb(sfWebRequest $request)
   {
     if (is_null($this->mm_media_folder))
     {
@@ -26,7 +52,7 @@ class baseMediatorMediaLibraryComponents extends sfComponents
     $this->path[] = $folder;
   }
 
-  public function executeList()
+  public function executeList(sfWebRequest $request)
   {
     // get the subdirectories
     $this->directories = $this->mm_media_folder->getNode()->getChildren();
@@ -53,7 +79,7 @@ class baseMediatorMediaLibraryComponents extends sfComponents
     }
   }
 
-  public function executeView_tags()
+  public function executeView_tags(sfWebRequest $request)
   {
     $this->tags_form = new mmMediaTagForm($this->mm_media, array('url' => $this->getController()->genUrl('mediatorMediaLibrary/tagAutocomplete')));
   }

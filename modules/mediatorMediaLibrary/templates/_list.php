@@ -1,6 +1,11 @@
 <?php use_helper('mediatorMediaLibrary'); ?>
 <ul class="mediator_media_library_list">
   <?php
+  if (!isset($action))
+  {
+    $action = 'list';
+  }
+
   $node = $mm_media_folder->getRawValue()->getNode();
   if (!$node->isRoot()):
   ?>
@@ -10,7 +15,7 @@
         <?php
         echo cml_link_to(
           '<span>'.$parent->getName().'</span>',
-          '@mediatorMediaLibrary?action=list&path='.$parent->getAbsolutePath()
+          '@mediatorMediaLibrary?action='.$action.'&path='.$parent->getAbsolutePath()
         );
         ?>
       </span>
@@ -22,7 +27,7 @@
         <?php
         echo cml_link_to(
           '<span>'.$directory->getName().'</span>',
-          '@mediatorMediaLibrary?action=list&path='.$directory->getAbsolutePath()
+          '@mediatorMediaLibrary?action='.$action.'&path='.$directory->getAbsolutePath()
         );
         ?>
       </span>

@@ -46,6 +46,7 @@ mmMedia:
     thumbnail_filename:  string(255)
     filesize:            float
     md5sum:              string(32)
+    uuid:                string(23)
     height:              integer
     mime_type:           string(50)
     type:                string(10)
@@ -71,6 +72,8 @@ mmMedia:
     filename_folder:
       fields:            [mm_media_folder_id, filename]
       type: unique
+    unique_id:
+      fields:            [uuid]
     CreatedAt:
       fields:            [created_at]
 

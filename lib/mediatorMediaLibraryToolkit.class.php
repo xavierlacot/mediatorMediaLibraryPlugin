@@ -64,4 +64,33 @@ class mediatorMediaLibraryToolkit
 
     return cleverFilesystem::getInstance($filesystem);
   }
+
+  public static function getMaxAllowedFilesize()
+  {
+    $max_size = ini_get('upload_max_filesize');
+
+    if (preg_match('#^([0-9]+?)([gmk])$#i', $max_size, $tokens))
+    {
+      $size_val = isset($tokens[1]) ? $tokens[1] : null;
+      $unit     = isset($tokens[2]) ? $tokens[2] : null;
+
+      if ($size_val && $unit)
+      {
+        switch (strtolower($unit))
+        {
+          case 'g':
+            $max_size = $size_val * 1024 * 1024 * 1024;
+            break;
+          case 'm':
+            $max_size = $size_val * 1024 * 1024;
+            break;
+          case 'k':
+            $max_size = $size_val * 1024;
+            break;
+        }
+      }
+    }
+
+    return $max_size;
+  }
 }

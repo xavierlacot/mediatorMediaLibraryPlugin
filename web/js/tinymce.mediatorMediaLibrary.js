@@ -60,7 +60,7 @@ $(function(){
   				ed.windowManager.open({
   					file : ed.getParam('mediatorMediaLibrary').uri,
             name: 'mediator',
-  					width : 600,
+  					width : 800,
   					height : 400,
             resizable : 'yes',
             scrollbars: 'yes'

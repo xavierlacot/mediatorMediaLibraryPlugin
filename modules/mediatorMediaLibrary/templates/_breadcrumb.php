@@ -5,7 +5,7 @@
   <?php endforeach; ?>
   <?php
   echo cml_link_to(
-    $mm_media->getRawValue()->getTitle(),
+    $mm_media->getTitle(),
     'mediatorMediaLibrary/view?path='.$mm_media->getRawValue()->getAbsoluteFilename()
   );
   ?>

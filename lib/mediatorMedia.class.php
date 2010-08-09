@@ -5,6 +5,18 @@
  */
 class mediatorMedia
 {
+  const META_TYPE_OFFICE = 'office';
+  const META_TYPE_IMAGE = 'image';
+  const META_TYPE_SOUND = 'sound';
+  const META_TYPE_VIDEO = 'video';
+  const META_TYPE_OTHER = 'other';
+
+  const TYPE_IMAGE = 'image';
+  const TYPE_OFFICE = 'office';
+  const TYPE_PDF = 'sound';
+  const TYPE_VIDEO = 'video';
+
+
   protected $filename,
             $filesystem,
             $handler,

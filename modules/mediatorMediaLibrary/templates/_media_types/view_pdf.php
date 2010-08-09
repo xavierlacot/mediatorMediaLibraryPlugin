@@ -19,6 +19,7 @@ echo image_tag(
 
 <?php $pages_count = $mm_media->getMetadata('pages_count'); ?>
 <?php if ($pages_count && ($pages_count->getValue() > 1)): ?>
+  <?php $sf_response->addJavascript('/mediatorMediaLibraryPlugin/js/jquery.pageslider.js') ?>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("#<?php echo $options['id'] ?>").addClass('slider').pageslider({

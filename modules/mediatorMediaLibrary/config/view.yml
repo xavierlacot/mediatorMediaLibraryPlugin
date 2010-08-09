@@ -1,24 +1,22 @@
 all:
-  stylesheets:   [-main, -admin, /sfDoctrinePlugin/css/global.css, /sfDoctrinePlugin/css/default.css, main, admin, /mediatorMediaLibraryPlugin/css/mediatorMediaLibrary]
-  javascripts:   [/mediatorMediaLibraryPlugin/js/jquery.livequery.js, /mediatorMediaLibraryPlugin/js/facebox.js]
+  stylesheets:   [/sfDoctrinePlugin/css/global.css, /sfDoctrinePlugin/css/default.css, /mediatorMediaLibraryPlugin/css/mediatorMediaLibrary]
+  javascripts:   [/mediatorMediaLibraryPlugin/js/facebox.js]
 
-chooseImageSuccess:
-  layout:        facebox
-  stylesheets:   [/mediatorMediaLibraryPlugin/css/mediatorMediaLibrary]
-  javascripts:   [-/mediatorMediaLibraryPlugin/js/jquery.livequery.js]
+chooseSuccess:
+  has_layout:    false
+  javascripts:   [/mediatorMediaLibraryPlugin/js/jquery.form.js]
+
+describeSuccess:
+  javascripts:   [/mediatorMediaLibraryPlugin/js/jquery.autoSuggest.js ]
+  stylesheets:   [ /mediatorMediaLibraryPlugin/css/autoSuggest.css]
 
 editSuccess:
-  stylesheets:   [/mediatorMediaLibraryPlugin/css/jquery.Jcrop.css, /mediatorMediaLibraryPlugin/css/mediatorMediaLibrary]
+  stylesheets:   [/mediatorMediaLibraryPlugin/css/jquery.Jcrop.css]
   javascripts:   [/mediatorMediaLibraryPlugin/js/jquery.Jcrop.js]
 
 listSuccess:
-  stylesheets:   [/mediatorMediaLibraryPlugin/css/mediatorMediaLibrary]
-  javascripts:   [/mediatorMediaLibraryPlugin/js/mediatorMediaLibrary, /mediatorMediaLibraryPlugin/js/jquery.pageslider.js]
-
-searchSuccess:
-  stylesheets:   [/mediatorMediaLibraryPlugin/css/mediatorMediaLibrary]
-  javascripts:   [/mediatorMediaLibraryPlugin/js/mediatorMediaLibrary]
+  javascripts:   [/mediatorMediaLibraryPlugin/js/jquery.pageslider.js]
 
 viewSuccess:
-  stylesheets:   [/sfFormExtraPlugin/css/jquery.autocompleter.css, /mediatorMediaLibraryPlugin/css/mediatorMediaLibrary]
+  stylesheets:   [/sfFormExtraPlugin/css/jquery.autocompleter.css]
   javascripts:   [/mediatorMediaLibraryPlugin/js/jquery.pageslider.js]

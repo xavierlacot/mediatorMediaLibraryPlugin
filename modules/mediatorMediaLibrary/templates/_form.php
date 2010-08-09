@@ -1,11 +1,7 @@
 <?php use_helper('mediatorMediaLibrary'); ?>
-<?php foreach ($form->getJavascripts() as $javascript): ?>
-  <?php use_javascript($javascript)?>
-<?php endforeach?>
 
-<?php foreach ($form->getStylesheets() as $stylesheet): ?>
-  <?php use_stylesheet($stylesheet)?>
-<?php endforeach?>
+<?php include_javascripts_for_form($form); ?>
+<?php include_stylesheets_for_form($form); ?>
 
 <fieldset id="sf_fieldset_none">
   <legend><?php echo __('General') ?></legend>
@@ -22,37 +18,10 @@
     </div>
   </div>
 
-  <?php echo $form['mm_media_folder_id']->render() ?>
-  <?php echo $form['_csrf_token']->render() ?>
+  <?php echo $form->renderHiddenFields() ?>
 
   <?php include_partial('mediatorMediaLibrary/form_actions', array('mm_media_folder' => $mm_media_folder)) ?>
 </fieldset>
-
-<?php
-$max_size = ini_get('upload_max_filesize');
-
-if (preg_match('#^([0-9]+?)([gmk])$#i', $max_size, $tokens))
-{
-  $size_val = isset($tokens[1]) ? $tokens[1] : null;
-  $unit     = isset($tokens[2]) ? $tokens[2] : null;
-
-  if ($size_val && $unit)
-  {
-    switch (strtolower($unit))
-    {
-      case 'g':
-        $max_size = $size_val * 1024 * 1024 * 1024;
-        break;
-      case 'm':
-        $max_size = $size_val * 1024 * 1024;
-        break;
-      case 'k':
-        $max_size = $size_val * 1024;
-        break;
-    }
-  }
-}
-?>
 
 <script type="text/javascript">
 
@@ -63,38 +32,75 @@ $(document).ready(function() {
     return false;
   });
 
-  $('.sf_admin_form_row label').hide();
+  if (!swfobject.hasFlashPlayerVersion("9.0.24")) {
+    $('#mm_media_file').parent().prepend("<p style='margin-bottom:20px!important;' class='error'><?php echo __('You are using an obsolete version of the flash plugin. Please update it or deactivate it.') ?></p>");
+  } else {
+    $('.sf_admin_form_row label').hide();
+    var hash_keys = new Array();
+    var errors = new Array();
+    $('#mm_media_file').uploadify({
+      'fileDataName':    'mm_media[file]',
+      'wmode':           'transparent',
+      'buttonText':      '<?php echo __('Browse'); ?>',
+      'simUploadLimit':  <?php echo sfConfig::get('app_mediatorMediaLibraryPlugin_upload_simultaneaous', 3) ?>,
+      'uploader':        '/mediatorMediaLibraryPlugin/js/jquery.uploadify/uploadify.swf',
+      'script':          $('#sf_admin_container form').attr('action'),
+      'cancelImg':       '/mediatorMediaLibraryPlugin/images/cancel.png',
+      'multi':           true,
+      <?php if (isset($fileDesc)): ?>
+        'fileDesc':        '<?php echo $fileDesc; ?>',
+      <?php endif; ?>
+      <?php if (isset($fileExt)): ?>
+        'fileExt':         '<?php echo $fileExt; ?>',
+      <?php endif; ?>
+      'sizeLimit':       '<<?php echo mediatorMediaLibraryToolkit::getMaxAllowedFilesize() ?>>',
+      'onComplete':  function(e, q, f, r, d) { // event, ID, fileObj, response, data
+        hash_keys.push(r);
+        return true;
+      },
+      'onError': function(e, q, f, err) {
+        errors.push(f.name);
+      },
+      'onAllComplete':  function(e, d) {
+        if (d.errors > 0) {
+          $('#mediator-media-add form input').hide();
+          $('#mediator-media-add form object').hide();
 
-  var errors = new Array();
-
-  $('#mm_media_file').uploadify({
-    'fileDataName':  'mm_media[file]',
-    'wmode':      'transparent',
-    'buttonText': '<?php echo __('Browse'); ?>',
-    'simUploadLimit': 3,
-    'uploader':   '/mediatorMediaLibraryPlugin/js/jquery.uploadify/uploadify.swf',
-    'script':     $('#sf_admin_container form').attr('action'),
-    'cancelImg':  '/mediatorMediaLibraryPlugin/images/cancel.png',
-    'multi':      true,
-    'sizeLimit':  '<?php echo $max_size ?>',
-    'onError': function(e, q, f, err) {
-      errors.push(f.name);
-    },
-    'onAllComplete': function(e, d) {
-      if (d.filesUploaded > 0) {
-        if (d.errors == 0) {
-          $('#sf_admin_container form').html('<p><?php echo str_replace('\'', '\\\'', __('The upload is completed. May be would you like to %1%?', array('%1%' => cml_link_to(__('see the files'), '@mediatorMediaLibrary?action=list&path='.$mm_media_folder->getAbsolutePath())))) ?></p>');
+          if (d.filesUploaded > 0) {
+            // there is a file OK, other in errors...
+            $('#mediator-media-add form').after("<p class=\"error\"><?php echo __('The upload is completed for some files, but some files could not be uploaded.') ?> <a class=\"btn-like\" href=\"<?php echo url_for('@mediatorMediaLibrary_describe?path=') ?>" + hash_keys.join(',') + "\"><?php echo __('Go to the description of the uploaded files') ?></a>.</p>");
+          } else {
+            // all files have failed
+            $('#mediator-media-add form').after("<p class=\"error\"><?php echo __('A problem happened, and no file was uploaded.') ?></p>");
+          }
         } else {
-          $('#sf_admin_container form').html('<p><?php echo str_replace('%1%', '\' + errors.join(", ") + \'', str_replace('\'', '\\\'', __('The upload is completed, but some files (%1%) have not been uploaded. May be would you like to %2%?', array('%2%' => cml_link_to(__('see the uploaded files'), '@mediatorMediaLibrary?action=list&path='.$mm_media_folder->getAbsolutePath()))))) ?></p>');
+          // Upload complete with no error, go to the next step
+          $('#mediator-media-add form').hide().after('<p><?php echo image_tag('icons/load.gif'); ?></p>');
+          $('#sf_admin_container.mediator-media-library').load("<?php echo url_for('@mediatorMediaLibrary_describe?path=') ?>" + hash_keys.join(','), null, function(t, st) {
+            if (st == 'error') {
+              $('#mediator-media-add').html("<p class=\"error\"><?php echo __('A problem happened, and no file was uploaded.') ?></p>");
+            } else {
+              $(document).trigger('mediatormediarebind');
+            }
+          });
+          return true;
         }
+
+        // Ajax load for links
+        $('#mediator-media-add a:not(.file)').click(function() {
+          $('#mediator-media-add').load(this.href, null, function() { $(document).trigger('mediatormediarebind'); });
+          return false;
+        });
+        return true;
+      },
+      'scriptData': {
+        '<?php echo session_name(); ?>': '<?php echo session_id(); ?>',
+        'mm_media[_csrf_token]': $('#mm_media__csrf_token').val(),
+        'mm_media[mm_media_folder_id]': $('#mm_media_mm_media_folder_id').val(),
+        'nocache': new Date().getTime()
       }
-    },
-    'scriptData': {
-      '<?php echo session_name(); ?>': '<?php echo session_id(); ?>',
-      'mm_media[_csrf_token]': $('#mm_media__csrf_token').val(),
-      'mm_media[mm_media_folder_id]': $('#mm_media_mm_media_folder_id').val()
-    }
-  });
+    });
+  }
 });
 
 </script>

@@ -108,7 +108,7 @@ abstract class PluginmmMedia extends BasemmMedia
 
     if (!isset($options['alt']))
     {
-      $options['alt'] = $this->getTitle();
+      $options['alt'] = $this->getTitle() ? $this->getTitle() : $this->getFilename();
     }
 
     if (!isset($options['class']))
@@ -201,6 +201,11 @@ abstract class PluginmmMedia extends BasemmMedia
 
   public function save(Doctrine_Connection $conn = null)
   {
+    if ($this->isNew())
+    {
+      $this->setUuid(uniqid('', true));
+    }
+
     parent::save($conn);
 
     if (isset($this->_metadatas_unsaved))

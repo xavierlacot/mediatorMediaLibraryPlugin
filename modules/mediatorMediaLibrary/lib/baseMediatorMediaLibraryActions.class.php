@@ -4,6 +4,8 @@ class baseMediatorMediaLibraryActions extends sfActions
 {
   public function executeAdd(sfWebRequest $request)
   {
+    sfConfig::set('sf_web_debug', false);
+    set_time_limit( sfConfig::get('app_mediatorMediaLibraryPlugin_max_upload_time', 300));
     $this->retrieveFolder();
     $this->form = new mmMediaForm();
     $this->form->setDefaults(array('mm_media_folder_id' => $this->mm_media_folder->getId()));
@@ -11,21 +13,41 @@ class baseMediatorMediaLibraryActions extends sfActions
     if ($request->isMethod('post'))
     {
       $this->form->bind(
-        $request->getParameter('mm_media'),
-        $request->getFiles('mm_media')
+        $request->getParameter($this->form->getName()),
+        $request->getFiles($this->form->getName())
       );
 
       if ($this->form->isValid())
       {
         $this->form->doSave();
-        $this->getUser()->setFlash('notice', 'The file has been uploaded successfully.');
+        $uuid = $this->form->getObject()->getUuid();
+
+        if (!$uuid)
+        {
+          throw new sfException('Impossible upload: incorrect unique id.');
+        }
 
         if (false === strpos($_SERVER['HTTP_USER_AGENT'], 'Flash'))
         {
-          $this->redirect('mediatorMediaLibrary/view?path='.$this->form->getObject()->getAbsoluteFilename());
+          $this->getUser()->setFlash('notice', 'The file has been uploaded successfully.');
+          $this->redirect('mediatorMediaLibrary/describe?media_ids='.$uuid);
+        }
+        else
+        {
+          $this->getResponse()->setContent($uuid);
+          return sfView::NONE;
+        }
+      }
+      else
+      {
+        $message = '';
+
+        foreach ($this->form->getErrorSchema() as $error)
+        {
+          $message .= ' '.$error->getMessage();
         }
 
-        return sfView::NONE;
+        throw new sfException('Impossible upload:'.$message);
       }
     }
   }
@@ -48,17 +70,22 @@ class baseMediatorMediaLibraryActions extends sfActions
     $this->setTemplate('tagList');
   }
 
-  public function executeChooseImage()
+  public function executeChoose()
   {
     $this->retrieveFolder();
-    $this->directories = $this->mm_media_folder->getNode()->getChildren();
 
-    if (!$this->directories)
+    $this->allowed_types = array(
+      mediatorMedia::META_TYPE_SOUND => (bool) $this->getRequestParameter("audio", true),
+      mediatorMedia::META_TYPE_IMAGE => (bool) $this->getRequestParameter("image", true),
+      mediatorMedia::META_TYPE_VIDEO => (bool) $this->getRequestParameter("video", true),
+      mediatorMedia::META_TYPE_OTHER => (bool) $this->getRequestParameter("other", true)
+    );
+
+    // if no restrictions, no hidden field.
+    if (!array_search(false, $this->allowed_types))
     {
-      $this->directories = array();
+      $this->allowed_types = false;
     }
-
-    $this->files = $this->mm_media_folder->getFiles();
   }
 
   public function executeDelete(sfWebRequest $request)
@@ -81,6 +108,37 @@ class baseMediatorMediaLibraryActions extends sfActions
     }
 
     $this->setTemplate('tagList');
+  }
+
+  public function executeDescribe(sfWebRequest $request)
+  {
+    $this->autocomplete_url = $this->getController()->genUrl('mediatorMediaLibrary/tagAutosuggest');
+    $this->retrieveFiles();
+    $this->form = new MmMultiMediaDescriptionForm(
+      $this->medias,
+      array('url' => $this->autocomplete_url, 'sf_user' => $this->getUser())
+    );
+
+    if ($request->isMethod('post'))
+    {
+      $this->form->bind($request->getParameter($this->form->getName()));
+
+      if ($this->form->isValid())
+      {
+        $this->form->save();
+        $path = $this->medias[0]->getmmMediaFolder()->getAbsolutePath();
+
+        if ($request->isXmlHttpRequest())
+        {
+          $this->forward('mediatorMediaLibrary', 'choose', array('path' => $path));
+        }
+        else
+        {
+          $this->getUser()->setFlash('notice', 'The files have been saved.');
+          $this->redirect('mediatorMediaLibrary/list?path='.$path);
+        }
+      }
+    }
   }
 
   public function executeEdit(sfWebRequest $request)
@@ -113,6 +171,12 @@ class baseMediatorMediaLibraryActions extends sfActions
 
   public function executeFolderAdd(sfWebRequest $request)
   {
+    if ($request->isXmlHttpRequest())
+    {
+      $this->getResponse()->addJavascript('/mediatorMediaLibraryPlugin/js/facebox.js');
+      $this->ajaxForm = true;
+    }
+
     $this->retrieveFolder();
     $this->form = new mmMediaFolderForm();
     $this->form->setDefaults(array('parent' => $this->mm_media_folder->getPrimaryKey()));
@@ -124,8 +188,17 @@ class baseMediatorMediaLibraryActions extends sfActions
       if ($this->form->isValid())
       {
         $this->form->doSave();
-        $this->getUser()->setFlash('notice', 'The folder has been created successfully.');
-        $this->redirect('mediatorMediaLibrary/list?path='.$this->form->getObject()->getAbsolutePath());
+        $path = $this->form->getObject()->getAbsolutePath();
+
+        if ($request->isXmlHttpRequest())
+        {
+          $this->redirect('mediatorMediaLibrary/choose?path='.$path);
+        }
+        else
+        {
+          $this->getUser()->setFlash('notice', 'The folder has been created successfully.');
+          $this->redirect('mediatorMediaLibrary/list?path='.$path);
+        }
       }
     }
   }
@@ -169,6 +242,11 @@ class baseMediatorMediaLibraryActions extends sfActions
 
   public function executeList(sfWebRequest $request)
   {
+    if ($request->isXmlHttpRequest())
+    {
+      $this->forward('mediatorMediaLibrary', 'choose');
+    }
+
     $this->retrieveFolder();
   }
 
@@ -236,6 +314,23 @@ class baseMediatorMediaLibraryActions extends sfActions
     if (!$this->mm_media)
     {
       throw new sfException(sprintf('Could not retrieve this file : "%s".', $requested_path));
+    }
+  }
+
+  protected function retrieveFiles()
+  {
+    $this->uuids = $this->getRequestParameter('path', null);
+    $requested_ids = explode(',', $this->uuids);
+    $this->forward404Unless(count($requested_ids) > 0 && ($requested_ids[0] != ''));
+
+    $this->medias = Doctrine_Query::create()
+      ->from('mmMedia m')
+      ->whereIn('m.uuid', $requested_ids)
+      ->execute();
+
+    if (count($this->medias) == 0)
+    {
+      throw new sfException(sprintf('Could not retrieve the files %s.', implode(', ', $requested_ids)));
     }
   }
 

@@ -19,12 +19,23 @@ use_helper('Date')
       <?php echo $mm_media->getRawValue()->getDisplay(array('size' => 'large')); ?>
     </div>
 
-    <div class="sf_admin_form_row">
-      <?php
-      echo __('File size: %1%',
-              array('%1%' => cml_format_filesize($mm_media->getFilesize())));
-      ?>
-    </div>
+
+    <?php if ($mm_media->getBody()): ?>
+      <div class="sf_admin_form_row">
+        <?php
+        echo $mm_media->getBody();
+        ?>
+      </div>
+    <?php endif; ?>
+
+    <?php if ($mm_media->getFilesize()): ?>
+      <div class="sf_admin_form_row">
+        <?php
+        echo __('File size: %1%',
+                array('%1%' => cml_format_filesize($mm_media->getFilesize())));
+        ?>
+      </div>
+    <?php endif; ?>
 
     <?php $creator = Doctrine::getTable('sfGuardUser')->find($mm_media->getCreatedBy()); ?>
     <?php if (!is_null($creator) && $creator): ?>
