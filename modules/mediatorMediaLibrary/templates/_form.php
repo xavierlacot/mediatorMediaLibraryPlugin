@@ -74,13 +74,14 @@ $(document).ready(function() {
 
           // load the description page
           var destination = $('#facebox .content');
+          var path = '<?php echo url_for('@mediatorMediaLibrary_describe?path=') ?>' + hash_keys.join(',') + ',nocache=' + new Date().getTime();
 
           if (destination.length == 0) {
-            destination = $('#sf_admin_container.mediator-media-library');
+            $(location).attr('href', path);
           }
 
           destination.load(
-            '<?php echo url_for('@mediatorMediaLibrary_describe?path=') ?>' + hash_keys.join(',') + ',nocache=' + new Date().getTime(),
+            path,
             function(r, s) { // response, status
               if (s == 'error') {
                 $('#mediator-media-add').html("<p class=\"error\"><?php echo __('A problem happened, and no file was uploaded.') ?></p>");
