@@ -97,7 +97,7 @@ class mediatorMediaPdfHandler extends mediatorMediaHandler
         'scale'     => !isset($options['scale']) || $options['scale'],
         'inflate'   => isset($options['inflate']) && $options['inflate'],
         'crop'      => isset($options['crop']) && $options['crop'],
-        'dest_mime' => isset($options['dest_mime']) ? $options['dest_mime'] : null,
+        'dest_mime' => isset($options['dest_mime']) ? $options['dest_mime'] : 'image/png',
         'quality'   => isset($options['quality']) ? $options['quality'] : 90,
         'extract'   => $i
       );
