@@ -89,7 +89,6 @@
 
       var fieldname = $('body').attr('widget_field_id');
       fieldname = fieldname.replace('_link', '');
-      console.log(fieldname);
       $('#' + fieldname).val($(image).parent('a').attr('rel')).change();
       $('#' + fieldname + '_image .imgselected').html($(image).parent().html());
       $('#' + fieldname + '_image a.mediatorWidgetFormMediaSelect').html('Replace');
