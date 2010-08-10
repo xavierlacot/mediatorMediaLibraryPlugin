@@ -63,7 +63,7 @@ $(document).ready(function() {
 
           if (d.filesUploaded > 0) {
             // there is a file OK, other in errors...
-            $('#mediator-media-add form').after("<p class=\"error\"><?php echo __('The upload is completed for some files, but some files could not be uploaded.') ?> <a class=\"btn-like\" href=\"<?php echo url_for('@mediatorMediaLibrary_describe?path=') ?>" + hash_keys.join(',') + "\"><?php echo __('Go to the description of the uploaded files') ?></a>.</p>");
+            $('#mediator-media-add form').after("<p class=\"error\"><?php echo __('The upload is completed for some files, but some files could not be uploaded.') ?> <a class=\"btn-like\" href=\"<?php echo url_for('@mediatorMediaLibrary_describe?media_ids=') ?>" + hash_keys.join(',') + "\"><?php echo __('Go to the description of the uploaded files') ?></a>.</p>");
           } else {
             // all files have failed
             $('#mediator-media-add form').after("<p class=\"error\"><?php echo __('A problem happened, and no file was uploaded.') ?></p>");
@@ -74,7 +74,7 @@ $(document).ready(function() {
 
           // load the description page
           var destination = $('#facebox .content');
-          var path = '<?php echo url_for('@mediatorMediaLibrary_describe?path=') ?>' + hash_keys.join(',') + ',nocache=' + new Date().getTime();
+          var path = '<?php echo url_for('@mediatorMediaLibrary_describe?media_ids=') ?>' + hash_keys.join(',') + ',nocache=' + new Date().getTime();
 
           if (destination.length == 0) {
             $(location).attr('href', path);

@@ -7,10 +7,7 @@ if (!isset($options['id']))
   $options['id'] = $id;
 }
 
-$thumbnail_url = sfConfig::get('app_mediatorMediaLibraryPlugin_media_root', '/media')
-  .'/'.mediatorMediaLibraryToolkit::getDirectoryForSize(isset($size) ? $size : 'original')
-  .'/'.$mm_media->getmmMediaFolder()->getAbsolutePath()
-  .'/'.$mm_media->getThumbnailFilename().'?time='.strtotime($mm_media->getUpdatedAt());
+$thumbnail_url = $mm_media->getUrl(array('size' => isset($size) ? $size : 'original'));
 echo image_tag(
   $thumbnail_url,
   $options

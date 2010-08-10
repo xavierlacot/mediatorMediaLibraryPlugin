@@ -123,7 +123,17 @@ abstract class PluginmmMedia extends BasemmMedia
     $display_options['mm_media'] = $this;
     $display_options['html_options'] = $options;
     $partial = 'mediatorMediaLibrary/media_types/view'.(('' != $this->getType()) ? '_'.$this->getType() : '');
-    return get_partial($partial, $display_options);
+
+    try
+    {
+      $result = get_partial($partial, $display_options);
+    }
+    catch (Exception $e)
+    {
+      $result = get_partial('mediatorMediaLibrary/media_types/view', $display_options);
+    }
+
+    return $result;
   }
 
   public function getMetadata($name)
@@ -175,9 +185,21 @@ abstract class PluginmmMedia extends BasemmMedia
       $options['size'] = 'original';
     }
 
-    return sfConfig::get('app_mediatorMediaLibraryPlugin_media_root', '/media')
+    $result = sfConfig::get('app_mediatorMediaLibraryPlugin_media_root', '/media')
     .'/'.mediatorMediaLibraryToolkit::getDirectoryForSize($options['size'])
-    .'/'.$this->getAbsoluteFilename().'?time='.strtotime($this->getUpdatedAt());
+    .'/'.$this->getAbsoluteFilename();
+
+    if (isset($options['extension']))
+    {
+      $result .= $options['extension'];
+    }
+
+    if (!isset($options['with_time']) || (false !== $options['with_time']))
+    {
+      $result .= '?time='.strtotime($this->getUpdatedAt());
+    }
+
+    return $result;
   }
 
   public function hasMetadata($name)
@@ -308,7 +330,21 @@ abstract class PluginmmMedia extends BasemmMedia
       $this->setFilesize(filesize($this->mediatorMedia->cache()));
 
       // save the media metadatas
-      $this->setMetadatas($this->mediatorMedia->getMetadatas());
+      $metadatas = $this->mediatorMedia->getMetadatas();
+
+      if (isset($metadatas['width']))
+      {
+        $this->setWidth($metadatas['width']);
+        unset($metadatas['width']);
+      }
+
+      if (isset($metadatas['height']))
+      {
+        $this->setHeight($metadatas['height']);
+        unset($metadatas['height']);
+      }
+
+      $this->setMetadatas($metadatas);
 
       if (false !== $thumbnail_name)
       {

@@ -4,7 +4,7 @@
   <h1><?php echo __('Title, description and tags') ?></h1>
 
   <div class="sf_admin_form">
-    <form method="post" action="<?php echo url_for('@mediatorMediaLibrary_describe?path='.$uuids) ?>" id="mediator-media-description">
+    <form method="post" action="<?php echo url_for('@mediatorMediaLibrary_describe?media_ids='.$uuids) ?>" id="mediator-media-description">
       <?php include_partial('mediatorMediaLibrary/flash'); ?>
       <?php include_partial('mediatorMediaLibrary/description', array('form' => $form, 'autocomplete_url' => $autocomplete_url)); ?>
     </form>

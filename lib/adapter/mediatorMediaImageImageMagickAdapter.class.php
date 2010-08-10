@@ -1,7 +1,7 @@
 <?php
 /**
  * mediatorMediaImageMagickAdapter is an adapter for images documents, using
- * ImageMagick tools. his adapter is widely based on the sfImageMagickAdapter
+ * ImageMagick tools. This adapter is widely based on the sfImageMagickAdapter
  * provided with the sfThumbnail plugin.
  * @see http://www.imagemagick.org
  *

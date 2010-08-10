@@ -1,6 +1,8 @@
 <?php
 abstract class mediatorMediaHandler
 {
+  protected $adapter;
+
   public function __construct($file, cleverFilesystem $filesystem, $options = array())
   {
     $this->file = $file;
@@ -11,6 +13,12 @@ abstract class mediatorMediaHandler
 
   public function __destruct()
   {
+    if (isset($this->adapter))
+    {
+      $this->adapter->__destruct();
+      unset($this->adapter);
+    }
+
     unset($this);
   }
 

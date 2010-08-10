@@ -1,19 +1,6 @@
 <?php
 class mediatorMediaImageHandler extends mediatorMediaHandler
 {
-  protected $adapter;
-
-  public function __destruct()
-  {
-    if (isset($this->adapter))
-    {
-      $this->adapter->__destruct();
-      unset($this->adapter);
-    }
-
-    parent::__destruct();
-  }
-
   public function crop($options)
   {
     $image = $this->getAdapter()->crop($options);

@@ -1,8 +1,6 @@
 <?php
 class mediatorMediaPdfHandler extends mediatorMediaHandler
 {
-  protected $adapter;
-
   /**
    * Deletes all teh representations/variations of a media
    *

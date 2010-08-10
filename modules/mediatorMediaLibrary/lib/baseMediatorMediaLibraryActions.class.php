@@ -30,7 +30,7 @@ class baseMediatorMediaLibraryActions extends sfActions
         if (false === strpos($_SERVER['HTTP_USER_AGENT'], 'Flash'))
         {
           $this->getUser()->setFlash('notice', 'The file has been uploaded successfully.');
-          $this->redirect('mediatorMediaLibrary/describe?media_ids='.$uuid);
+          $this->redirect('@mediatorMediaLibrary_describe?media_ids='.$uuid);
         }
         else
         {
@@ -315,7 +315,7 @@ class baseMediatorMediaLibraryActions extends sfActions
 
   protected function retrieveFiles()
   {
-    $this->uuids = $this->getRequestParameter('path', null);
+    $this->uuids = $this->getRequestParameter('media_ids', null);
     $requested_ids = explode(',', $this->uuids);
     $this->forward404Unless(count($requested_ids) > 0 && ($requested_ids[0] != ''));
 

@@ -26,7 +26,16 @@ class mediatorMediaLibraryRouting
       )
     );
 
-    $actions = array('delete', 'describe', 'edit', 'list', 'move', 'view');
+    $r->prependRoute(
+      'mediatorMediaLibrary_describe',
+      new sfRoute(
+        '/mediatorMediaLibrary/describe/:media_ids',
+        array('module' => 'mediatorMediaLibrary', 'action' => 'describe'),
+        array('media_ids' => '^(.)*$')
+      )
+    );
+
+    $actions = array('delete', 'edit', 'list', 'move', 'view');
 
     foreach ($actions as $action)
     {
