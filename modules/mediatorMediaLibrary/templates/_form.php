@@ -25,7 +25,7 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-  $('#sf_admin_container form').bind('submit', function() {
+  $('#mediator-media-add-form form').bind('submit', function() {
     $('#mm_media_file').uploadifyUpload();
     return false;
   });
@@ -33,7 +33,7 @@ $(document).ready(function() {
   if (!swfobject.hasFlashPlayerVersion("9.0.24")) {
     $('#mm_media_file').parent().prepend("<p style='margin-bottom:20px!important;' class='error'><?php echo __('You are using an obsolete version of the flash plugin. Please update it or deactivate it.') ?></p>");
   } else {
-    $('.sf_admin_form_row label').hide();
+    $('#mediator-media-add-form label').hide();
     var hash_keys = new Array();
     var errors = new Array();
     $('#mm_media_file').uploadify({
