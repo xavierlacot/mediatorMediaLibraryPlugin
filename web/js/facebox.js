@@ -180,13 +180,13 @@
     if ($.facebox.settings.inited) return true
     else $.facebox.settings.inited = true
 
+    if (settings) $.extend($.facebox.settings, settings)
     $(document).trigger('init.facebox')
     makeCompatible()
 
     var imageTypes = $.facebox.settings.imageTypes.join('|')
     $.facebox.settings.imageTypesRegexp = new RegExp('\.' + imageTypes + '$', 'i')
 
-    if (settings) $.extend($.facebox.settings, settings)
     $('body').append($.facebox.settings.faceboxHtml)
 
     var preload = [ new Image(), new Image() ]
@@ -252,9 +252,8 @@
       var url    = window.location.href.split('#')[0]
       var target = href.replace(url,'')
       $.facebox.reveal($(target).clone().show(), klass)
-
     // image
-    } else if (href.match($.facebox.settings.imageTypesRegexp)) {
+    } else if (($.facebox.settings.imageTypes.length > 0) && href.match($.facebox.settings.imageTypesRegexp)) {
       fillFaceboxFromImage(href, klass)
     // ajax
     } else {
