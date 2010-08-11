@@ -7,7 +7,7 @@ if (!isset($options['id']))
   $options['id'] = $id;
 }
 
-$thumbnail_url = $mm_media->getUrl(array('size' => isset($size) ? $size : 'original'));
+$thumbnail_url = $mm_media->getUrl(array('extension' => '-0.png', 'size' => isset($size) ? $size : 'original'));
 echo image_tag(
   $thumbnail_url,
   $options
