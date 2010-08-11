@@ -1,5 +1,5 @@
 all:
-  stylesheets:   [/sfDoctrinePlugin/css/global.css, /sfDoctrinePlugin/css/default.css, /mediatorMediaLibraryPlugin/css/mediatorMediaLibrary]
+  stylesheets:   [/sfDoctrinePlugin/css/global.css: { position: first }, /sfDoctrinePlugin/css/default.css: { position: first }, /mediatorMediaLibraryPlugin/css/mediatorMediaLibrary]
   javascripts:   [/mediatorMediaLibraryPlugin/js/facebox.js]
 
 chooseSuccess:
