@@ -41,10 +41,7 @@ class mediatorMediaVideoFfmpegAdapter extends mediatorMediaAdapter
     ob_start();
     passthru($command);
     ob_get_clean();
-
-    $encoded = file_get_contents($tempFile);
-    unlink($tempFile);
-    return $encoded;
+    return fopen($tempFile, 'r');
   }
 
   public function extractFrame($maxWidth = null, $maxHeight = null, $options = array())

@@ -514,7 +514,7 @@ class mediatorMedia
     $original_path = mediatorMediaLibraryToolkit::getDirectoryForSize('original');
     $this->filesystem->write(
       $original_path.DIRECTORY_SEPARATOR.$this->filename,
-      file_get_contents($source)
+      fopen($source, 'r')
     );
 
     if (isset($tempFile))
