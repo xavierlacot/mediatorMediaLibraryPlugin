@@ -153,12 +153,11 @@ class mediatorMediaImageImageMagickAdapter extends mediatorMediaAdapter
     else
     {
       // get image data via identify
-      list($img, $type, $dimen) = explode(' ', $stdout[0]);
+      list($img, $type, $dimen) = explode(' ', substr($stdout[0], strlen($this->cache_file)));
       list($width, $height) = explode('x', $dimen);
-      $sourceMime = $this->mimeMap[strtolower($type)];
+      $this->sourceMime = $this->mimeMap[strtolower($type)];
       $this->sourceWidth = $width;
       $this->sourceHeight = $height;
-      $this->sourceMime = $sourceMime;
     }
   }
 
@@ -266,7 +265,6 @@ class mediatorMediaImageImageMagickAdapter extends mediatorMediaAdapter
     $output = '-';
     $output = (($mime = array_search($dest_mime, $this->mimeMap)) ? $mime.':' : '').$output;
     $cmd = $this->magickCommands['convert'].' '.$command.' '.escapeshellarg($this->cache_file).$extract.' '.escapeshellarg($output);
-
     ob_start();
     passthru($cmd);
     return ob_get_clean();
