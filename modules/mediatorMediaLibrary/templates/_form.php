@@ -25,7 +25,7 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-  $('#mediator-media-add-form form').bind('submit', function() {
+  $('form#mediator-media-add-form').bind('submit', function() {
     $('#mm_media_file').uploadifyUpload();
     return false;
   });
