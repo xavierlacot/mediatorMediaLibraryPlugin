@@ -278,6 +278,15 @@ ul.mediator_media_library_list li.directory.parent span a span {
   margin-right: 0;
 }
 
+#facebox .mediator_media_facebox_detail {
+  margin: 0 -10px;
+  text-align: center;
+}
+
+#facebox .mediator_media_facebox_detail img {
+  max-width: 820px;
+}
+
 #facebox .ui-tabs {
   margin:0 -10px;
   padding:0;

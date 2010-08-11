@@ -16,9 +16,14 @@ use_helper('Date')
 
   <div id="mediator_media_library_file_details">
     <div class="sf_admin_form_row" style="clear: none; padding-left: 0;">
-      <?php echo $mm_media->getDisplay(array('size' => 'original')); ?>
+      <?php
+      echo link_to(
+        $mm_media->getRawValue()->getDisplay(array('size' => 'large')),
+        '@mediatorMediaLibrary_detail?path='.$mm_media->getAbsoluteFilename().'&time='.strtotime($mm_media->getUpdatedAt()),
+        array('rel' => 'facebox')
+      );
+      ?>
     </div>
-
 
     <?php if ($mm_media->getBody()): ?>
       <div class="sf_admin_form_row">
@@ -68,3 +73,11 @@ use_helper('Date')
     <?php } catch (Exception $e) { } ?>
   </div>
 </div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('a[rel*=facebox]').facebox({
+      image_types: [ ]
+    });
+  });
+</script>

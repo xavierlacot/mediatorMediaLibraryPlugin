@@ -143,6 +143,11 @@ class baseMediatorMediaLibraryActions extends sfActions
     }
   }
 
+  public function executeDetail(sfWebRequest $request)
+  {
+    $this->retrieveFile();
+  }
+
   public function executeEdit(sfWebRequest $request)
   {
     $this->retrieveFile();
