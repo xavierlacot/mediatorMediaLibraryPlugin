@@ -4,7 +4,7 @@
     'Size: %1%px x %2%px',
     array(
       '%1%' => $mm_media->getWidth(),
-      '%2%' => $mm_media->getWidth()
+      '%2%' => $mm_media->getHeight()
     )
   );
   ?>
