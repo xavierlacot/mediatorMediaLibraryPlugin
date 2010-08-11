@@ -11,6 +11,8 @@ class mediatorMediaVideoHandler extends mediatorMediaHandler
     if (isset($sizes['original']))
     {
       $this->filesystem->unlink($sizes['original']['directory'].DIRECTORY_SEPARATOR.$this->file);
+      $this->filesystem->unlink($sizes['original']['directory'].DIRECTORY_SEPARATOR.$this->file.'.ogg');
+      $this->filesystem->unlink($sizes['original']['directory'].DIRECTORY_SEPARATOR.$this->file.'.mp4');
     }
 
     foreach ($sizes as $format => $size)
@@ -53,6 +55,35 @@ class mediatorMediaVideoHandler extends mediatorMediaHandler
       'height' => $this->getAdapter()->getHeight(),
       'width' => $this->getAdapter()->getWidth(),
     ));
+  }
+
+  public function moveTo($absolute_path, $sizes)
+  {
+    // move the original, along with the ogg and mp4 formats
+    if (isset($sizes['original']))
+    {
+      $this->filesystem->rename(
+        $sizes['original']['directory'].DIRECTORY_SEPARATOR.$this->file,
+        $sizes['original']['directory'].DIRECTORY_SEPARATOR.$absolute_path.DIRECTORY_SEPARATOR.basename($this->file)
+      );
+      $this->filesystem->rename(
+        $sizes['original']['directory'].DIRECTORY_SEPARATOR.$this->file.'.ogg',
+        $sizes['original']['directory'].DIRECTORY_SEPARATOR.$absolute_path.DIRECTORY_SEPARATOR.basename($this->file).'.ogg'
+      );
+      $this->filesystem->rename(
+        $sizes['original']['directory'].DIRECTORY_SEPARATOR.$this->file.'.mp4',
+        $sizes['original']['directory'].DIRECTORY_SEPARATOR.$absolute_path.DIRECTORY_SEPARATOR.basename($this->file).'.mp4'
+      );
+    }
+
+    // move the thumbnails
+    foreach ($sizes as $format => $size)
+    {
+      $this->filesystem->rename(
+        $size['directory'].DIRECTORY_SEPARATOR.$this->file.'.jpg',
+        $size['directory'].DIRECTORY_SEPARATOR.$absolute_path.DIRECTORY_SEPARATOR.basename($this->file).'.jpg'
+      );
+    }
   }
 
   public function process(array $sizes)

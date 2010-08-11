@@ -2,7 +2,7 @@
 class mediatorMediaPdfHandler extends mediatorMediaHandler
 {
   /**
-   * Deletes all teh representations/variations of a media
+   * Deletes all the representations/variations of a media
    *
    * @param  array  sizes of the thumbnails to be deleted
    */
@@ -58,6 +58,41 @@ class mediatorMediaPdfHandler extends mediatorMediaHandler
   public function getMetadatas()
   {
     return array('pages_count' => $this->getAdapter()->getPagesCount());
+  }
+
+  public function moveTo($absolute_path, $sizes)
+  {
+    // get the pages number
+    $pagesCount = $this->getAdapter()->getPagesCount();
+
+    if (isset($sizes['original']))
+    {
+      $this->filesystem->rename(
+        $sizes['original']['directory'].DIRECTORY_SEPARATOR.$this->file,
+        $sizes['original']['directory'].DIRECTORY_SEPARATOR.$absolute_path.DIRECTORY_SEPARATOR.basename($this->file)
+      );
+      unset($sizes['original']);
+    }
+
+    foreach ($sizes as $format => $size)
+    {
+      $i = 0;
+
+      while ($i < $pagesCount)
+      {
+        // move every pages
+        $filename = sprintf(
+          '%s-%s.png',
+          $size['directory'].DIRECTORY_SEPARATOR.$this->file,
+          $i
+        );
+        $this->filesystem->rename(
+          $filename,
+          $size['directory'].DIRECTORY_SEPARATOR.$absolute_path.DIRECTORY_SEPARATOR.basename($filename)
+        );
+        $i++;
+      }
+    }
   }
 
   /**
