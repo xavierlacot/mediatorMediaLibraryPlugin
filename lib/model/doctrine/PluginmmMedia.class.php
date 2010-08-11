@@ -15,7 +15,7 @@ abstract class PluginmmMedia extends BasemmMedia
   protected $mediatorMedia = null;
   protected
     $_metadatas_unsaved,
-    $_metadatas;
+    $_metadatas = array();
 
   public function getMediatorMedia()
   {
@@ -299,7 +299,13 @@ abstract class PluginmmMedia extends BasemmMedia
 
     if (!is_null($mm_media_folder))
     {
-      $mm_media_folder_path = ('' != $mm_media_folder->getAbsolutePath()) ? $mm_media_folder->getAbsolutePath().DIRECTORY_SEPARATOR : '';
+      if ($mm_media_folder->isNew())
+      {
+        $mm_media_folder->save();
+      }
+
+      $absolute_path = $mm_media_folder->getAbsolutePath();
+      $mm_media_folder_path = ('' != $absolute_path) ? $absolute_path.DIRECTORY_SEPARATOR : '';
       $this->setMmMediaFolderId($mm_media_folder->getPrimaryKey());
     }
     else
