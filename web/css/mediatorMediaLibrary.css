@@ -147,6 +147,10 @@ a img {
   background: transparent url(../images/icons/folder.png) no-repeat 5px 3px;
 }
 
+#mediator_media_library_actions ul li a.move {
+  background: transparent url(../images/icons/move.png) no-repeat 5px 3px;
+}
+
 #mediator_media_library_actions ul li a.remove {
   background: transparent url(../images/icons/delete.png) no-repeat 5px 3px;
 }
