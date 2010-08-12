@@ -189,6 +189,12 @@ class mediatorMedia
     return $this->getHandler()->delete($sizes);
   }
 
+  protected function getAbsoluteFilename()
+  {
+    $original_path = mediatorMediaLibraryToolkit::getDirectoryForSize('original');
+    return $original_path.DIRECTORY_SEPARATOR.$this->filename;
+  }
+
   /**
    * Retrieves the associated mm_media object
    *
@@ -305,8 +311,7 @@ class mediatorMedia
 
   protected function guessFromExtension()
   {
-    $original_path = mediatorMediaLibraryToolkit::getDirectoryForSize('original');
-    $filename = $original_path.DIRECTORY_SEPARATOR.$this->filename;
+    $filename = $this->getAbsoluteFilename();
     $path_info = pathinfo($filename);
     $extension = strtolower($path_info['extension']);
 
@@ -327,8 +332,7 @@ class mediatorMedia
    */
   protected function guessFromFileinfo()
   {
-    $original_path = mediatorMediaLibraryToolkit::getDirectoryForSize('original');
-    $filename = $original_path.DIRECTORY_SEPARATOR.$this->filename;
+    $filename = $this->getAbsoluteFilename();
 
     if (!function_exists('finfo_open') || !$this->filesystem->exists($filename))
     {
@@ -358,8 +362,7 @@ class mediatorMedia
    */
   protected function guessFromMimeContentType()
   {
-    $original_path = mediatorMediaLibraryToolkit::getDirectoryForSize('original');
-    $filename = $original_path.DIRECTORY_SEPARATOR.$this->filename;
+    $filename = $this->getAbsoluteFilename();
 
     if (!function_exists('mime_content_type') || !$this->filesystem->exists($filename))
     {
@@ -376,6 +379,13 @@ class mediatorMedia
    */
   protected function guessFromFileBinary()
   {
+    $filename = $this->getAbsoluteFilename();
+
+    if (!$this->filesystem->exists($filename))
+    {
+      return null;
+    }
+
     ob_start();
     passthru(sprintf('file -bi %s 2>/dev/null', escapeshellarg($this->cache())), $return);
 
