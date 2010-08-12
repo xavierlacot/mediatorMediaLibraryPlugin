@@ -32,7 +32,7 @@ class mediatorMediaVideoFfmpegAdapter extends mediatorMediaAdapter
     // encode localy
     $tempFile = tempnam('/tmp', 'mediatorMediaLibraryPlugin').'.'.$format;
     $command = sprintf(
-      '%s -i %s -ar 22050 %s',
+      '%s -i %s -ar 22050 -s 320x240 %s',
       $this->commands['ffmpeg'],
       escapeshellarg($this->cache_file),
       $tempFile
