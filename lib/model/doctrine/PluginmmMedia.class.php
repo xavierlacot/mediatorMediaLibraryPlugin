@@ -202,6 +202,11 @@ abstract class PluginmmMedia extends BasemmMedia
     return $result;
   }
 
+  protected function log($message)
+  {
+    sfContext::getInstance()->getLogger()->log('{mmMedia}'.$message);
+  }
+
   public function hasMetadata($name)
   {
     return (null !== $this->getMetadata($name));
@@ -316,6 +321,7 @@ abstract class PluginmmMedia extends BasemmMedia
     if (isset($array['filename']))
     {
       $filename = $array['filename'];
+      $this->log(sprintf('The media will be created or updated in "%s"', $mm_media_folder_path.$filename));
       $this->mediatorMedia = new mediatorMedia($mm_media_folder_path.$filename);
 
       if (isset($array['source']))
@@ -324,6 +330,7 @@ abstract class PluginmmMedia extends BasemmMedia
 
         if (!isset($array['filesystem_existing']) || (true !== $array['filesystem_existing']))
         {
+          $this->log(sprintf('Writing the media from "%s"', $source));
           $this->mediatorMedia->write($source);
         }
       }
