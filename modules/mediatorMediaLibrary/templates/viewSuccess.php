@@ -19,7 +19,7 @@ use_helper('Date')
       <?php
       echo link_to(
         $mm_media->getRawValue()->getDisplay(array('size' => 'large')),
-        '@mediatorMediaLibrary_detail?path='.$mm_media->getAbsoluteFilename().'&time='.strtotime($mm_media->getUpdatedAt()),
+        '@mediatorMediaLibrary_detail?path='.$mm_media->getAbsoluteFilename(),
         array('rel' => 'facebox')
       );
       ?>
