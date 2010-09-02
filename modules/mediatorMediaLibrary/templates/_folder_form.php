@@ -7,6 +7,7 @@
 
   <div class="sf_admin_form_row sf_admin_text">
     <div>
+      <?php echo $form['name']->renderError();?>
       <?php echo $form['name']->renderLabel() ?>
       <?php echo $form['name']->render() ?>
       <div class="help"><?php echo $form['name']->renderHelp() ?></div>
