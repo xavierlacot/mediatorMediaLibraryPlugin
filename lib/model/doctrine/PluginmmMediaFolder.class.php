@@ -62,14 +62,14 @@ abstract class PluginmmMediaFolder extends BasemmMediaFolder
 
   public function __adjancy_list_getAncestors()
   {
-    if ($this->isRoot())
+    if ($this->__adjancy_list_isRoot())
     {
       return array();
     }
     else
     {
-      $parent = $this->getParent();
-      $ancestors = $parent->getAncestors();
+      $parent = $this->__adjancy_list_getParent();
+      $ancestors = $parent->__adjancy_list_getAncestors();
       $ancestors[] = $parent;
       return $ancestors;
     }
@@ -86,32 +86,32 @@ abstract class PluginmmMediaFolder extends BasemmMediaFolder
 
   public function __adjancy_list_getDescendants()
   {
-    if ($this->isLeaf())
+    if ($this->__adjancy_list_isLeaf())
     {
       return array();
     }
     else
     {
-      $children = $this->getChildren();
+      $children = $this->__adjancy_list_getChildren();
       $descendants = $children->toArray();
 
       foreach ($children as $key => $child)
       {
-        $descendants[$key]['__descendants'] = $child->getDescendants();
+        $descendants[$key]['__descendants'] = $child->__adjancy_list_getDescendants();
       }
 
       return $descendants;
     }
   }
 
-  public function __adjancy_list_getParent()
-  {
-    return $this->getTable()->find($this->getParentId());
-  }
-
   public function __adjancy_list_getLevel()
   {
     return count($this->__adjancy_list_getAncestors());
+  }
+
+  public function __adjancy_list_getParent()
+  {
+    return $this->getTable()->find($this->getParentId());
   }
 
   public function __adjancy_list_isRoot()
