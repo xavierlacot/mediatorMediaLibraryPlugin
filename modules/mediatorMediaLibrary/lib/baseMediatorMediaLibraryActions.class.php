@@ -253,22 +253,32 @@ class baseMediatorMediaLibraryActions extends sfActions
 
   public function executeMedias(sfWebRequest $request)
   {
-    $this->retrieveFile();
     $size = $request->getParameter('size');
-    header('Cache-Control: public');
-    header('Content-Disposition: attachment; filename="'.$this->mm_media->getFilename().'"');
-    header('Content-Type: '.$this->mm_media->getMimeType());
 
     if ('original' == $size)
     {
       // read the local cache file
+      $this->retrieveFile();
+      header('Cache-Control: public');
+      header('Content-Disposition: attachment; filename="'.$this->mm_media->getFilename().'"');
+      header('Content-Type: '.$this->mm_media->getMimeType());
       readfile($this->mm_media->getMediatorMedia()->cache());
     }
     else
     {
       // get the file content from the filesystem
       $fs = mediatorMediaLibraryToolkit::getFilesystem();
-      echo $fs->read($size.'/'.$this->getRequestParameter('path', ''));
+
+      if ($fs->exists($size.'/'.$this->getRequestParameter('path', '')))
+      {
+        header('Cache-Control: public');
+        header('Content-Disposition: attachment; filename="'.basename($this->getRequestParameter('path', '')).'"');
+        echo $fs->read($size.'/'.$this->getRequestParameter('path', ''));
+      }
+      else
+      {
+        $this->forward404();
+      }
     }
 
     return sfView::NONE;
