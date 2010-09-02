@@ -21,6 +21,8 @@ echo image_tag(
 		$(document).ready(function(){
 			$("#<?php echo $options['id'] ?>").addClass('slider').pageslider({
 			  nb_pages:   <?php echo $pages_count->getValue() ?>,
+			  prevId:    '<?php echo $options['id'] ?>-prevButton',
+			  nextId:    '<?php echo $options['id'] ?>-nextButton',
 			  images_uri: {
 			    <?php $i = 0; ?>
 			    <?php while ($i < $pages_count->getValue()): ?>

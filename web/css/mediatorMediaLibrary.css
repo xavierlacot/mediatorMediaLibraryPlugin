@@ -283,7 +283,7 @@ ul.mediator_media_library_list li.directory.parent span a span {
 }
 
 #facebox .mediator_media_facebox_detail {
-  margin: 0 -10px;
+  margin: 0;
   text-align: center;
 }
 
@@ -308,10 +308,10 @@ ul.mediator_media_library_list li.directory.parent span a span {
   position: relative;
 }
 
-#sf_admin_container.mediator-media-library #pageslider-wrapper #prevBtn,
-#sf_admin_container.mediator-media-library #pageslider-wrapper #nextBtn,
-#sf_admin_container.mediator-media-library ul.mediator_media_library_list #prevBtn,
-#sf_admin_container.mediator-media-library ul.mediator_media_library_list #nextBtn {
+#sf_admin_container.mediator-media-library #pageslider-wrapper .prevBtn,
+#sf_admin_container.mediator-media-library #pageslider-wrapper .nextBtn,
+#sf_admin_container.mediator-media-library ul.mediator_media_library_list .prevBtn,
+#sf_admin_container.mediator-media-library ul.mediator_media_library_list .nextBtn {
 	display: none;
 	width:35px;
 	height:35px;
@@ -321,23 +321,23 @@ ul.mediator_media_library_list li.directory.parent span a span {
 	background-color: transparent;
 }
 
-#sf_admin_container.mediator-media-library #pageslider-wrapper #nextBtn,
-#sf_admin_container.mediator-media-library ul.mediator_media_library_list #nextBtn {
+#sf_admin_container.mediator-media-library #pageslider-wrapper .nextBtn,
+#sf_admin_container.mediator-media-library ul.mediator_media_library_list .nextBtn {
   left: auto;
 	right:10px;
 }
 
-#sf_admin_container.mediator-media-library #pageslider-wrapper:hover #prevBtn,
-#sf_admin_container.mediator-media-library #pageslider-wrapper:hover #nextBtn,
-#sf_admin_container.mediator-media-library ul.mediator_media_library_list #pageslider-wrapper:hover #prevBtn,
-#sf_admin_container.mediator-media-library ul.mediator_media_library_list #pageslider-wrapper:hover #nextBtn {
+#sf_admin_container.mediator-media-library #pageslider-wrapper:hover .prevBtn,
+#sf_admin_container.mediator-media-library #pageslider-wrapper:hover .nextBtn,
+#sf_admin_container.mediator-media-library ul.mediator_media_library_list #pageslider-wrapper:hover .prevBtn,
+#sf_admin_container.mediator-media-library ul.mediator_media_library_list #pageslider-wrapper:hover .nextBtn {
 	display:block;
 }
 
-#sf_admin_container.mediator-media-library #prevBtn a,
-#sf_admin_container.mediator-media-library #nextBtn a,
-#sf_admin_container.mediator-media-library ul.mediator_media_library_list #prevBtn a,
-#sf_admin_container.mediator-media-library ul.mediator_media_library_list #nextBtn a {
+#sf_admin_container.mediator-media-library .prevBtn a,
+#sf_admin_container.mediator-media-library .nextBtn a,
+#sf_admin_container.mediator-media-library ul.mediator_media_library_list .prevBtn a,
+#sf_admin_container.mediator-media-library ul.mediator_media_library_list .nextBtn a {
 	display:block;
 	width:35px;
 	height:35px;
@@ -345,8 +345,8 @@ ul.mediator_media_library_list li.directory.parent span a span {
 	background:url(../images/previous.png) no-repeat 0 0;
 }
 
-#sf_admin_container.mediator-media-library #nextBtn a,
-#sf_admin_container.mediator-media-library ul.mediator_media_library_list #nextBtn a {
+#sf_admin_container.mediator-media-library .nextBtn a,
+#sf_admin_container.mediator-media-library ul.mediator_media_library_list .nextBtn a {
 	background:url(../images/next.png) no-repeat 0 0;
 }
 
