@@ -18,6 +18,7 @@
   <?php echo $form['auto_path']->render() ?>
   <?php echo $form['folder_path']->render() ?>
 <?php endif; ?>
+  <?php echo $form['parent']->renderError();?>
   <?php echo $form['parent']->render() ?>
   <?php echo $form['_csrf_token']->render() ?>
 

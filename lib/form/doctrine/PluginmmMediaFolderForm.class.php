@@ -33,16 +33,20 @@ abstract class PluginmmMediaFolderForm extends BasemmMediaFolderForm
         'auto_path'   => new sfWidgetFormInputCheckbox(),
       ));
 
+      $name = $this->getObject()->getName();
+      $folder_path = $this->getObject()->getFolderPath();
+
       $this->setValidators(array(
         'id'          => new sfValidatorDoctrineChoice(array('model' => 'mmMediaFolder', 'column' => 'id', 'required' => false)),
         'name'        => new sfValidatorString(array('max_length' => 250, 'required' => true)),
         'folder_path' => new sfValidatorString(array('max_length' => 250, 'required' => true)),
-        'parent'      => new sfValidatorDoctrineChoice(array('model' => 'mmMediaFolder', 'column' => 'id', 'required' => true)),
+        'parent'      => new sfValidatorAnd(array(
+          new sfValidatorDoctrineChoice(array('model' => 'mmMediaFolder', 'column' => 'id', 'required' => true)),
+          new mediatorNotInFolderValidator(array('folder_path' => $folder_path))
+        )),
         'auto_path'   => new sfValidatorBoolean(array('required' => false)),
       ));
 
-      $name = $this->getObject()->getName();
-      $folder_path = $this->getObject()->getFolderPath();
       $this->setDefault('auto_path', $folder_path == mediatorMediaLibraryInflector::toUrl($name));
       $this->setDefault('parent', $this->getObject()->getNode()->getParent()->getPrimaryKey());
     }
