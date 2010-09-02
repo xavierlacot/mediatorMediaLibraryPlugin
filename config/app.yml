@@ -37,6 +37,7 @@ all:
       - ISOSpeedRatings
       - Make
       - Model
+    pdf_max_pages:                  10       #extract max 10 pages from PDF files
     thumbnail_types:
       - jpg
       - png

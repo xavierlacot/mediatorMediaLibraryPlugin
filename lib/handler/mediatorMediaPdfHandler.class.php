@@ -123,6 +123,7 @@ class mediatorMediaPdfHandler extends mediatorMediaHandler
   {
     // get the pages number
     $pagesCount = $this->getAdapter()->getPagesCount();
+    $limit = sfConfig::get('app_mediatorMediaLibraryPlugin_pdf_max_pages', 10);
 
     if (!isset($options['width']) || !isset($options['height']))
     {
@@ -142,7 +143,7 @@ class mediatorMediaPdfHandler extends mediatorMediaHandler
     $adapter_options = array();
     $i = 0;
 
-    while ($i < $pagesCount)
+    while ($i < $pagesCount && $i < $limit)
     {
       $adapter_options = array(
         'scale'     => !isset($options['scale']) || $options['scale'],
