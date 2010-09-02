@@ -30,7 +30,7 @@ class mediatorMedia
     'guessFromExtension',
   );
 
-  protected $media_types = array(
+  public static $media_types = array(
     'application/pdf'                                 => self::TYPE_PDF,
     'application/postscript'                          => '',
     'application/vnd.oasis.opendocument.chart'        => self::TYPE_OFFICE,
@@ -91,7 +91,7 @@ class mediatorMedia
     'video/x-msvideo'        => self::TYPE_VIDEO,
   );
 
-  protected $file_extensions = array(
+  public static $file_extensions = array(
     'avi'    => 'video/avi',
     'c'      => 'text/x-c',
     'cpp'    => 'text/x-cpp',
@@ -109,7 +109,8 @@ class mediatorMedia
     'odi'    => 'application/vnd.oasis.opendocument.image',
     'odp'    => 'application/vnd.oasis.opendocument.presentation',
     'ods'    => 'application/vnd.oasis.opendocument.spreadsheet',
-    'odt'    => ' application/vnd.oasis.opendocument.text',
+    'odt'    => 'application/vnd.oasis.opendocument.text',
+    'ogg'    => 'video/ogg',
     'pdf'    => 'application/pdf',
     'pjpeg'  => 'image/jpeg',
     'php'    => 'text/x-php',
@@ -193,6 +194,11 @@ class mediatorMedia
   {
     $original_path = mediatorMediaLibraryToolkit::getDirectoryForSize('original');
     return $original_path.DIRECTORY_SEPARATOR.$this->filename;
+  }
+
+  public static function getFileExtensions()
+  {
+    return self::$file_extensions;
   }
 
   /**
@@ -293,15 +299,20 @@ class mediatorMedia
     }
   }
 
+  public static function getMimeTypeFromFileExtension($extension)
+  {
+    return isset(self::$file_extensions[$extension]) ? self::$file_extensions[$extension] : null;
+  }
+
   public function getType($fallback = null)
   {
     $mime_type = $this->getMimeType();
     $this->logger->log(sprintf('{mediatorMedia} the media "%s" has the mime-type "%s".', $this->filename, $mime_type));
 
-    if (isset($this->media_types[$mime_type])
-        && ('' != $this->media_types[$mime_type]))
+    if (isset(self::$media_types[$mime_type])
+        && ('' != self::$media_types[$mime_type]))
     {
-      return $this->media_types[$mime_type];
+      return self::$media_types[$mime_type];
     }
     else
     {
@@ -315,13 +326,13 @@ class mediatorMedia
     $path_info = pathinfo($filename);
     $extension = strtolower($path_info['extension']);
 
-    if (!isset($this->file_extensions[$extension]) || !$this->filesystem->exists($filename))
+    if (!isset(self::$file_extensions[$extension]) || !$this->filesystem->exists($filename))
     {
       return null;
     }
     else
     {
-      return $this->file_extensions[$extension];
+      return self::$file_extensions[$extension];
     }
   }
 

@@ -255,10 +255,15 @@ class baseMediatorMediaLibraryActions extends sfActions
   {
     $size = $request->getParameter('size');
 
-    if ('original' == $size)
+    try
+    {
+      $this->retrieveFile();
+    }
+    catch (Exception $e) { }
+
+    if ($this->mm_media && ('original' == $size))
     {
       // read the local cache file
-      $this->retrieveFile();
       header('Cache-Control: public');
       header('Content-Disposition: attachment; filename="'.$this->mm_media->getFilename().'"');
       header('Content-Type: '.$this->mm_media->getMimeType());
@@ -268,12 +273,18 @@ class baseMediatorMediaLibraryActions extends sfActions
     {
       // get the file content from the filesystem
       $fs = mediatorMediaLibraryToolkit::getFilesystem();
+      $path = $size.'/'.$this->getRequestParameter('path', '');
 
-      if ($fs->exists($size.'/'.$this->getRequestParameter('path', '')))
+      if ($fs->exists($path))
       {
         header('Cache-Control: public');
-        header('Content-Disposition: attachment; filename="'.basename($this->getRequestParameter('path', '')).'"');
-        echo $fs->read($size.'/'.$this->getRequestParameter('path', ''));
+        $pathinfo = pathinfo($path);
+
+        $mimeType = mediatorMedia::getMimeTypeFromFileExtension($pathinfo['extension']);
+
+        header('Content-Type: video/ogg');
+        header('Content-Disposition: attachment; filename="'.$pathinfo['basename'].'"');
+        echo $fs->read($path);
       }
       else
       {
