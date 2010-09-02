@@ -446,7 +446,6 @@ class mediatorMedia
   public function process()
   {
     $sizes = mediatorMediaLibraryToolkit::getAvailableSizes();
-    unset($sizes['original']);
     return $this->getHandler()->process($sizes);
   }
 

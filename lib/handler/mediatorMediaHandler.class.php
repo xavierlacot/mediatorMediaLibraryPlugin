@@ -54,6 +54,8 @@ abstract class mediatorMediaHandler
    */
   public function process(array $sizes)
   {
+    unset($sizes['original']);
+
     foreach ($sizes as $format => $size)
     {
       if (!isset($size['overwrite'])

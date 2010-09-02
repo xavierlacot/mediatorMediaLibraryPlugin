@@ -14,7 +14,6 @@ class mediatorMediaPdfHandler extends mediatorMediaHandler
     if (isset($sizes['original']))
     {
       $this->filesystem->unlink($sizes['original']['directory'].DIRECTORY_SEPARATOR.$this->file);
-      unset($sizes['original']);
     }
 
     foreach ($sizes as $format => $size)
@@ -71,7 +70,6 @@ class mediatorMediaPdfHandler extends mediatorMediaHandler
         $sizes['original']['directory'].DIRECTORY_SEPARATOR.$this->file,
         $sizes['original']['directory'].DIRECTORY_SEPARATOR.$absolute_path.DIRECTORY_SEPARATOR.basename($this->file)
       );
-      unset($sizes['original']);
     }
 
     foreach ($sizes as $format => $size)
@@ -105,9 +103,14 @@ class mediatorMediaPdfHandler extends mediatorMediaHandler
   {
     foreach ($sizes as $format => $size)
     {
+      $filename = sprintf(
+        '%s-0.png',
+        $size['directory'].DIRECTORY_SEPARATOR.$this->file
+      );
+
       if (!isset($size['overwrite'])
           || (true == $size['overwrite'])
-          || !$this->filesystem->exists($size['directory'].DIRECTORY_SEPARATOR.$this->file))
+          || !$this->filesystem->exists($filename))
       {
         $this->resize($size);
       }
@@ -120,6 +123,21 @@ class mediatorMediaPdfHandler extends mediatorMediaHandler
   {
     // get the pages number
     $pagesCount = $this->getAdapter()->getPagesCount();
+
+    if (!isset($options['width']) || !isset($options['height']))
+    {
+      $dimensions = $this->getAdapter()->getDimensions();
+
+      if (!isset($options['width']))
+      {
+        $options['width'] = $dimensions['width'];
+      }
+
+      if (!isset($options['height']))
+      {
+        $options['height'] = $dimensions['height'];
+      }
+    }
 
     $adapter_options = array();
     $i = 0;
