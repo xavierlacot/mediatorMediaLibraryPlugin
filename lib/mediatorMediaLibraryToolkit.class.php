@@ -45,6 +45,11 @@ class mediatorMediaLibraryToolkit
 
   public static function getFilesystem()
   {
+    return cleverFilesystem::getInstance(self::getFilesystemConfiguration());
+  }
+
+  public static function getFilesystemConfiguration()
+  {
     $default = array(
       'type'      => 'disk',
       'root'      => sfConfig::get('sf_web_dir').DIRECTORY_SEPARATOR.'media',
@@ -54,15 +59,15 @@ class mediatorMediaLibraryToolkit
 
     if (is_string($fs_name))
     {
-      $filesystem = cleverFilesystem::getConfiguration($fs_name);
+      $configuration = cleverFilesystem::getConfiguration($fs_name);
     }
 
-    if (!isset($filesystem) || !$filesystem)
+    if (!isset($configuration) || !$configuration)
     {
-      $filesystem = $default;
+      $configuration = $default;
     }
 
-    return cleverFilesystem::getInstance($filesystem);
+    return $configuration;
   }
 
   public static function getMaxAllowedFilesize()

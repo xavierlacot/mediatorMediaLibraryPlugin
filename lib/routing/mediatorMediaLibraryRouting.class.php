@@ -48,5 +48,18 @@ class mediatorMediaLibraryRouting
         )
       );
     }
+
+    // route for serving the media through php
+    if (sfConfig::get('app_mediatorMediaLibraryPlugin_php_serve_media', false))
+    {
+      $r->prependRoute(
+        'mediatorMediaLibrary_medias',
+        new sfRoute(
+          '/mediatorMediaLibrary/medias/:size/:path',
+          array('module' => 'mediatorMediaLibrary', 'action' => 'medias'),
+          array('path' => '^(.)*$')
+        )
+      );
+    }
   }
 }

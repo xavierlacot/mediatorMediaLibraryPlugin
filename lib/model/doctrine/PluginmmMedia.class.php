@@ -185,13 +185,26 @@ abstract class PluginmmMedia extends BasemmMedia
       $options['size'] = 'original';
     }
 
-    $result = sfConfig::get('app_mediatorMediaLibraryPlugin_media_root', '/media')
-    .'/'.mediatorMediaLibraryToolkit::getDirectoryForSize($options['size'])
-    .'/'.$this->getAbsoluteFilename();
+    $size_directory = mediatorMediaLibraryToolkit::getDirectoryForSize($options['size']);
+    $media_path = $this->getAbsoluteFilename();
 
     if (isset($options['extension']))
     {
-      $result .= $options['extension'];
+      $media_path .= $options['extension'];
+    }
+
+    if (sfConfig::get('app_mediatorMediaLibraryPlugin_php_serve_media', false))
+    {
+      // generate a url to the image path
+      $result = sfContext::getInstance()->getController()->genUrl(
+        '@mediatorMediaLibrary_medias?size='.$size_directory.'&path='.$media_path
+      );
+    }
+    else
+    {
+      $result = sfConfig::get('app_mediatorMediaLibraryPlugin_media_root', '/media')
+        .'/'.$size_directory
+        .'/'.$media_path;
     }
 
     if (!isset($options['with_time']) || (false !== $options['with_time']))

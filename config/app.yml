@@ -5,28 +5,28 @@ all:
     directories:
       # this directory is used to store the original media
       original:
-        directory:                original
+        directory:                  original
       large:
-        directory:                large
-        width:                    500
-        height:                   500
-        overwrite:                true
+        directory:                  large
+        width:                      500
+        height:                     500
+        overwrite:                  true
       medium:
-        directory:                medium
-        width:                    300
-        height:                   300
-        overwrite:                true
+        directory:                  medium
+        width:                      300
+        height:                     300
+        overwrite:                  true
       small:
-        directory:                small
-        width:                    100
-        height:                   100
-        overwrite:                true
+        directory:                  small
+        width:                      100
+        height:                     100
+        overwrite:                  true
     fs:                             localdisk
-    media_root:                     /media/
+    media_root:                     /media
     media_types:
-      images:                     "*.jpg;*.jpeg;*.png;*.gif;*.bmp"
-      sound:                      "*.aac;*.wma;*.mp3;*.wav"
-      video:                      "*.mpeg;*.mp4;*.m4v;*.mov;*.flv;*.avi;*.mpg"
+      images:                       "*.jpg;*.jpeg;*.png;*.gif;*.bmp"
+      sound:                        "*.aac;*.wma;*.mp3;*.wav"
+      video:                        "*.mpeg;*.mp4;*.m4v;*.mov;*.flv;*.avi;*.mpg"
     metadata_exif:
       - Artist
       - Copyright
@@ -37,7 +37,8 @@ all:
       - ISOSpeedRatings
       - Make
       - Model
-    pdf_max_pages:                  10       #extract max 10 pages from PDF files
+    pdf_max_pages:                  10      # extract max 10 pages from PDF files
+    php_serve_media:                false   # whether or not the media are served by PHP
     thumbnail_types:
       - jpg
       - png
