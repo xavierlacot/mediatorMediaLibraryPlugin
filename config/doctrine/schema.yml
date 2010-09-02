@@ -33,7 +33,6 @@ mmMediaFolder:
 <?php endif ; ?>
     absolute_path:
       fields:            [absolute_path(255)]
-      type: unique
 
 mmMedia:
   columns:
