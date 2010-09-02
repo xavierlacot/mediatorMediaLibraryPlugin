@@ -259,7 +259,7 @@ class baseMediatorMediaLibraryActions extends sfActions
     {
       $this->retrieveFile();
     }
-    catch (Exception $e) { }
+    catch (mediatorFileNotFoundException $e) { }
 
     if ($this->mm_media && ('original' == $size))
     {
@@ -358,7 +358,7 @@ class baseMediatorMediaLibraryActions extends sfActions
 
     if (!$this->mm_media)
     {
-      throw new sfException(sprintf('Could not retrieve this file : "%s".', $requested_path));
+      throw new mediatorFileNotFoundException(sprintf('Could not retrieve this file : "%s".', $requested_path));
     }
   }
 
@@ -375,7 +375,7 @@ class baseMediatorMediaLibraryActions extends sfActions
 
     if (count($this->medias) == 0)
     {
-      throw new sfException(sprintf('Could not retrieve the files %s.', implode(', ', $requested_ids)));
+      throw new mediatorFileNotFoundException(sprintf('Could not retrieve the files %s.', implode(', ', $requested_ids)));
     }
   }
 
@@ -388,11 +388,11 @@ class baseMediatorMediaLibraryActions extends sfActions
     {
       if ('' === $requested_path)
       {
-        throw new sfException('Could not retrieve the root directory. You must first initialize the plugin using the task media:initialize');
+        throw new mediatorFileNotFoundException('Could not retrieve the root directory. You must first initialize the plugin using the task media:initialize');
       }
       else
       {
-        throw new sfException(sprintf('Could not retrieve this directory : "%s".', $requested_path));
+        throw new mediatorFileNotFoundException(sprintf('Could not retrieve this directory : "%s".', $requested_path));
       }
     }
   }
