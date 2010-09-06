@@ -212,6 +212,25 @@ abstract class PluginmmMedia extends BasemmMedia
       $result .= '?time='.strtotime($this->getUpdatedAt());
     }
 
+    $pattern = '~^
+      (%s)://                                 # protocol
+      (
+        ([a-z0-9-]+\.)+[a-z]{2,6}             # a domain name
+          |                                   #  or
+        \d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}    # a IP address
+      )
+      (:[0-9]+)?                              # a port (optional)
+      (/?|/\S+)                               # a /, nothing or a / with something
+    $~ix';
+
+    if (isset($options['absolute'])
+      && (true === $options['absolute'])
+      && !preg_match($pattern, $result))
+    {
+      // prepend with the current domain name
+      $result = sfContext::getInstance()->getRequest()->getUriPrefix().'/'.$result;
+    }
+
     return $result;
   }
 

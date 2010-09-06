@@ -19,17 +19,22 @@ along with VideoJS.  If not, see <http://www.gnu.org/licenses/>.
 var videoJSPlayers = new Array();
 
 // Using jresig's Class implementation http://ejohn.org/blog/simple-javascript-inheritance/
-(function(){var initializing=false, fnTest=/xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/; this.Class = function(){}; Class.extend = function(prop) { var _super = this.prototype; initializing = true; var prototype = new this(); initializing = false; for (var name in prop) { prototype[name] = typeof prop[name] == "function" && typeof _super[name] == "function" && fnTest.test(prop[name]) ? (function(name, fn){ return function() { var tmp = this._super; this._super = _super[name]; var ret = fn.apply(this, arguments); this._super = tmp; return ret; }; })(name, prop[name]) : prop[name]; } function Class() { if ( !initializing && this.init ) this.init.apply(this, arguments); } Class.prototype = prototype; Class.constructor = Class; Class.extend = arguments.callee; return Class;};})();
+(function(){var initializing=false, fnTest=/xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/; this.JRClass = function(){}; JRClass.extend = function(prop) { var _super = this.prototype; initializing = true; var prototype = new this(); initializing = false; for (var name in prop) { prototype[name] = typeof prop[name] == "function" && typeof _super[name] == "function" && fnTest.test(prop[name]) ? (function(name, fn){ return function() { var tmp = this._super; this._super = _super[name]; var ret = fn.apply(this, arguments); this._super = tmp; return ret; }; })(name, prop[name]) : prop[name]; } function JRClass() { if ( !initializing && this.init ) this.init.apply(this, arguments); } JRClass.prototype = prototype; JRClass.constructor = JRClass; JRClass.extend = arguments.callee; return JRClass;};})();
 
 // Video JS Player Class
-var VideoJS = Class.extend({
+var VideoJS = JRClass.extend({
 
   // Initialize the player for the supplied video tag element
   // element: video tag
   // num: the current player's position in the videoJSPlayers array
   init: function(element, setOptions){
 
-    this.video = element;
+    // Allow an ID string or an element
+    if (typeof element == 'string') {
+      this.video = document.getElementById(element);
+    } else {
+      this.video = element;
+    }
 
     // Hide default controls
     this.video.controls = false;
@@ -37,13 +42,17 @@ var VideoJS = Class.extend({
     // Default Options
     this.options = {
       num: 0, // Optional tracking of videoJSPLayers position
-      controlsBelow: false, // Display control bar below video vs. on top
+      controlsBelow: false, // Display control bar below video vs. in front of
       controlsHiding: true, // Hide controls when not over the video
       defaultVolume: 0.85, // Will be overridden by localStorage volume if available
       flashVersion: 9, // Required flash version for fallback
       linksHiding: true // Hide download links when video is supported
     };
-    // Override default options with set options
+
+    // Override default options with global options
+    if (typeof VideoJS.options == "object") _V_.merge(this.options, VideoJS.options);
+
+    // Override global options with options specific to this video
     if (typeof setOptions == "object") _V_.merge(this.options, setOptions);
 
     this.box = this.video.parentNode;
@@ -166,6 +175,7 @@ var VideoJS = Class.extend({
       this.loadSubtitles();
       this.buildSubtitles();
     }
+    
   },
 
   // Support older browsers that used "autobuffer"
@@ -174,6 +184,10 @@ var VideoJS = Class.extend({
       this.video.autobuffer = true;
     }
   },
+
+  // Translate functionality
+  play: function(){ this.video.play(); },
+  pause: function(){ this.video.pause(); },
 
   buildController: function(){
 
@@ -300,6 +314,24 @@ var VideoJS = Class.extend({
     // Make sure the controls are visible
     if (this.controls.style.display == 'none') return;
 
+    // Sometimes the CSS styles haven't been applied to the controls yet
+    // when we're trying to calculate the height and position them correctly.
+    // This causes a flicker where the controls are out of place.
+    // Best way I can think of to test this is to check if the width of all the controls are the same.
+    // If so, hide the controller and delay positioning them briefly.
+    if (this.playControl.offsetWidth == this.progressControl.offsetWidth
+     && this.playControl.offsetWidth == this.timeControl.offsetWidth
+     && this.playControl.offsetWidth == this.volumeControl.offsetWidth) {
+       // Don't want to create an endless loop either.
+       if (!this.positionRetries) this.positionRetries = 1;
+       if (this.positionRetries++ < 100) {
+         this.controls.style.display = "none";
+         setTimeout(this.showController.context(this),0);
+         return;
+       }
+    }
+
+    // Set width based on fullscreen or not.
     if (this.videoIsFullScreen) {
       this.box.style.width = "";
     } else {
@@ -548,16 +580,6 @@ var VideoJS = Class.extend({
 
   // Adjust the width of the progress bar to fill the controls width
   sizeProgressBar: function(){
-    // this.progressControl.style.width =
-    //   this.controls.offsetWidth
-    //   - this.playControl.offsetWidth
-    //   - this.volumeControl.offsetWidth
-    //   - this.timeControl.offsetWidth
-    //   - this.fullscreenControl.offsetWidth
-    //   - (this.getControlsPadding() * 6)
-    //   - this.getControlBorderAdjustment()
-    //   + "px";
-    // this.progressHolder.style.width = (this.progressControl.offsetWidth - (this.timeControl.offsetWidth + 20)) + "px";
     this.updatePlayProgress();
     this.updateLoadProgress();
   },
@@ -636,6 +658,13 @@ var VideoJS = Class.extend({
     }
   },
 
+  // Check if browser can use this flash player
+  flashVersionSupported: function(){
+    return VideoJS.getFlashVersion() >= this.options.flashVersion;
+  },
+
+  /* Fullscreen / Full-window
+  ================================================================================ */
   // Turn on fullscreen (window) mode
   // Real fullscreen isn't available in browsers quite yet.
   fullscreenOn: function(){
@@ -689,11 +718,6 @@ var VideoJS = Class.extend({
     // Resize to original settings
     this.positionController();
     this.positionPoster();
-  },
-
-  // Check if browser can use this flash player
-  flashVersionSupported: function(){
-    return VideoJS.getFlashVersion() >= this.options.flashVersion;
   },
 
   /* Subtitles
@@ -866,41 +890,125 @@ var _V_ = {
 
   getComputedStyleValue: function(element, style){
     return window.getComputedStyle(element, null).getPropertyValue(style);
+  },
+
+  // DOM Ready functionality adapted from jQuery. http://jquery.com/
+  bindDOMReady: function(){
+    if (document.readyState === "complete") {
+      return _V_.DOMReady();
+    }
+    if (document.addEventListener) {
+      document.addEventListener("DOMContentLoaded", _V_.DOMContentLoaded, false);
+      window.addEventListener("load", _V_.DOMReady, false);
+    } else if (document.attachEvent) {
+      document.attachEvent("onreadystatechange", _V_.DOMContentLoaded);
+      window.attachEvent("onload", _V_.DOMReady);
+    }
+  },
+
+  DOMContentLoaded: function(){
+    if (document.addEventListener) {
+      document.removeEventListener( "DOMContentLoaded", _V_.DOMContentLoaded, false);
+      _V_.DOMReady();
+    } else if ( document.attachEvent ) {
+      if ( document.readyState === "complete" ) {
+        document.detachEvent("onreadystatechange", _V_.DOMContentLoaded);
+        _V_.DOMReady();
+      }
+    }
+  },
+
+  // Functions to be run once the DOM is loaded
+  DOMReadyList: [],
+  addToDOMReady: function(fn){
+    if (_V_.DOMIsReady) {
+      fn.call(document)
+    } else {
+      _V_.DOMReadyList.push(fn);
+    }
+  },
+
+  DOMIsReady: false,
+  DOMReady: function(){
+    if (_V_.DOMIsReady) return;
+    if (!document.body) { return setTimeout(_V_.DOMReady, 13); }
+    _V_.DOMIsReady = true;
+    if (_V_.DOMReadyList) {
+      for (var i=0; i<_V_.DOMReadyList.length; i++) {
+
+        _V_.DOMReadyList[i].call(document)
+      }
+      _V_.DOMReadyList = null;
+    }
   }
+
 }
+_V_.bindDOMReady();
 
 ////////////////////////////////////////////////////////////////////////////////
 // Class Methods
 // Functions that don't apply to individual videos.
 ////////////////////////////////////////////////////////////////////////////////
 
-// Add video-js to any video tag with the class
-// Typically used when page is loaded.
-VideoJS.setup = function(options){
-  var elements = document.getElementsByTagName("video");
-  for (var i=0,j=elements.length; i<j; i++) {
-    videoTag = elements[i];
-    if (videoTag.className.indexOf("video-js") != -1) {
-      options = (options) ? _V_.merge(options, { num: i }) : options;
-      videoJSPlayers[i] = new VideoJS(videoTag, options);
-    }
-  }
+// Add VideoJS to all video tags with the video-js class when the DOM is ready
+VideoJS.setupAllWhenReady = function(options){
+  // Options is stored globally, and added ot any new player on init
+  VideoJS.options = options;
+  VideoJS.DOMReady(VideoJS.setup);
 }
 
-// Add video-js to the video tag or array of video tags (or IDs) passed in.
-// Typically used when videos are being added to a page dynamically.
-VideoJS.addVideos = function(videos, options) {
-  videos = videos instanceof Array ? videos : [videos];
-  var videoTag;
+// Run the supplied function when the DOM is ready
+VideoJS.DOMReady = function(fn){
+  _V_.addToDOMReady(fn);
+}
+
+// Set up a specific video or array of video elements
+// "video" can be:
+//    false, undefined, or "All": set up all videos with the video-js class
+//    A video tag ID or video tag element: set up one video and return one player
+//    An array of video tag elements/IDs: set up each and return an array of players
+VideoJS.setup = function(videos, options){
+
+  var returnSingular = false,
+  playerList = [];
+
+  // If videos is undefined or "All", set up all videos with the video-js class
+  if (!videos || videos == "All") {
+    videos = VideoJS.getVideoJSTags();
+
+  // If videos is not an array, add to an array
+  } else if (typeof videos != 'object') {
+    videos = [videos];
+    returnSingular = true;
+  }
+
+  // Loop through videos and create players for them
   for (var i=0; i<videos.length; i++) {
     if (typeof videos[i] == 'string') {
-      videoTag = document.getElementById(videos[i]);
+      videoElement = document.getElementById(videos[i]);
     } else { // assume DOM object
-      videoTag = videos[i];
+      videoElement = videos[i];
     }
-    options = (options) ? _V_.merge(options, { num: videoJSPlayers.length }) : options;
-    videoJSPlayers.push(new VideoJS(videoTag, options));
+    playerList.push(new VideoJS(videoElement, options));
   }
+
+  // Return one or all depending on what was passed in
+  return (returnSingular) ? playerList[0] : playerList;
+}
+
+// Find video tags with the video-js class
+VideoJS.getVideoJSTags = function() {
+  var videoTags = document.getElementsByTagName("video"),
+  videoJSTags = [];
+
+  for (var i=0,j=videoTags.length; i<j; i++) {
+    videoTag = videoTags[i];
+    if (videoTag.className.indexOf("video-js") != -1) {
+      videoJSTags.push(videoTag);
+    }
+  }
+
+  return videoJSTags;
 }
 
 // Check if the browser supports video.

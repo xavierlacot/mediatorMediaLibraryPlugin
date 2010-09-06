@@ -19,5 +19,5 @@ listSuccess:
   javascripts:   [/mediatorMediaLibraryPlugin/js/jquery.pageslider.js]
 
 viewSuccess:
-  stylesheets:   [/sfFormExtraPlugin/css/jquery.autocompleter.css]
-  javascripts:   [/mediatorMediaLibraryPlugin/js/jquery.pageslider.js]
+  stylesheets:   [/sfFormExtraPlugin/css/jquery.autocompleter.css, /mediatorMediaLibraryPlugin/css/video-js.css]
+  javascripts:   [/mediatorMediaLibraryPlugin/js/jquery.pageslider.js, /mediatorMediaLibraryPlugin/js/video.js]
