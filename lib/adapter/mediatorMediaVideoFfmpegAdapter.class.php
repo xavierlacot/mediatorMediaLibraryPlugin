@@ -58,12 +58,18 @@ class mediatorMediaVideoFfmpegAdapter extends mediatorMediaAdapter
 
   public function extractFrame($maxWidth = null, $maxHeight = null, $options = array())
   {
+    $frame = false;
     $frame_number = 1 + floor($this->getMovie()->getFrameCount() / 2);
-    $frame = $this->getMovie()->getFrame($frame_number);
+
+    while (!$frame && $frame_number > 0)
+    {
+      $frame = $this->getMovie()->getFrame($frame_number);
+      $frame_number = floor($frame_number / 2);
+    }
 
     if (!$frame)
     {
-      throw new sfException(sprintf('Could not extract frame number %s.', $frame_number));
+      throw new sfException('Could not extract any frame from this video.');
     }
 
     $scale = isset($options['scale']) ? $options['scale'] : true;
