@@ -29,12 +29,24 @@ class mediatorMediaVideoFfmpegAdapter extends mediatorMediaAdapter
 
   public function reEncode($format)
   {
+    $ffmpeg_options = array(
+      'mp4' => '-acodec aac -strict experimental',
+      'ogg' => '-acodec libvorbis -ar 22050 -ab 48k',
+    );
+
+    if (!isset($ffmpeg_options[$format]))
+    {
+      throw new sfException('The video adapter can not reencode in this format!');
+    }
+
     // encode localy
     $tempFile = tempnam('/tmp', 'mediatorMediaLibraryPlugin').'.'.$format;
+
     $command = sprintf(
-      '%s -i %s -ar 22050 -s 320x240 %s',
+      '%s -i %s -s 384x288 -b 300k %s %s',
       $this->commands['ffmpeg'],
       escapeshellarg($this->cache_file),
+      $ffmpeg_options[$format],
       $tempFile
     );
 
