@@ -15,6 +15,7 @@ class mediatorMediaLibraryInflector extends sfInflector
     $text = str_replace(array('É', 'È', 'Ê', 'Ë', 'é', 'è', 'ê', 'ë'), 'e', $text);
     $text = str_replace(array('Î', 'Ï', 'î', 'ï'), 'i', $text);
     $text = str_replace(array('Ô', 'ô'), 'o', $text);
+    $text = str_replace('œ', 'oe', $text);
     $text = str_replace(array('Ù', 'Û', 'ù', 'û'), 'u', $text);
     $text = str_replace(array('Ç', 'ç'), 'c', $text);
 
