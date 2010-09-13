@@ -223,7 +223,7 @@ abstract class PluginmmMediaFolder extends BasemmMediaFolder
         // check that the absolute path is unique
         if (Doctrine::getTable('mmMediaFolder')->findOneByAbsolutePath($parent_path.$this->getFolderPath()))
         {
-          throw new sfException('This path is already taken!');
+          throw new sfException(sprintf('This path "%s" is already taken!', $parent_path.$this->getFolderPath()));
         }
 
         $this->setAbsolutePath($parent_path.$this->getFolderPath());
