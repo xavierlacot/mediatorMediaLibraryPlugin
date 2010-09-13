@@ -207,6 +207,7 @@ abstract class PluginmmMediaFolder extends BasemmMediaFolder
         $this->setFolderPath(Doctrine::getTable('mmMediaFolder')->generateFolderName($this->getName()));
       }
 
+
       if (!sfConfig::get('app_mediatorMediaLibraryPlugin_use_nested_set', false) && $this->parent_id)
       {
         // ensure the absolute path is coherent with the parent and the folder_path
@@ -218,6 +219,13 @@ abstract class PluginmmMediaFolder extends BasemmMediaFolder
         }
 
         $parent_path = ('' != $parent->getAbsolutePath()) ? $parent->getAbsolutePath().DIRECTORY_SEPARATOR : '';
+
+        // check that the absolute path is unique
+        if (Doctrine::getTable('mmMediaFolder')->findOneByAbsolutePath($parent_path.$this->getFolderPath()))
+        {
+          throw new sfException('This path is already taken!');
+        }
+
         $this->setAbsolutePath($parent_path.$this->getFolderPath());
 
         // create the filesystem
