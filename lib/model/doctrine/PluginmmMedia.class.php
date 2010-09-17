@@ -77,7 +77,7 @@ abstract class PluginmmMedia extends BasemmMedia
       $mediator_media->delete();
     }
 
-    parent::delete($conn);
+    return parent::delete($conn);
   }
 
   public function getAbsoluteFilename($mm_media_folder = null)
@@ -236,7 +236,14 @@ abstract class PluginmmMedia extends BasemmMedia
 
   protected function log($message)
   {
-    sfContext::getInstance()->getLogger()->log('{mmMedia}'.$message);
+    try
+    {
+      sfContext::getInstance()->getLogger()->log('{mmMedia}'.$message);
+    }
+    catch (Exception $e)
+    {
+      // nothing
+    }
   }
 
   public function hasMetadata($name)
