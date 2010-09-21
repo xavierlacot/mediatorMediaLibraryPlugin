@@ -327,22 +327,46 @@ class baseMediatorMediaLibraryActions extends sfActions
     }
   }
 
+  /**
+   * Return a json array with the most popular tags
+   *
+   * @param sfWebRequest $request
+   * @return json
+   */
   public function executeTagAutocomplete(sfWebRequest $request)
   {
-    $this->getResponse()->setContentType('application/json');
     $tags_array = array();
-    $tags = TagTable::getPopulars(null,
-              array(
-                'like' => '%'.$request->getParameter('q').'%',
-                'limit' => $request->getParameter('limit'),
-              ));
-    arsort($tags);
+    $tags = $this->retrievePopularTags($request);
 
     foreach ($tags as $name => $weight)
     {
       $tags_array[$name] = $name;
     }
 
+    $this->getResponse()->setContentType('application/json');
+    return $this->renderText(json_encode($tags_array));
+  }
+
+  /**
+   * Return a json array with the most popular tags, formatted in an other way
+   *
+   * @param sfWebRequest $request
+   * @return json
+   */
+  public function executeTagAutosuggest(sfWebRequest $request)
+  {
+    $tags_array = array();
+    $tags = $this->retrievePopularTags($request);
+
+    foreach ($tags as $name => $weight)
+    {
+      $tags_array[] = array(
+        'value' => $name,
+        'name' => $name,
+      );
+    }
+
+    $this->getResponse()->setContentType('application/json');
     return $this->renderText(json_encode($tags_array));
   }
 
@@ -395,5 +419,18 @@ class baseMediatorMediaLibraryActions extends sfActions
         throw new mediatorFileNotFoundException(sprintf('Could not retrieve this directory : "%s".', $requested_path));
       }
     }
+  }
+
+  protected function retrievePopularTags(sfWebRequest $request)
+  {
+    $tags = TagTable::getPopulars(
+      null,
+      array(
+        'like'  => '%'.$request->getParameter('q').'%',
+        'limit' => $request->getParameter('limit', 10),
+      )
+    );
+    arsort($tags);
+    return $tags;
   }
 }
