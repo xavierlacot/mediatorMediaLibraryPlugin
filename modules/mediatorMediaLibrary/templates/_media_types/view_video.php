@@ -1,6 +1,5 @@
 <?php if (!isset($size) || 'original' == $size): ?>
   <?php $poster = $mm_media->getUrl(array('extension' => '.jpg')); ?>
-  <?php $sf_response->addJavascript(''); ?>
 
   <div class="video-js-box">
     <video id="video-js-<?php echo $mm_media->getId() ?>" class="video-js" width="<?php echo $mm_media->getWidth() ?>" height="<?php echo $mm_media->getHeight() ?>" poster="<?php echo $poster ?>" controls preload>
