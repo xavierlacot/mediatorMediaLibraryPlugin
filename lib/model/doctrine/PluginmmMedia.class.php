@@ -377,7 +377,6 @@ abstract class PluginmmMedia extends BasemmMedia
       $this->setMimeType($this->mediatorMedia->getMimeType());
       $type = $this->mediatorMedia->getType();
       $this->setType($type);
-      $thumbnail_name = $this->mediatorMedia->process();
       $this->setMd5sum(md5_file($this->mediatorMedia->cache()));
       $this->setFilesize(filesize($this->mediatorMedia->cache()));
 
@@ -398,13 +397,17 @@ abstract class PluginmmMedia extends BasemmMedia
 
       $this->setMetadatas($metadatas);
 
-      if (false !== $thumbnail_name)
+      if (false === sfConfig::get('app_mediatorMediaLibraryPlugin_asynchronous', false))
       {
-        $this->setThumbnailFilename($thumbnail_name);
+        $thumbnail_name = $this->mediatorMedia->process();
+
+        if (false !== $thumbnail_name)
+        {
+          $this->setThumbnailFilename($thumbnail_name);
+        }
       }
 
       unset($array['source']);
-
       $this->setFilename($filename);
       $this->setTitle($filename);
     }

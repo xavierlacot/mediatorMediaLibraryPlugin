@@ -1,5 +1,5 @@
 <?php
-class mediatorMediaLibraryGenerateVariationsTask extends sfBaseTask
+class mediatorMediaLibraryAsynchronousVariationsTask extends sfBaseTask
 {
   /**
    * @see sfTask
@@ -15,13 +15,13 @@ class mediatorMediaLibraryGenerateVariationsTask extends sfBaseTask
     ));
 
     $this->namespace = 'media';
-    $this->name = 'generate';
-    $this->briefDescription = 'Generates the variations of all the media included in the media library';
+    $this->name = 'asynchronous-variations';
+    $this->briefDescription = 'Generates the variations of all the media newly uploaded in the media library';
 
     $this->detailedDescription = <<<EOF
-The [media:generate|INFO] generates the variations of all the media included in the media library:
+The [media:asynchronous-variations|INFO] generates the variations of all the media newly uploaded in the media library:
 
-  [./symfony media:generate|INFO]
+  [./symfony media:asynchronous-variations|INFO]
 
 EOF;
   }
@@ -51,41 +51,20 @@ EOF;
 
     $sizes = mediatorMediaLibraryToolkit::getAvailableSizes();
 
-    // retrieve the mmMediaFolders
-    $q = Doctrine_Query::create()
-      ->select('f.*')
-      ->from('mm_media_folder f');
-    $media_folders = $q->execute();
-
-    foreach ($sizes as $size => $params)
-    {
-      if (!isset($params['directory']))
-      {
-        throw new sfException(sprintf('Could not create directory for size %s', $size));
-      }
-
-      if (!$filesystem->exists($params['directory']))
-      {
-        $filesystem->mkdir($params['directory']);
-
-        // also create all the subfolders
-        foreach ($media_folders as $media_folder)
-        {
-          $path = $media_folder->getAbsolutePath();
-
-          if (!$filesystem->exists($params['directory'].DIRECTORY_SEPARATOR.$path))
-          {
-            $filesystem->mkdir($params['directory'].DIRECTORY_SEPARATOR.$path);
-          }
-        }
-      }
-    }
-
     // retrieve the mmMedia
     $q = Doctrine_Query::create()
       ->select('m.*')
-      ->from('mm_media m');
+      ->from('mmMedia m')
+      ->where('m.thumbnail_filename IS NULL');
     $medias = $q->execute();
+
+    // mark them as pending
+    $q = Doctrine_Query::create()
+      ->update('mmMedia m')
+      ->set('m.thumbnail_filename', '""')
+      ->where('m.thumbnail_filename IS NULL')
+      ->execute();
+
     $total = count($medias);
 
     foreach ($medias as $key => $media)

@@ -1,5 +1,6 @@
 all:
   mediatorMediaLibraryPlugin:
+    asynchronous:                   false
     default_adapters:
       mediatorMediaImageHandler:    mediatorMediaImageImageMagickAdapter
     directories:
