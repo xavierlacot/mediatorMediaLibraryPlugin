@@ -111,7 +111,8 @@ class mediatorMediaVideoHandler extends mediatorMediaHandler
       '%s.mp4',
       $sizes['original']['directory'].DIRECTORY_SEPARATOR.$this->file
     );
-    $this->filesystem->write($filename, $image);
+    $this->filesystem->write($filename, fopen($image, 'r'));
+    unlink($image);
 
     // and a ogg one
     $image = $this->getAdapter()->reEncode('ogg');
