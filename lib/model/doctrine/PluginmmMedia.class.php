@@ -123,6 +123,7 @@ abstract class PluginmmMedia extends BasemmMedia
     $display_options['mm_media'] = $this;
     $display_options['html_options'] = $options;
     $partial = 'mediatorMediaLibrary/media_types/view'.(('' != $this->getType()) ? '_'.$this->getType() : '');
+    sfContext::getInstance()->getConfiguration()->loadHelpers(array('Partial'));
 
     try
     {

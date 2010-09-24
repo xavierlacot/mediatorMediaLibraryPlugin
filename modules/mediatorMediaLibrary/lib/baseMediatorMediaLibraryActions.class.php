@@ -370,6 +370,24 @@ class baseMediatorMediaLibraryActions extends sfActions
     return $this->renderText(json_encode($tags_array));
   }
 
+  public function executeVariations(sfWebRequest $request)
+  {
+    $this->retrieveFiles();
+    $result = array();
+
+    foreach ($this->medias as $media)
+    {
+      if ('' != $media->getThumbnailFilename())
+      {
+
+        $result[$media->getId()] = $media->getDisplay(array('size' => 'medium'));
+      }
+    }
+
+    $this->renderText(json_encode($result));
+    return sfView::NONE;
+  }
+
   public function executeView(sfWebRequest $request)
   {
     $this->retrieveFile();

@@ -70,7 +70,14 @@ EOF;
     foreach ($medias as $key => $media)
     {
       $this->log(sprintf('%s, %s (%s on %s)', memory_get_usage(), $media->getFilename(), $key + 1, $total));
-      $media->getMediatorMedia()->process();
+      $thumbnail_name = $media->getMediatorMedia()->process();
+
+      if (false !== $thumbnail_name)
+      {
+        $media->setThumbnailFilename($thumbnail_name);
+        $media->save();
+      }
+
       $media->__destruct();
       unset($media);
     }

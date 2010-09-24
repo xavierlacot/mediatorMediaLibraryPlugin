@@ -56,6 +56,9 @@ $(document).ready(function() {
         hash_keys.push(r);
         return true;
       },
+      'onError': function (e, q, f, r) {
+        alert(r.type + ' : ' + r.info);
+      },
       'onAllComplete':  function(e, d) {
         if (d.errors > 0) {
           $('#mediator-media-add form input').hide();

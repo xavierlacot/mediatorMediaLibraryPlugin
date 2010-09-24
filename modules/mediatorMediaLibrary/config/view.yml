@@ -18,6 +18,11 @@ editSuccess:
 listSuccess:
   javascripts:   [/mediatorMediaLibraryPlugin/js/jquery.pageslider.js]
 
+variationsSuccess:
+  has_layout:    false
+  http_metas:
+    content-type: text/json
+
 viewSuccess:
   stylesheets:   [/sfFormExtraPlugin/css/jquery.autocompleter.css, /mediatorMediaLibraryPlugin/css/video-js.css]
   javascripts:   [/mediatorMediaLibraryPlugin/js/jquery.pageslider.js, /mediatorMediaLibraryPlugin/js/video.js]

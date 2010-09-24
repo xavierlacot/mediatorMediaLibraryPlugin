@@ -28,7 +28,7 @@
       }
 
       jQuery.post(
-        '<?php echo sfContext::getInstance()->getController()->genUrl('mediatorMediaLibrary/deleteTag') ?>',
+        '<?php echo url_for('mediatorMediaLibrary/deleteTag') ?>',
         {'tagging[]':['<?php echo $mm_media->getRawValue()->getId() ?>', value]},
         function(data) {
           jQuery('#mediator_media_library_tags').html(data);

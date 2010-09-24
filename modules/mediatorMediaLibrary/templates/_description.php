@@ -57,6 +57,27 @@
               { minChars: 2, matchCase: true, retrieveLimit: 10, startText: "" },
               ""
             );
+
+            <?php if (true === sfConfig::get('app_mediatorMediaLibraryPlugin_asynchronous', false)): ?>
+              // if asynchronous, check when files are ready
+                var loadVariations = setInterval(function() {
+                  $.getJSON(
+                    '<?php echo url_for('@mediatorMediaLibrary_variations?media_ids='.$uuids)?>?randval='+ Math.random(),
+                    function(data) {
+                      $.each(data, function(i, item){
+                        $("#sf_admin_form_row_preview_" + i).html(item);
+                      });
+
+                      if (<?php echo count(explode(',', $uuids)) ?> <= data.length + 1) {
+                        // completed all the variations, can stop ajax calls
+                        clearInterval(loadVariations);
+                      }
+                    });
+                  },
+                  // every 5s.
+                  5000
+                );
+            <?php endif; ?>
           });
         </script>
       </div>
@@ -68,7 +89,7 @@
     <?php if (0 === strpos($name, 'media_')): ?>
       <div class="media_description_form">
         <div class="sf_admin_form_row sf_admin_text sf_admin_form_row_preview">
-          <div>
+          <div id="sf_admin_form_row_preview_<?php echo substr($name, 6) ?>">
             <?php echo $form->getObject(substr($name, 6))->getDisplay(array('size' => 'medium')) ?>
           </div>
         </div>
