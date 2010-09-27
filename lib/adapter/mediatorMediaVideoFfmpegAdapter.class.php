@@ -41,11 +41,14 @@ class mediatorMediaVideoFfmpegAdapter extends mediatorMediaAdapter
 
     // encode localy
     $tempFile = tempnam('/tmp', 'mediatorMediaLibraryPlugin').'.'.$format;
+    $size = $this->getVariationSize();
 
     $command = sprintf(
-      '%s -i %s -s 384x288 -b 300k %s %s',
+      '%s -i %s -s %sx%s -b 300k %s %s',
       $this->commands['ffmpeg'],
       escapeshellarg($this->cache_file),
+      $size['width'],
+      $size['height'],
       $ffmpeg_options[$format],
       $tempFile
     );
@@ -219,6 +222,30 @@ class mediatorMediaVideoFfmpegAdapter extends mediatorMediaAdapter
   public function getHeight()
   {
     return $this->sourceHeight;
+  }
+
+  /**
+   * Computes the variation size so that the video is not distorted
+   * The size and height must me multiples of 16 (ffmpeg constraint)
+   *
+   * @return array   an array of dimensions
+   */
+  protected function getVariationSize()
+  {
+    $width = 384;
+    $height = 288;
+    $original_width = $this->getWidth();
+    $original_height = $this->getHeight();
+
+    if ($original_width > 0 && $original_height > 0)
+    {
+      $height = 16 * round($width * $this->getHeight() / (16 * $this->getWidth()));
+    }
+
+    return array(
+      'width'  => $width,
+      'height' => $height,
+    );
   }
 
   public function getWidth()

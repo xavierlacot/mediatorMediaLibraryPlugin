@@ -121,7 +121,8 @@ class mediatorMediaVideoHandler extends mediatorMediaHandler
       '%s.ogg',
       $sizes['original']['directory'].DIRECTORY_SEPARATOR.$this->file
     );
-    $this->filesystem->write($filename, $image);
+    $this->filesystem->write($filename, fopen($image, 'r'));
+    unlink($image);
 
     return basename($this->file);
   }
