@@ -267,6 +267,7 @@ class baseMediatorMediaLibraryActions extends sfActions
       header('Cache-Control: public');
       header('Content-Disposition: attachment; filename="'.$this->mm_media->getFilename().'"');
       header('Content-Type: '.$this->mm_media->getMimeType());
+      header('Content-Length: '.$this->mm_media->getFilesize());
       readfile($this->mm_media->getMediatorMedia()->cache());
     }
     else
@@ -284,6 +285,7 @@ class baseMediatorMediaLibraryActions extends sfActions
 
         header('Content-Type: video/ogg');
         header('Content-Disposition: attachment; filename="'.$pathinfo['basename'].'"');
+        header('Content-Length: '.$fs->getSize($path));
         echo $fs->read($path);
       }
       else
