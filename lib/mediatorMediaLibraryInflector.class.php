@@ -2,7 +2,20 @@
 class mediatorMediaLibraryInflector extends sfInflector
 {
   /**
-   * Strip some chars from given text
+   * Strip some chars from given text (#, quotes, etc.)
+   *
+   * @param  string  $text       text to be transformed to a url-valid string
+   * @return string              url-valid string
+   */
+  public static function cleanFilename($filename)
+  {
+    $filename = str_replace(array('#', '"', '\''), '', $filename);
+    return $filename;
+  }
+
+  /**
+   * Strip some chars from given text, in order to create a url slug
+   *
    * @param  string  $text       text to be transformed to a url-like string
    * @param  string  $separator  default '-'
    * @return string              url-like string

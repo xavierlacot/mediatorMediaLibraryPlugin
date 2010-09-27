@@ -360,13 +360,15 @@ abstract class PluginmmMedia extends BasemmMedia
 
     if (isset($array['filename']))
     {
-      $filename = $array['filename'];
+      $filename = mediatorMediaLibraryInflector::cleanFilename($array['filename']);
+      unset($array['filename']);
       $this->log(sprintf('The media will be created or updated in "%s"', $mm_media_folder_path.$filename));
       $this->mediatorMedia = new mediatorMedia($mm_media_folder_path.$filename);
 
       if (isset($array['source']))
       {
         $source = $array['source'];
+        unset($array['source']);
 
         if (!isset($array['filesystem_existing']) || (true !== $array['filesystem_existing']))
         {
@@ -408,7 +410,6 @@ abstract class PluginmmMedia extends BasemmMedia
         }
       }
 
-      unset($array['source']);
       $this->setFilename($filename);
       $this->setTitle($filename);
     }
