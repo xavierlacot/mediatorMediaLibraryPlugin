@@ -121,6 +121,7 @@ class mediatorWidgetFormMediaSelect extends sfWidgetFormInput
   {
     return array(
       '/mediatorMediaLibraryPlugin/js/jquery.uploadify/uploadify.css' => 'all',
+      '/mediatorMediaLibraryPlugin/css/facebox.css' => 'all',
       '/mediatorMediaLibraryPlugin/css/autoSuggest.css' => 'all',
       '/mediatorMediaLibraryPlugin/css/mediatorMediaLibrary.css' => 'all',
     );
