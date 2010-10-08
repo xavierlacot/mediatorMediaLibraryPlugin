@@ -69,15 +69,18 @@ abstract class PluginmmMediaForm extends BasemmMediaForm
   public function getJavaScripts()
   {
     return array(
-      '/mediatorMediaLibraryPlugin/js/jquery.uploadify/swfobject.js',
-      '/mediatorMediaLibraryPlugin/js/jquery.uploadify/jquery.uploadify.v2.1.0.min.js',
+      '/mediatorMediaLibraryPlugin/js/mootools.js',
+      '/mediatorMediaLibraryPlugin/js/fancyupload/Swiff.Uploader.js',
+      '/mediatorMediaLibraryPlugin/js/fancyupload/Fx.ProgressBar.js',
+      '/mediatorMediaLibraryPlugin/js/mootools.Lang.js',
+      '/mediatorMediaLibraryPlugin/js/fancyupload/FancyUpload2.js'
     );
   }
 
   public function getStylesheets()
   {
     return array(
-      '/mediatorMediaLibraryPlugin/js/jquery.uploadify/uploadify.css' => 'all',
+      '/mediatorMediaLibraryPlugin/css/fancyupload.css' => 'all',
     );
   }
 }

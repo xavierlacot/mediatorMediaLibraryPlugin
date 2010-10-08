@@ -1,0 +1,93 @@
+/**
+ * FancyUpload Showcase
+ *
+ * @license   MIT License
+ * @author    Harald Kirschner <mail [at] digitarald [dot] de>
+ * @copyright Authors
+ */
+
+/* CSS vs. Adblock tabs */
+.swiff-uploader-box a {
+  display: none !important;
+}
+
+#mediator-uploader {
+  padding: 10px 15px;
+  width: 420px;
+  border: 1px solid #eee;
+}
+
+#mediator-uploader .progress {
+  background: url(../images/fancyupload/assets/progress-bar/progress.gif) no-repeat;
+  background-position: +50% 0;
+  margin-right: 0.5em;
+  vertical-align: middle;
+}
+
+#mediator-uploader .progress-text {
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+#mediator-uploader-file-list {
+  list-style: none;
+  width: 450px;
+  margin: 0;
+}
+
+#mediator-uploader-file-list li.validation-error {
+  padding-left: 44px;
+  display: block;
+  clear: left;
+  line-height: 40px;
+  color: #8a1f11;
+  cursor: pointer;
+  border-bottom: 1px solid #fbc2c4;
+  background: #fbe3e4 url(../images/fancyupload/assets/failed.png) no-repeat 4px 4px;
+}
+
+#mediator-uploader-file-list li.file {
+  border-bottom: 1px solid #eee;
+  background: url(../images/fancyupload/assets/file.png) no-repeat 4px 4px;
+  overflow: auto;
+}
+#mediator-uploader-file-list li.file.file-uploading {
+  background-image: url(../images/fancyupload/assets/uploading.png);
+  background-color: #D9DDE9;
+}
+#mediator-uploader-file-list li.file.file-success {
+  background-image: url(../images/fancyupload/assets/success.png);
+}
+#mediator-uploader-file-list li.file.file-failed {
+  background-image: url(../images/fancyupload/assets/failed.png);
+}
+
+#mediator-uploader-file-list li.file .file-name {
+  font-size: 1.2em;
+  margin-left: 44px;
+  display: block;
+  clear: left;
+  line-height: 40px;
+  height: 40px;
+  font-weight: bold;
+}
+#mediator-uploader-file-list li.file .file-size {
+  font-size: 0.9em;
+  line-height: 18px;
+  float: right;
+  margin-top: 2px;
+  margin-right: 6px;
+}
+#mediator-uploader-file-list li.file .file-info {
+  display: block;
+  margin-left: 44px;
+  font-size: 0.9em;
+  line-height: 20px;
+  clear
+}
+#mediator-uploader-file-list li.file .file-remove {
+  clear: right;
+  float: right;
+  line-height: 18px;
+  margin-right: 6px;
+}
