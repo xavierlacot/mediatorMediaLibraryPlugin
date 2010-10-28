@@ -17,7 +17,7 @@
     <div id="sf_admin_container" class="mediator-media-library">
       <?php include_partial('mediatorMediaLibrary/flash'); ?>
 
-      <div id="tabs">
+      <div id="mediator-media-tabs">
         <ul>
           <li><a href="#mediator-media-browse"><?php echo __('Browse') ?></a></li>
           <li><a href="#mediator-media-search"><?php echo __('Search') ?></a></li>
@@ -42,8 +42,8 @@
     </div>
 
     <script type="text/javascript">
-      $(document).ready(function() {
-    		$("#tabs").tabs();
+      jQuery(document).ready(function() {
+    		jQuery("#mediator-media-tabs").tabs();
       });
     </script>
   </body>
