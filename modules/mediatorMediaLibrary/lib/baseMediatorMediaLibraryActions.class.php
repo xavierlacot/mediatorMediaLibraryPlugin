@@ -426,7 +426,18 @@ class baseMediatorMediaLibraryActions extends sfActions
   protected function retrieveFolder(sfWebRequest $request)
   {
     $requested_path = $request->getParameter('path', '');
+
+    if ($requested_path === '' && $this->getUser()->hasAttribute('lastpath') && $this->hasRequestParameter('getoldpath'))
+    {
+      $requested_path = $this->getUser()->getAttribute('lastpath', '');
+    }
+
     $this->mm_media_folder = Doctrine::getTable('mmMediaFolder')->findOneByAbsolutePath($requested_path);
+
+    if (!$this->mm_media_folder)
+    {
+      $this->mm_media_folder = Doctrine::getTable('mmMediaFolder')->findOneByAbsolutePath('');
+    }
 
     if (!$this->mm_media_folder)
     {
@@ -439,6 +450,8 @@ class baseMediatorMediaLibraryActions extends sfActions
         throw new mediatorFileNotFoundException(sprintf('Could not retrieve this directory : "%s".', $requested_path));
       }
     }
+
+    $this->getUser()->setAttribute('lastpath', $requested_path);
   }
 
   protected function retrievePopularTags(sfWebRequest $request)

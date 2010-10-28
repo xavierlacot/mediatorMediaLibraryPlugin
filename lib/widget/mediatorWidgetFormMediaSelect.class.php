@@ -58,7 +58,7 @@ class mediatorWidgetFormMediaSelect extends sfWidgetFormInput
     // Media selection link
     $choose_link = link_to(
       sfContext::getInstance()->getI18N()->__('Choose'),
-      'mediatorMediaLibrary/choose?path='.$this->getOption('path'),
+      sprintf('mediatorMediaLibrary/choose?path=%s&fieldname=%s&getoldpath=true', $this->getOption('path'), $id),
       array(
         'rel' => 'media_lib_facebox',
         'id' => $id.'_link',
@@ -69,7 +69,7 @@ class mediatorWidgetFormMediaSelect extends sfWidgetFormInput
     // Media edit link
     $edit_link = link_to(
       sfContext::getInstance()->getI18N()->__('Replace'),
-      'mediatorMediaLibrary/choose?path='.$this->getOption('path'),
+      sprintf('mediatorMediaLibrary/choose?path=%s&fieldname=%s&getoldpath=true', $this->getOption('path'), $id),
       array(
         'rel' => 'media_lib_facebox',
         'id' => $id.'_link',
