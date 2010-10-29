@@ -280,10 +280,8 @@ class baseMediatorMediaLibraryActions extends sfActions
       {
         header('Cache-Control: public');
         $pathinfo = pathinfo($path);
-
         $mimeType = mediatorMedia::getMimeTypeFromFileExtension($pathinfo['extension']);
-
-        header('Content-Type: video/ogg');
+        header('Content-Type: '.$mimeType);
         header('Content-Disposition: attachment; filename="'.$pathinfo['basename'].'"');
         header('Content-Length: '.$fs->getSize($path));
         echo $fs->read($path);
