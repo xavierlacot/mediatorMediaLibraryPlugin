@@ -57,22 +57,27 @@ class mediatorMediaVideoHandler extends mediatorMediaHandler
     ));
   }
 
-  public function moveTo($absolute_path, $sizes)
+  public function moveTo($absolute_path, $sizes, $new_filename = null)
   {
+    if (null == $new_filename)
+    {
+      $new_filename = basename($this->file);
+    }
+
     // move the original, along with the ogg and mp4 formats
     if (isset($sizes['original']))
     {
       $this->filesystem->rename(
         $sizes['original']['directory'].DIRECTORY_SEPARATOR.$this->file,
-        $sizes['original']['directory'].DIRECTORY_SEPARATOR.$absolute_path.DIRECTORY_SEPARATOR.basename($this->file)
+        $sizes['original']['directory'].DIRECTORY_SEPARATOR.$absolute_path.DIRECTORY_SEPARATOR.$new_filename
       );
       $this->filesystem->rename(
         $sizes['original']['directory'].DIRECTORY_SEPARATOR.$this->file.'.ogg',
-        $sizes['original']['directory'].DIRECTORY_SEPARATOR.$absolute_path.DIRECTORY_SEPARATOR.basename($this->file).'.ogg'
+        $sizes['original']['directory'].DIRECTORY_SEPARATOR.$absolute_path.DIRECTORY_SEPARATOR.$new_filename.'.ogg'
       );
       $this->filesystem->rename(
         $sizes['original']['directory'].DIRECTORY_SEPARATOR.$this->file.'.mp4',
-        $sizes['original']['directory'].DIRECTORY_SEPARATOR.$absolute_path.DIRECTORY_SEPARATOR.basename($this->file).'.mp4'
+        $sizes['original']['directory'].DIRECTORY_SEPARATOR.$absolute_path.DIRECTORY_SEPARATOR.$new_filename.'.mp4'
       );
     }
 
@@ -81,7 +86,7 @@ class mediatorMediaVideoHandler extends mediatorMediaHandler
     {
       $this->filesystem->rename(
         $size['directory'].DIRECTORY_SEPARATOR.$this->file.'.jpg',
-        $size['directory'].DIRECTORY_SEPARATOR.$absolute_path.DIRECTORY_SEPARATOR.basename($this->file).'.jpg'
+        $size['directory'].DIRECTORY_SEPARATOR.$absolute_path.DIRECTORY_SEPARATOR.$new_filename.'.jpg'
       );
     }
   }

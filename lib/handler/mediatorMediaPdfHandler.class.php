@@ -59,8 +59,13 @@ class mediatorMediaPdfHandler extends mediatorMediaHandler
     return array('pages_count' => $this->getAdapter()->getPagesCount());
   }
 
-  public function moveTo($absolute_path, $sizes)
+  public function moveTo($absolute_path, $sizes, $new_filename = null)
   {
+    if (null == $new_filename)
+    {
+      $new_filename = basename($this->file);
+    }
+
     // get the pages number
     $pagesCount = $this->getAdapter()->getPagesCount();
 
@@ -68,7 +73,7 @@ class mediatorMediaPdfHandler extends mediatorMediaHandler
     {
       $this->filesystem->rename(
         $sizes['original']['directory'].DIRECTORY_SEPARATOR.$this->file,
-        $sizes['original']['directory'].DIRECTORY_SEPARATOR.$absolute_path.DIRECTORY_SEPARATOR.basename($this->file)
+        $sizes['original']['directory'].DIRECTORY_SEPARATOR.$absolute_path.DIRECTORY_SEPARATOR.$new_filename
       );
     }
 
@@ -84,10 +89,12 @@ class mediatorMediaPdfHandler extends mediatorMediaHandler
           $size['directory'].DIRECTORY_SEPARATOR.$this->file,
           $i
         );
-        $this->filesystem->rename(
-          $filename,
-          $size['directory'].DIRECTORY_SEPARATOR.$absolute_path.DIRECTORY_SEPARATOR.basename($filename)
+        $filename_dest = sprintf(
+          '%s-%s.png',
+          $size['directory'].DIRECTORY_SEPARATOR.$absolute_path.DIRECTORY_SEPARATOR.$new_filename,
+          $i
         );
+        $this->filesystem->rename($filename, $filename_dest);
         $i++;
       }
     }

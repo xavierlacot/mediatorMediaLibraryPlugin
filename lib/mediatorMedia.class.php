@@ -443,10 +443,10 @@ class mediatorMedia
     $this->logger->log(sprintf('{mediatorMedia} the media "%s" has been initialized.', $this->filename));
   }
 
-  public function moveTo($absolute_path)
+  public function moveTo($absolute_path, $new_filename = null)
   {
     $sizes = mediatorMediaLibraryToolkit::getAvailableSizes();
-    return $this->getHandler()->moveTo($absolute_path, $sizes);
+    return $this->getHandler()->moveTo($absolute_path, $sizes, $new_filename);
   }
 
   /**
