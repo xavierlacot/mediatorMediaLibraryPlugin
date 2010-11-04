@@ -215,7 +215,7 @@ abstract class PluginmmMediaFolder extends BasemmMediaFolder
 
         if (!$parent)
         {
-          throw new sfException('This parent does not exist.');
+          throw new sfException('This parent does not exist : "'.$this->parent_id.'".');
         }
 
         $parent_path = ('' != $parent->getAbsolutePath()) ? $parent->getAbsolutePath().DIRECTORY_SEPARATOR : '';
@@ -322,6 +322,7 @@ abstract class PluginmmMediaFolder extends BasemmMediaFolder
     if (isset($array['parent']))
     {
       $parent = $array['parent'];
+
       $parent_path = ('' != $parent->getAbsolutePath()) ? $parent->getAbsolutePath().DIRECTORY_SEPARATOR : '';
       $this->setAbsolutePath($parent_path.$folder_path);
 
