@@ -238,6 +238,7 @@ abstract class PluginmmMediaFolder extends BasemmMediaFolder
           if (isset($params['directory']))
           {
             $filesystem->mkdir($params['directory'].DIRECTORY_SEPARATOR.$parent_path.$this->getFolderPath());
+            $filesystem->chmod($params['directory'].DIRECTORY_SEPARATOR.$parent_path.$this->getFolderPath(), 0777);
           }
         }
       }
