@@ -536,6 +536,10 @@ class mediatorMedia
       $original_path.DIRECTORY_SEPARATOR.$this->filename,
       fopen($source, 'r')
     );
+    $this->filesystem->chmod(
+      $original_path.DIRECTORY_SEPARATOR.$this->filename,
+      0777
+    );
 
     if (isset($tempFile))
     {
