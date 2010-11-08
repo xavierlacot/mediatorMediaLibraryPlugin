@@ -73,6 +73,25 @@ class mediatorMediaImageImageMagickAdapter extends mediatorMediaAdapter
     'png32' => 'image/png',
   );
 
+  public function autoRotate()
+  {
+    $quality = isset($options['quality']) ? $options['quality'] : 90;
+    $command = '-auto-orient';
+
+    if ($quality && $this->sourceMime == 'image/jpeg')
+    {
+      $command .= ' -quality '.$quality.'% ';
+    }
+
+    $output = '-';
+    $output = (($mime = array_search($this->sourceMime, $this->mimeMap)) ? $mime.':' : '').$output;
+    $cmd = $this->magickCommands['convert'].' '.$command.' '.escapeshellarg($this->cache_file).' '.escapeshellarg($output);
+
+    ob_start();
+    passthru($cmd);
+    return ob_get_clean();
+  }
+
   public function crop($options)
   {
     $x1 = $options['x1'];
@@ -222,17 +241,13 @@ class mediatorMediaImageImageMagickAdapter extends mediatorMediaAdapter
       $thumbHeight = ceil($ratioHeight * $this->sourceHeight);
     }
 
+    $command = '';
+
     if ($crop)
     {
       $thumbWidth = $maxWidth;
       $thumbHeight = $maxHeight;
-
-      // compute top, left, width, height
-      $originalSize = min($this->sourceWidth, $this->sourceHeight);
-      $sourceTop = ($this->sourceHeight - $originalSize) / 2;
-      $sourceLeft = ($this->sourceWidth - $originalSize) / 2;
-      $originalWidth = $originalSize;
-      $originalHeight = $originalSize;
+      $command .= ' -resize '.$thumbWidth.'x'.$thumbHeight.'^ -gravity center -crop '.$thumbWidth.'x'.$thumbHeight.'+0x0';
     }
     else
     {
@@ -240,15 +255,13 @@ class mediatorMediaImageImageMagickAdapter extends mediatorMediaAdapter
       $sourceLeft = 0;
       $originalWidth = $this->sourceWidth;
       $originalHeight = $this->sourceHeight;
-    }
+      $command .= ' -thumbnail '.$thumbWidth.'x'.$thumbHeight;
 
-    $command = '';
-    $command .= ' -thumbnail '.$thumbWidth.'x'.$thumbHeight;
-
-    // absolute sizing
-    if (!$scale)
-    {
-      $command .= '!';
+      // absolute sizing
+      if (!$scale)
+      {
+        $command .= '!';
+      }
     }
 
     if ($quality && $dest_mime == 'image/jpeg')
@@ -265,6 +278,32 @@ class mediatorMediaImageImageMagickAdapter extends mediatorMediaAdapter
     $output = '-';
     $output = (($mime = array_search($dest_mime, $this->mimeMap)) ? $mime.':' : '').$output;
     $cmd = $this->magickCommands['convert'].' '.$command.' '.escapeshellarg($this->cache_file).$extract.' '.escapeshellarg($output);
+
+    ob_start();
+    passthru($cmd);
+    return ob_get_clean();
+  }
+
+  public function rotate($angle, $options = array())
+  {
+    $dest_mime = isset($options['dest_mime']) ? $options['dest_mime'] : null;
+    $quality = isset($options['quality']) ? $options['quality'] : 90;
+
+    if (null === $dest_mime)
+    {
+      $dest_mime = $this->sourceMime;
+    }
+
+    $command = '-rotate '.$angle;
+
+    if ($quality && $dest_mime == 'image/jpeg')
+    {
+      $command .= ' -quality '.$quality.'% ';
+    }
+
+    $output = '-';
+    $output = (($mime = array_search($dest_mime, $this->mimeMap)) ? $mime.':' : '').$output;
+    $cmd = $this->magickCommands['convert'].' '.$command.' '.escapeshellarg($this->cache_file).' '.escapeshellarg($output);
     ob_start();
     passthru($cmd);
     return ob_get_clean();

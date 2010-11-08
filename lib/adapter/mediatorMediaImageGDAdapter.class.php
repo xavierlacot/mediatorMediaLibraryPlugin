@@ -33,6 +33,57 @@ class mediatorMediaImageGDAdapter extends mediatorMediaAdapter
     'image/gif'   => 'imagegif',
   );
 
+  public function autoRotate()
+  {
+    if (!function_exists('exif_read_data'))
+    {
+      return false;
+    }
+
+    $exif = exif_read_data($this->cache_file);
+    $image = false;
+
+    if (isset($exif['Orientation']))
+    {
+      switch ($exif['Orientation'])
+      {
+        case 1:
+          // nothing
+          break;
+
+        case 2:
+          // nothing
+          break;
+
+        case 3:
+          $image = $this->rotate(180);
+          break;
+
+        case 4:
+          $image = $this->rotate(180);
+          break;
+
+        case 5:
+          $image = $this->rotate(90);
+          break;
+
+        case 6:
+          $image = $this->rotate(90);
+          break;
+
+        case 7:
+          $image = $this->rotate(270);
+          break;
+
+        case 8:
+          $image = $this->rotate(270);
+          break;
+      }
+    }
+
+    return $image;
+  }
+
   public function crop($options)
   {
     $x1 = $options['x1'];

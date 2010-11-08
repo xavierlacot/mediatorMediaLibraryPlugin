@@ -1,6 +1,21 @@
 <?php
 class mediatorMediaImageHandler extends mediatorMediaHandler
 {
+  protected function autoRotate($options = array())
+  {
+    $original_path = mediatorMediaLibraryToolkit::getDirectoryForSize('original');
+    $image = $this->getAdapter()->autoRotate();
+
+    if (false !== $image)
+    {
+      // write the rotated image in the original folder
+      $this->filesystem->write($original_path.DIRECTORY_SEPARATOR.$this->file, $image);
+
+      // reinitialize the adapter
+      $this->getAdapter()->reinitialize($this->file, $this->filesystem, $options);
+    }
+  }
+
   public function crop($options)
   {
     $image = $this->getAdapter()->crop($options);
@@ -63,6 +78,13 @@ class mediatorMediaImageHandler extends mediatorMediaHandler
   {
     // get dimensions from image adapter
     return $this->getAdapter()->getDimensions();
+  }
+
+  public function process(array $sizes)
+  {
+    // turn correctly images having an EXIF "Orientation" entry
+    $this->autoRotate();
+    return parent::process($sizes);
   }
 
   public function resize($options = array())
