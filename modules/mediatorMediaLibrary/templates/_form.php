@@ -159,13 +159,9 @@ $(document).ready(function() {
         case 'flash': // no flash 9+ :(
           alert('<?php echo __('To enable the embedded uploader, install the latest Adobe Flash plugin.'); ?>')
       }
-
-      console.log(error);
     },
 
     onComplete: function() {
-      console.log('onComplete');
-
       if (errors.length > 0) {
         // there was at least one error
         document.id('mediator-uploader').destroy();
