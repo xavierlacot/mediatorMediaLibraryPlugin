@@ -136,9 +136,12 @@ $(document).ready(function() {
     onFileComplete: function(file) {
     	if (file.response.error) {
         errors.push(this.fileList[0].name);
-    	  console.log('Failed Upload', 'Uploading <em>' + this.fileList[0].name + '</em> failed, please try again. (Error: #' + this.fileList[0].response.code + ' ' + this.fileList[0].response.error + ')');
+        file.element.addClass('file-failed');
+        file.info.set('html', 'Failed Upload', 'Uploading <em>' + this.fileList[0].name + '</em> failed, please try again. (Error: #' + this.fileList[0].response.code + ' ' + this.fileList[0].response.error + ')');
       } else {
         hash_keys.push(file.response.text);
+        file.element.addClass('file-success');
+        file.info.set('html', '<strong>The file has been uploaded.</strong>');
       }
     },
 
@@ -193,9 +196,7 @@ $(document).ready(function() {
             if (s == 'error') {
               $('#mediator-media-add').html("<p class=\"error\"><?php echo __('A problem happened, and no file was uploaded.') ?></p>");
             } else {
-              //console.log('call rebind media');
               $('html').trigger('mediatormediarebind');
-              //console.log('called rebind media');
             }
           }
         );
