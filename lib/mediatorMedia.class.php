@@ -5,18 +5,19 @@
  */
 class mediatorMedia
 {
-  const META_TYPE_OFFICE = 'office';
+  const META_TYPE_FLASH = 'flash';
   const META_TYPE_IMAGE = 'image';
+  const META_TYPE_OFFICE = 'office';
+  const META_TYPE_OTHER = 'other';
   const META_TYPE_SOUND = 'sound';
   const META_TYPE_VIDEO = 'video';
-  const META_TYPE_OTHER = 'other';
 
+  const TYPE_FLASH = 'flash';
   const TYPE_IMAGE = 'image';
   const TYPE_OFFICE = 'office';
   const TYPE_PDF = 'pdf';
   const TYPE_SOUND = 'sound';
   const TYPE_VIDEO = 'video';
-
 
   protected $filename,
             $filesystem,
@@ -44,51 +45,52 @@ class mediatorMedia
     'application/vnd.sun.xml.draw'                    => self::TYPE_OFFICE,
     'application/vnd.sun.xml.impress'                 => self::TYPE_OFFICE,
     'application/vnd.sun.xml.writer'                  => self::TYPE_OFFICE,
-    'application/x-icb'      => '',
-    'application/x-mif'      => '',
-    'image/dcx'              => '',
-    'image/g3fax'            => '',
-    'image/gif'              => self::TYPE_IMAGE,
-    'image/jng'              => '',
-    'image/jpeg'             => self::TYPE_IMAGE,
-    'image/pbm'              => '',
-    'image/pcd'              => '',
-    'image/pict'             => '',
-    'image/pjpeg'            => self::TYPE_IMAGE,
-    'image/png'              => self::TYPE_IMAGE,
-    'image/ras'              => '',
-    'image/sgi'              => '',
-    'image/svg'              => self::TYPE_IMAGE,
-    'image/tga'              => '',
-    'image/tiff'             => self::TYPE_IMAGE,
-    'image/vda'              => '',
-    'image/vnd.wap.wbmp'     => '',
-    'image/vst'              => '',
-    'image/x-fits'           => '',
-    'image/x-ms-bmp'         => self::TYPE_IMAGE,
-    'image/x-otb'            => '',
-    'image/x-palm'           => '',
-    'image/x-pcx'            => '',
-    'image/x-pgm'            => '',
-    'image/x-photoshop'      => '',
-    'image/x-ppm'            => '',
-    'image/x-ptiff'          => '',
-    'image/x-viff'           => '',
-    'image/x-win-bitmap'     => self::TYPE_IMAGE,
-    'image/x-xbitmap'        => self::TYPE_IMAGE,
-    'image/x-xv'             => self::TYPE_IMAGE,
-    'image/xpm'              => self::TYPE_IMAGE,
-    'image/xwd'              => self::TYPE_IMAGE,
-    'text/plain'             => 'text',
-    'text/x-c'               => 'text',
-    'video/avi'              => self::TYPE_VIDEO,
-    'video/mng'              => '',
-    'video/mpeg'             => self::TYPE_VIDEO,
-    'video/mpeg2'            => self::TYPE_VIDEO,
-    'video/mp4'              => self::TYPE_VIDEO,
-    'video/msvideo'          => self::TYPE_VIDEO,
-    'video/quicktime'        => self::TYPE_VIDEO,
-    'video/x-msvideo'        => self::TYPE_VIDEO,
+    'application/x-icb'                               => '',
+    'application/x-mif'                               => '',
+    'image/dcx'                                       => '',
+    'image/g3fax'                                     => '',
+    'image/gif'                                       => self::TYPE_IMAGE,
+    'image/jng'                                       => '',
+    'image/jpeg'                                      => self::TYPE_IMAGE,
+    'image/pbm'                                       => '',
+    'image/pcd'                                       => '',
+    'image/pict'                                      => '',
+    'image/pjpeg'                                     => self::TYPE_IMAGE,
+    'image/png'                                       => self::TYPE_IMAGE,
+    'image/ras'                                       => '',
+    'image/sgi'                                       => '',
+    'image/svg'                                       => self::TYPE_IMAGE,
+    'image/tga'                                       => '',
+    'image/tiff'                                      => self::TYPE_IMAGE,
+    'image/vda'                                       => '',
+    'image/vnd.wap.wbmp'                              => '',
+    'image/vst'                                       => '',
+    'image/x-fits'                                    => '',
+    'image/x-ms-bmp'                                  => self::TYPE_IMAGE,
+    'image/x-otb'                                     => '',
+    'image/x-palm'                                    => '',
+    'image/x-pcx'                                     => '',
+    'image/x-pgm'                                     => '',
+    'image/x-photoshop'                               => '',
+    'image/x-ppm'                                     => '',
+    'image/x-ptiff'                                   => '',
+    'image/x-viff'                                    => '',
+    'image/x-win-bitmap'                              => self::TYPE_IMAGE,
+    'image/x-xbitmap'                                 => self::TYPE_IMAGE,
+    'image/x-xv'                                      => self::TYPE_IMAGE,
+    'image/xpm'                                       => self::TYPE_IMAGE,
+    'image/xwd'                                       => self::TYPE_IMAGE,
+    'text/plain'                                      => 'text',
+    'text/x-c'                                        => 'text',
+    'video/avi'                                       => self::TYPE_VIDEO,
+    'video/mng'                                       => '',
+    'video/mpeg'                                      => self::TYPE_VIDEO,
+    'video/mpeg2'                                     => self::TYPE_VIDEO,
+    'video/mp4'                                       => self::TYPE_VIDEO,
+    'video/msvideo'                                   => self::TYPE_VIDEO,
+    'video/quicktime'                                 => self::TYPE_VIDEO,
+    'video/x-msvideo'                                 => self::TYPE_VIDEO,
+    'application/x-shockwave-flash'                   => self::TYPE_FLASH,
   );
 
   public static $file_extensions = array(
@@ -117,6 +119,7 @@ class mediatorMedia
     'png'    => 'image/png',
     'ppt'    => 'application/vnd.ms-powerpoint',
     'svg'    => 'image/svg',
+    'swf'    => 'application/x-shockwave-flash',
     'sxc'    => 'application/vnd.sun.xml.calc',
     'sxd'    => 'application/vnd.sun.xml.draw',
     'sxi'    => 'application/vnd.sun.xml.impress',

@@ -25,6 +25,7 @@ all:
     fs:                             localdisk
     media_root:                     /media
     media_types:
+      flash:                        "*.swf"
       images:                       "*.jpg;*.jpeg;*.png;*.gif;*.bmp"
       sound:                        "*.aac;*.wma;*.mp3;*.wav"
       video:                        "*.mpeg;*.mp4;*.m4v;*.mov;*.flv;*.avi;*.mpg"
