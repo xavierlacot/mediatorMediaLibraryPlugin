@@ -128,12 +128,6 @@ $(document).ready(function() {
       }, this);
     },
 
-    onFileSuccess: function(file, response) {
-      if (response) {
-        hash_keys.push(response);
-      }
-    },
-
     onFileError: function(file) {
         console.log('onFileError');
         console.log(file);
@@ -143,6 +137,8 @@ $(document).ready(function() {
     	if (file.response.error) {
         errors.push(this.fileList[0].name);
     	  console.log('Failed Upload', 'Uploading <em>' + this.fileList[0].name + '</em> failed, please try again. (Error: #' + this.fileList[0].response.code + ' ' + this.fileList[0].response.error + ')');
+      } else {
+        hash_keys.push(file.response.text);
       }
     },
 
