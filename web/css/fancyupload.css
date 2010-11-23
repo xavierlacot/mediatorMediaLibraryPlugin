@@ -63,8 +63,9 @@
 }
 
 #mediator-uploader-file-list li.file .file-name {
-  font-size: 1.2em;
+  font-size: 1.1em;
   margin-left: 44px;
+  margin-right: 75px;
   display: block;
   clear: left;
   line-height: 30px;
