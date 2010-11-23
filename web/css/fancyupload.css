@@ -17,6 +17,13 @@
   border: 1px solid #eee;
 }
 
+#mediator-uploader .current-title {
+  overflow: hidden;
+  display: block;
+  height: 35px;
+  width: 350px;
+}
+
 #mediator-uploader .progress {
   background: url(../images/fancyupload/assets/progress-bar/progress.gif) no-repeat;
   background-position: +50% 0;
