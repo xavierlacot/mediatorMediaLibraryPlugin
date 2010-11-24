@@ -199,6 +199,16 @@ class mediatorMedia
     return $original_path.DIRECTORY_SEPARATOR.$this->filename;
   }
 
+  /**
+   * returns the raw content of the document
+   *
+   * @return string the content of the file
+   */
+  public function getContent()
+  {
+    return file_get_contents($this->cache());
+  }
+
   public static function getFileExtensions()
   {
     return self::$file_extensions;

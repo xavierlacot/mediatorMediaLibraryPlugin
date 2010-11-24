@@ -92,6 +92,25 @@ abstract class PluginmmMedia extends BasemmMedia
     return $path;
   }
 
+  /**
+   * returns the raw content of the document
+   *
+   * @return string the content of the file
+   */
+  public function getContent()
+  {
+    $mediator_media = $this->getMediatorMedia();
+
+    if ($mediator_media)
+    {
+      return $mediator_media->getContent();
+    }
+    else
+    {
+      return null;
+    }
+  }
+
   public function getDisplay($options = array())
   {
     $display_options = array();
