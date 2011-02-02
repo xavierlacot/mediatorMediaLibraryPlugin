@@ -18,11 +18,12 @@
       <?php include_partial('mediatorMediaLibrary/flash'); ?>
 
       <div id="mediator-media-tabs">
+<?php /* ?>
         <ul>
           <li><a href="#mediator-media-browse"><?php echo __('Browse') ?></a></li>
           <li><a href="#mediator-media-search"><?php echo __('Search') ?></a></li>
         </ul>
-
+<?php */ ?>
         <div id="mediator-media-browse" class="mediator-media-library">
           <h1><?php echo __('Browse media Library') ?></h1>
           <?php  include_component('mediatorMediaLibrary', 'folder_breadcrumb', array('mm_media_folder' => $mm_media_folder, 'action' => 'choose')); ?>
@@ -32,19 +33,21 @@
           </div>
           <?php include_partial('mediatorMediaLibrary/browse', array('mm_media_folder' => $mm_media_folder, 'allowed_types' => $allowed_types, 'action' => 'choose')) ?>
         </div>
-
+<?php /* ?>
         <div id="mediator-media-search" class="mediator-media-library">
           <h1><?php echo __('Search in media Library') ?></h1>
           <?php include_partial('mediatorMediaLibrary/advanced_search', array('mm_media_folder' => $mm_media_folder, 'allowed_types' => $allowed_types)); ?>
           <div class="spacer"></div>
         </div>
+<?php */ ?>
       </div>
     </div>
-
+<?php /* ?>
     <script type="text/javascript">
       jQuery(document).ready(function() {
     		jQuery("#mediator-media-tabs").tabs();
       });
     </script>
+<?php */ ?>
   </body>
 </html>
