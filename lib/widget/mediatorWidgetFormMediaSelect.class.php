@@ -101,7 +101,7 @@ class mediatorWidgetFormMediaSelect extends sfWidgetFormInput
       }
     }
 
-    return '<div class="imgselected">'.sfContext::getInstance()->getI18N()->__('No image has been chosen so far.').'</div>'
+    return '<div class="imgselected">'.sfContext::getInstance()->getI18N()->__('No file has been chosen so far.').'</div>'
     .$choose_link.' '.$delete_link;
   }
 
