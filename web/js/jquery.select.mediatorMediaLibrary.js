@@ -78,19 +78,16 @@
    */
   function fileClick(e) {
     try {
-      var image = e.target;
+      var target = e.target;
 
-      if (!$(image).is('img')) {
-        if (!$(image).is('a')) {
-          image = $(image).parent();
-        }
-        image = $(image).find('img');
+      if (!$(target).is('a')) {
+        target = $(target).parents('.file');
       }
 
       var fieldname = $('body').attr('widget_field_id');
       fieldname = fieldname.replace('_link', '');
-      $('#' + fieldname).val($(image).parent('a').attr('rel')).change();
-      $('#' + fieldname + '_image .imgselected').html($(image).parent().html());
+      $('#' + fieldname).val($(target).attr('rel')).change();
+      $('#' + fieldname + '_image .imgselected').html($(target).html());
       $('#' + fieldname + '_image a.mediatorWidgetFormMediaSelect').html('Replace');
     } catch (exception) {
       return false;
