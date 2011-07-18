@@ -63,8 +63,8 @@ abstract class PluginmmMedia extends BasemmMedia
     }
 
     $q = Doctrine_Query::create()
-      ->delete('mm_media_metadata m')
-      ->where('m.mm_media_id = ?', $this->getId);
+      ->delete('mmMediaMetadata m')
+      ->where('m.mm_media_id = ?', $this->getId());
     $q->execute();
   }
 
