@@ -361,7 +361,7 @@ abstract class PluginmmMedia extends BasemmMedia
     $mm_media_folder = $array['mm_media_folder'];
     unset($array['mm_media_folder']);
 
-    if (!is_null($mm_media_folder))
+    if (!is_null($mm_media_folder) && is_object($mm_media_folder))
     {
       if ($mm_media_folder->isNew())
       {
