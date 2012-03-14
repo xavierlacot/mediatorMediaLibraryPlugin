@@ -24,8 +24,8 @@ mmMediaFolder:
 <?php endif ; ?>
     mmMedia:               { class: mmMedia, local: id, foreign: mm_media_folder_id, type: many }
     mmMediaFolderMetadata: { class: mmMediaFolderMetadata, local: id, foreign: mm_media_folder_id, type: many }
-    created_by:            { class: SfDoctrineGuardUser, onDelete: SET NULL, local: created_by, foreign: id }
-    updated_by:            { class: SfDoctrineGuardUser, onDelete: SET NULL, local: updated_by, foreign: id }
+    CreatedBy:             { class: sfGuardUser, onDelete: SET NULL, local: created_by, foreign: id }
+    UpdatedBy:             { class: sfGuardUser, onDelete: SET NULL, local: updated_by, foreign: id }
   indexes:
 <?php if (!sfConfig::get('app_mediatorMediaLibraryPlugin_use_nested_set', false)): ?>
     parent_id_root:
@@ -63,8 +63,8 @@ mmMedia:
       type: many
       local: id
       foreign: mm_media_id
-    CreatedBy: { class: SfDoctrineGuardUser, onDelete: SET NULL, local: created_by, foreign: id }
-    UpdatedBy: { class: SfDoctrineGuardUser, onDelete: SET NULL, local: updated_by, foreign: id }
+    CreatedBy: { class: sfGuardUser, onDelete: SET NULL, local: created_by, foreign: id }
+    UpdatedBy: { class: SfGuardUser, onDelete: SET NULL, local: updated_by, foreign: id }
   indexes:
     browse:
       fields:            [filename]
