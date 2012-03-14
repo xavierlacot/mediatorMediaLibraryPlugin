@@ -64,7 +64,7 @@ mmMedia:
       local: id
       foreign: mm_media_id
     CreatedBy: { class: sfGuardUser, onDelete: SET NULL, local: created_by, foreign: id }
-    UpdatedBy: { class: SfGuardUser, onDelete: SET NULL, local: updated_by, foreign: id }
+    UpdatedBy: { class: sfGuardUser, onDelete: SET NULL, local: updated_by, foreign: id }
   indexes:
     browse:
       fields:            [filename]
