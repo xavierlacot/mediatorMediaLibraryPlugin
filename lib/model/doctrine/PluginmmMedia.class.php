@@ -227,6 +227,8 @@ abstract class PluginmmMedia extends BasemmMedia
         .'/'.$media_path;
     }
 
+    $result = str_replace(' ', '%20', $result);
+
     if (!isset($options['with_time']) || (false !== $options['with_time']))
     {
       $result .= '?time='.strtotime($this->getUpdatedAt());
