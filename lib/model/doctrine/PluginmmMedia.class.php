@@ -229,7 +229,7 @@ abstract class PluginmmMedia extends BasemmMedia
 
     $result = str_replace(' ', '%20', $result);
 
-    if (!isset($options['with_time']) || (false !== $options['with_time']))
+    if (isset($options['with_time']) && (true === $options['with_time']))
     {
       $result .= '?time='.strtotime($this->getUpdatedAt());
     }
@@ -275,16 +275,34 @@ abstract class PluginmmMedia extends BasemmMedia
 
   public function moveTo($array = array())
   {
-    if (!isset($array['mm_media_folder']))
+    if (!isset($array['mm_media_folder']) && !isset($array['filename']))
     {
       throw new sfException('Missing informations in order to move the file.');
     }
 
-    $mm_media_folder = $array['mm_media_folder'];
+    if (isset($array['mm_media_folder']))
+    {
+      $mm_media_folder = $array['mm_media_folder'];
+    }
+    else
+    {
+      $mm_media_folder = $this->getMmMediaFolder();
+    }
+
     $mm_media_folder_path = ('' != $mm_media_folder->getAbsolutePath()) ? $mm_media_folder->getAbsolutePath().DIRECTORY_SEPARATOR : '';
-    $this->getMediatorMedia()->moveTo($mm_media_folder_path);
-    $this->setMmMediaFolder($mm_media_folder);
-    $this->save();
+
+    if (isset($array['filename']))
+    {
+      $this->getMediatorMedia()->moveTo($mm_media_folder_path, $array['filename']);
+      $this->setMmMediaFolder($mm_media_folder);
+      $this->setFilename($array['filename']);
+      $this->setTitle($array['filename']);
+    }
+    else
+    {
+      $this->getMediatorMedia()->moveTo($mm_media_folder_path);
+      $this->setMmMediaFolder($mm_media_folder);
+    }
   }
 
   public function save(Doctrine_Connection $conn = null)
