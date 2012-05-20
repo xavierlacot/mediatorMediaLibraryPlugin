@@ -272,7 +272,9 @@ class mediatorMedia
     if (function_exists('exif_read_data') && ('image/jpeg' === $this->getMimeType()))
     {
       $exif = exif_read_data($this->cache());
-      $metadatas = array_merge($exif, $metadatas);
+      $allowed = sfConfig::get('app_mediatorMediaLibraryPlugin_metadata_exif');
+      $allowed = array_combine($allowed, $allowed);
+      $metadatas = array_merge(array_intersect_key($exif, $allowed), $metadatas);
     }
 
     return $metadatas;
