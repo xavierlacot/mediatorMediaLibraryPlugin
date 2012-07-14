@@ -303,6 +303,8 @@ abstract class PluginmmMedia extends BasemmMedia
       $this->getMediatorMedia()->moveTo($mm_media_folder_path);
       $this->setMmMediaFolder($mm_media_folder);
     }
+
+    $this->save();
   }
 
   public function save(Doctrine_Connection $conn = null)
