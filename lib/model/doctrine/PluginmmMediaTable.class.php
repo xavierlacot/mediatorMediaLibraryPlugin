@@ -42,4 +42,14 @@ class PluginmmMediaTable extends Doctrine_Table
 
     return isset($result[0]) ? $result[0] : null;
   }
+
+  public function findByFilenameAndFolder($filename, $folderId)
+  {
+    $result = Doctrine_Query::create()->from('mmMedia m')
+      ->where('m.filename = ?', $filename)
+      ->andWhere('m.mm_media_folder_id = ?', $folderId)
+      ->execute();
+
+    return isset($result[0]) ? $result[0] : null;
+  }
 }
