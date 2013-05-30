@@ -54,7 +54,7 @@ EOF;
     // retrieve the mmMediaFolders
     $q = Doctrine_Query::create()
       ->select('f.*')
-      ->from('mm_media_folder f');
+      ->from('mmMediaFolder f');
     $media_folders = $q->execute();
 
     foreach ($sizes as $size => $params)
@@ -84,7 +84,7 @@ EOF;
     // retrieve the mmMedia
     $q = Doctrine_Query::create()
       ->select('m.*')
-      ->from('mm_media m');
+      ->from('mmMedia m');
     $medias = $q->execute();
     $total = count($medias);
 
