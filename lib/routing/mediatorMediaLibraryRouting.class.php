@@ -40,7 +40,7 @@ class mediatorMediaLibraryRouting
       );
     }
 
-    $actions = array('delete', 'detail', 'edit', 'list', 'move', 'view');
+    $actions = array('choose', 'delete', 'detail', 'edit', 'list', 'move', 'view');
 
     foreach ($actions as $action)
     {

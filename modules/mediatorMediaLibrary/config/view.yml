@@ -1,10 +1,13 @@
-all:
+default:
   stylesheets:   [/sfDoctrinePlugin/css/global.css: { position: first }, /sfDoctrinePlugin/css/default.css: { position: first }, /mediatorMediaLibraryPlugin/css/facebox, /mediatorMediaLibraryPlugin/css/mediatorMediaLibrary]
   javascripts:   [/mediatorMediaLibraryPlugin/js/facebox.js]
 
 chooseSuccess:
   has_layout:    false
-  javascripts:   [/mediatorMediaLibraryPlugin/js/jquery.form.js, /mediatorMediaLibraryPlugin/js/jquery.autoSuggest.js]
+  javascripts:
+    - /mediatorMediaLibraryPlugin/js/jquery.form.js
+    - /mediatorMediaLibraryPlugin/js/jquery.autoSuggest.js
+    - -/mediatorMediaLibraryPlugin/js/facebox.js
   stylesheets:   [/mediatorMediaLibraryPlugin/css/autoSuggest.css]
 
 describeSuccess:
