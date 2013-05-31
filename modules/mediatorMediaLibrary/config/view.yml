@@ -1,4 +1,4 @@
-default:
+all:
   stylesheets:   [/sfDoctrinePlugin/css/global.css: { position: first }, /sfDoctrinePlugin/css/default.css: { position: first }, /mediatorMediaLibraryPlugin/css/facebox, /mediatorMediaLibraryPlugin/css/mediatorMediaLibrary]
   javascripts:   [/mediatorMediaLibraryPlugin/js/facebox.js]
 
